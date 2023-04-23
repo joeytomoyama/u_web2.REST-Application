@@ -1,0 +1,37 @@
+"use strict";
+// objects
+let age;
+age = 44;
+let personName;
+personName = 'john';
+let isNano;
+isNano = false;
+let tracerDmg = 20;
+let reinDmg = 75;
+let tracerHp = 150;
+let tracer;
+tracer = {
+    damage: 20,
+    health: 150,
+    recallCooldown: 12,
+    playerName: 'Martok',
+    nestedObject: {
+        test: 'test'
+    },
+    isNano: false
+};
+let mercy = {
+    damage: 20,
+    health: 150,
+    resCooldown: 12,
+    playerName: 'Ataru',
+    // pocketed: {
+    //     anything: true
+    // },
+    // die: function() {
+    //     console.log('mercy died')
+    // },
+    isNano: false
+};
+console.log(mercy.damage);
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoib2JqZWN0cy5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uL29iamVjdHMudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IjtBQUFBLFVBQVU7QUFFVixJQUFJLEdBQVcsQ0FBQTtBQUNmLEdBQUcsR0FBRyxFQUFFLENBQUE7QUFFUixJQUFJLFVBQWtCLENBQUE7QUFDdEIsVUFBVSxHQUFHLE1BQU0sQ0FBQTtBQUVuQixJQUFJLE1BQWUsQ0FBQTtBQUNuQixNQUFNLEdBQUcsS0FBSyxDQUFBO0FBRWQsSUFBSSxTQUFTLEdBQVcsRUFBRSxDQUFBO0FBRTFCLElBQUksT0FBTyxHQUFXLEVBQUUsQ0FBQTtBQUN4QixJQUFJLFFBQVEsR0FBVyxHQUFHLENBQUE7QUFFMUIsSUFBSSxNQUEyQixDQUFBO0FBRS9CLE1BQU0sR0FBRztJQUNMLE1BQU0sRUFBRSxFQUFFO0lBQ1YsTUFBTSxFQUFFLEdBQUc7SUFDWCxjQUFjLEVBQUUsRUFBRTtJQUNsQixVQUFVLEVBQUUsUUFBUTtJQUNwQixZQUFZLEVBQUU7UUFDVixJQUFJLEVBQUUsTUFBTTtLQUNmO0lBQ0QsTUFBTSxFQUFFLEtBQUs7Q0FDaEIsQ0FBQTtBQUVELElBQUksS0FBSyxHQUFHO0lBQ1IsTUFBTSxFQUFFLEVBQUU7SUFDVixNQUFNLEVBQUUsR0FBRztJQUNYLFdBQVcsRUFBRSxFQUFFO0lBQ2YsVUFBVSxFQUFFLE9BQU87SUFDbkIsY0FBYztJQUNkLHFCQUFxQjtJQUNyQixLQUFLO0lBQ0wsb0JBQW9CO0lBQ3BCLGdDQUFnQztJQUNoQyxLQUFLO0lBQ0wsTUFBTSxFQUFFLEtBQUs7Q0FDaEIsQ0FBQTtBQUVELE9BQU8sQ0FBQyxHQUFHLENBQUMsS0FBSyxDQUFDLE1BQU0sQ0FBQyxDQUFBIn0=
