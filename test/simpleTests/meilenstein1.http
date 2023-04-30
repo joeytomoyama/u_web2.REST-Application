@@ -1,10 +1,10 @@
 // Rufe alle User ab. Zu Beginn sollten keine User in der Datenbank sein. 
 ###
-GET http://localhost/api/publicUsers
+GET http://localhost:8080/api/publicUsers
 
 // Lege ersten User an, der Administrator ist
 ###
-POST http://localhost:80/api/publicUsers
+POST http://localhost:8080/api/publicUsers
 Content-Type: application/json
 
 {
@@ -17,14 +17,14 @@ Content-Type: application/json
 
 // Rufe den User mit UserID admin ab. 
 ###
-GET http://localhost/api/publicUsers/admin
+GET http://localhost:8080/api/publicUsers/admin
 
 ###
-GET http://localhost/api/publicUsers/manfred
+GET http://localhost:8080/api/publicUsers/manfred
 
 // Lege zweiten User an. Prüfe UserID sowie den Namen, ob die Angaben korrekt sind.
 ###
-POST http://localhost/api/publicUsers
+POST http://localhost:8080/api/publicUsers
 Content-Type: application/json
 
 {
@@ -36,7 +36,7 @@ Content-Type: application/json
 
 // Ändere beim zweiten User den User-Name. Zur Selektion des Users verwende die userID.
 ###
-PUT http://localhost/api/publicUsers/manfred
+PUT http://localhost:8080/api/publicUsers/manfred
 Content-Type: application/json
 
 {
@@ -46,17 +46,17 @@ Content-Type: application/json
 
 // Rufe alle User ab. Es sollten 2 User zurückgegeben werden.
 ###
-GET http://localhost/api/publicUsers
+GET http://localhost:8080/api/publicUsers
 
 // Lösche den User mit der User-ID manfred
 ###
-DELETE  http://localhost/api/publicUsers/manfred// Rufe alle User ab. Zu Beginn sollten keine User in der Datenbank sein. 
+DELETE  http://localhost:8080/api/publicUsers/manfred// Rufe alle User ab. Zu Beginn sollten keine User in der Datenbank sein. 
 ###
-GET http://localhost/api/publicUsers
+GET http://localhost:8080/api/publicUsers
 
 // Lege ersten User an, der Administrator ist
 ###
-POST http://localhost:80/api/publicUsers
+POST http://localhost:8080:80/api/publicUsers
 Content-Type: application/json
 
 {
@@ -69,14 +69,14 @@ Content-Type: application/json
 
 // Rufe den User mit UserID admin ab. 
 ###
-GET http://localhost/api/publicUsers/admin
+GET http://localhost:8080/api/publicUsers/admin
 
 ###
-GET http://localhost/api/publicUsers/manfred
+GET http://localhost:8080/api/publicUsers/manfred
 
 // Lege zweiten User an. Prüfe UserID sowie den Namen, ob die Angaben korrekt sind.
 ###
-POST http://localhost/api/publicUsers
+POST http://localhost:8080/api/publicUsers
 Content-Type: application/json
 
 {
@@ -88,7 +88,7 @@ Content-Type: application/json
 
 // Ändere beim zweiten User den User-Name. Zur Selektion des Users verwende die userID.
 ###
-PUT http://localhost/api/publicUsers/manfred
+PUT http://localhost:8080/api/publicUsers/manfred
 Content-Type: application/json
 
 {
@@ -98,8 +98,8 @@ Content-Type: application/json
 
 // Rufe alle User ab. Es sollten 2 User zurückgegeben werden.
 ###
-GET http://localhost/api/publicUsers
+GET http://localhost:8080/api/publicUsers
 
 // Lösche den User mit der User-ID manfred
 ###
-DELETE  http://localhost/api/publicUsers/manfred
+DELETE  http://localhost:8080/api/publicUsers/manfred
