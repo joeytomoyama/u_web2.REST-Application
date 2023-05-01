@@ -10,7 +10,7 @@ const router = express.Router()
 router.get('/', async (req, res, next) => {
     try {
         const users = await User.find()
-        res.status(201).send(users)
+        res.status(200).send(users)
     } catch (error: any) {
         res.status(500).json({ message: error.message })
     }
@@ -18,7 +18,7 @@ router.get('/', async (req, res, next) => {
 
 // Getting one
 router.get('/:userID', getUser, (req: any, res: any) => {
-    res.status(201).json(res.user)
+    res.status(200).json(res.user)
 })
 
 // Creating one
