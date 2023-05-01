@@ -8,13 +8,17 @@ const router = express.Router()
 
 // Getting all
 router.get('/', async (req, res, next) => {
-    const users = await User.find()
-    res.send(users)
+    try {
+        const users = await User.find()
+        res.status(201).send(users)
+    } catch (error: any) {
+        res.status(500).json({ message: error.message })
+    }
 })
 
 // Getting one
 router.get('/:userID', getUser, (req: any, res: any) => {
-    res.json(res.user)
+    res.status(201).json(res.user)
 })
 
 // Creating one
@@ -78,6 +82,7 @@ async function getUser(req: any, res: any, next: any) {
     next()
 }
 
+// Just for testing password hashing
 router.post('/login', async (req: any, res: any) => {
     const user = await User.findOne({ userID: req.body.userID })
     if (user === null) return
