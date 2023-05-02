@@ -53,7 +53,11 @@ router.put('/:userID', async(req: any, res: any) => {
 
     try {
         const newUser = await User.findOneAndUpdate({ userID: req.params.userID }, req.body, { new: true })
-        res.status(200).json(newUser)
+        if (newUser) {
+            res.status(200).json(newUser)
+        } else {
+            res.status(404).send('User not found')
+        }
     } catch (error: any) {
         res.status(500).json({ message: error })
     }
@@ -65,7 +69,7 @@ router.delete('/:userID', getUser, async (req: any, res: any) => {
         await User.deleteOne(res.user)
         res.status(200).json(res.user)
     } catch(error: any) {
-        res.status(500).json({ message: error.message})
+        res.status(500).json({ message: error.message })
     }
 })
 
