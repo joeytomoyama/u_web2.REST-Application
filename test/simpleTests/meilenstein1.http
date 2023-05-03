@@ -28,7 +28,7 @@ Content-Type: application/json
     "userID": "manfred",
     "firstName": "Susi",
     "lastName": "Sunkist",
-    "password": "asdf"
+    "password": "eliasistcool1"
 }
 
 // Ändere beim zweiten User den User-Name. Zur Selektion des Users verwende die userID.
@@ -37,8 +37,7 @@ PUT http://localhost/api/publicUsers/manfred
 Content-Type: application/json
 
 {
-    "firstName": "Marina",
-    "lastName": "Sauerbier"
+    "isAdministrator": true
 }
 
 // Rufe alle User ab. Es sollten 2 User zurückgegeben werden.
@@ -57,4 +56,23 @@ Content-Type: application/json
 {
     "userID": "admin",
     "password": "123"
+}
+
+// remove non existing
+###
+DELETE  http://localhost/api/publicUsers/blablo
+
+// change non existing
+###
+PUT  http://localhost/api/publicUsers/blablo
+
+// User without ID.
+###
+POST http://localhost/api/publicUsers
+Content-Type: application/json
+
+{
+    "firstName": "test",
+    "lastName": "test2",
+    "password": "password"
 }

@@ -7,7 +7,7 @@ import mongoose from 'mongoose'
 const router = express.Router()
 
 // Getting all
-router.get('/', async (req, res, next) => {
+router.get('/', async (req, res) => {
     try {
         const users = await User.find()
         res.status(200).send(users)
@@ -23,8 +23,10 @@ router.get('/:userID', getUser, (req: any, res: any) => {
 
 // Creating one
 router.post('/', async (req: any, res: any) => {
-    const salt = await bcryptjs.genSalt()
-    const hashedPassword = await bcryptjs.hash(req.body.password, salt)
+    // if (!req.body.userID) res.status(400).json({ message: 'id is definitely required' })
+
+    const salt = bcryptjs.genSaltSync()
+    const hashedPassword = bcryptjs.hashSync(req.body.password, salt)
 
     const user = new User({
         userID: req.body.userID,
@@ -37,8 +39,16 @@ router.post('/', async (req: any, res: any) => {
     try {
         await user.save()
         res.status(201).json(user)
-    } catch(error) {
-        res.status(400).json({ message: error })
+    } catch(error: any) {
+        if (error.code === 11000) {
+            res.status(400).json({ message: 'Duplicate ID not allowed.' })
+        } else {
+            if (error.name === "ValidationError") {
+                res.status(400).json({ message: 'Required property missing.' })
+            } else {
+                res.status(500).json({ message: error })
+            }
+        }
     }
 })
 
@@ -46,8 +56,8 @@ router.post('/', async (req: any, res: any) => {
 router.put('/:userID', async(req: any, res: any) => {
     // hash password, if password was changed.
     if (req.body.password) {
-        const salt = await bcryptjs.genSalt()
-        const hashedPassword = await bcryptjs.hash(req.body.password, salt)
+        const salt = bcryptjs.genSaltSync()
+        const hashedPassword = bcryptjs.hashSync(req.body.password, salt)
         req.body.password = hashedPassword
     }
 
@@ -56,7 +66,7 @@ router.put('/:userID', async(req: any, res: any) => {
         if (newUser) {
             res.status(200).json(newUser)
         } else {
-            res.status(404).send('User not found')
+            res.status(404).json({message: 'User not found' })
         }
     } catch (error: any) {
         res.status(500).json({ message: error })
