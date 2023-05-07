@@ -88,7 +88,7 @@ async function getUser(req: any, res: any, next: any) {
     let user: mongoose.Schema | null
     try {
         user = await User.findOne({ userID: req.params.userID })
-        if (user == null) return res.status(404).json({ message: 'Cannot find user' })
+        if (user == null) return res.status(404).json({ message: 'User not found' })
     } catch (err: any) {
         return res.status(500).json({ message: err.message })
     }
@@ -110,5 +110,19 @@ router.post('/login', async (req: any, res: any) => {
         res.status(500).send()
     }
 })
+
+export async function ensureAdmin() {
+    const users = await User.find()
+    if (users.length > 0) return
+    const admin = new User({
+        userID: 'admin',
+        firstName: 'admin',
+        lastName: 'admin',
+        password: '123',
+        isAdministrator: true
+    })
+    await admin.save()
+    console.log('Added admin user.')
+}
 
 export default router
