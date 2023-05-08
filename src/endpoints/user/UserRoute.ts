@@ -2,14 +2,15 @@ import express from 'express'
 import bcryptjs from 'bcryptjs'
 
 import User from './UserModel'
-import mongoose from 'mongoose'
+import { getAllUsers, getOneUser } from './userService'
+// import mongoose from 'mongoose'
 
 const router = express.Router()
 
 // Getting all
 router.get('/', async (req, res) => {
     try {
-        const users = await User.find()
+        const users = await getAllUsers()
         res.status(200).send(users)
     } catch (error: any) {
         res.status(500).json({ message: error.message })
@@ -17,8 +18,9 @@ router.get('/', async (req, res) => {
 })
 
 // Getting one
-router.get('/:userID', getUser, (req: any, res: any) => {
-    res.status(200).json(res.user)
+router.get('/:userID', async (req: any, res: any) => {
+    const user = await getOneUser(req.params.userID)
+    user ? res.status(201).json(user) : res.status(404).json({ Error: 'user not found' })
 })
 
 // Creating one
@@ -84,32 +86,32 @@ router.delete('/:userID', getUser, async (req: any, res: any) => {
 })
 
 // Middleware function to find a user
-async function getUser(req: any, res: any, next: any) {
-    let user: mongoose.Schema | null
-    try {
-        user = await User.findOne({ userID: req.params.userID })
-        if (user == null) return res.status(404).json({ message: 'User not found' })
-    } catch (err: any) {
-        return res.status(500).json({ message: err.message })
-    }
-    res.user = user
-    next()
-}
+// async function getUser(req: any, res: any, next: any) {
+//     let user: mongoose.Schema | null
+//     try {
+//         user = await User.findOne({ userID: req.params.userID })
+//         if (user == null) return res.status(404).json({ message: 'User not found' })
+//     } catch (err: any) {
+//         return res.status(500).json({ message: err.message })
+//     }
+//     res.user = user
+//     next()
+// }
 
 // Just for testing password hashing
-router.post('/login', async (req: any, res: any) => {
-    const user = await User.findOne({ userID: req.body.userID })
-    if (user === null) return
-    try {
-        if (await bcryptjs.compare(req.body.password, user.password)) {
-            res.send('Success')
-        } else {
-            res.send('Not Allowed')
-        }
-    } catch {
-        res.status(500).send()
-    }
-})
+// router.post('/login', async (req: any, res: any) => {
+//     const user = await User.findOne({ userID: req.body.userID })
+//     if (user === null) return
+//     try {
+//         if (await bcryptjs.compare(req.body.password, user.password)) {
+//             res.send('Success')
+//         } else {
+//             res.send('Not Allowed')
+//         }
+//     } catch {
+//         res.status(500).send()
+//     }
+// })
 
 export async function ensureAdmin() {
     const users = await User.find()

@@ -46,7 +46,7 @@ GET http://localhost/api/publicUsers
 
 // Lösche den User mit der User-ID manfred
 ###
-DELETE  http://localhost/api/publicUsers/manfred
+DELETE  http://localhost/api/publicUsers/admin
 
 // check login
 ###
