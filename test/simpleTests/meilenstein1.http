@@ -37,6 +37,7 @@ PUT http://localhost/api/publicUsers/manfred
 Content-Type: application/json
 
 {
+    "password": "1234",
     "isAdministrator": true
 }
 
@@ -46,7 +47,7 @@ GET http://localhost/api/publicUsers
 
 // Lösche den User mit der User-ID manfred
 ###
-DELETE  http://localhost/api/publicUsers/admin
+DELETE  http://localhost/api/publicUsers/manfred
 
 // check login
 ###

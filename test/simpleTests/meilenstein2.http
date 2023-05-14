@@ -8,7 +8,7 @@ Authorization: Basic YWRtaW46MTIz
 // Hinweis: Der REST-Client überführt das Passwort automatisch nach Base64
 ###
 GET http://localhost/api/authenticate
-Authorization: Basic admin:asdf
+Authorization: Basic admin:123
 
 @adminToken = {{loginAdminCorrect.response.headers.Authorization}}
 
