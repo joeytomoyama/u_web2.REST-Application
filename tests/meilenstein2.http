@@ -4,13 +4,24 @@
 GET http://localhost/api/authenticate
 Authorization: Basic YWRtaW46MTIz
 
+@adminToken = {{loginAdminCorrect.response.headers.Authorization}}
+
+// Login manfred
+###
+# @name loginManfredCorrect
+GET http://localhost/api/authenticate
+Authorization: Basic manfred:eliasistcool1
+
+@manfredToken = {{loginManfredCorrect.response.headers.Authorization}}
+
 // Login mit Basic Authentication als admin mit falschen Credentials
 // Hinweis: Der REST-Client überführt das Passwort automatisch nach Base64
 ###
+# @name loginAdminIncorrect
 GET http://localhost/api/authenticate
-Authorization: Basic admin:123
+Authorization: Basic admin:12345
 
-@adminToken = {{loginAdminCorrect.response.headers.Authorization}}
+@incorrectToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDYwY2QwMjE4NWI3Y2M2ZGE1MDU3MDAiLCJ1c2VySUQiOiJhZG1pbiIsInBhc3N3b3JkIjoiJDJhJDEwJGhmbmV4TmZjWG1ZajJ4dVVnUExEZC5LMWJPZjZzeURmdE05dWFYdjBvcW9ObEZHZFZDTVpDIiwiZmlyc3ROYW1lIjoiVWRvIiwibGFzdE5hbWUiOiJNw7xsbGVyIiwiaXNBZG1pbmlzdHJhdG9yIjp0cnVlLCJfX3YiOjAsImlhdCI6MTY4NDA5NTUzNCwiZXhwIjoxNjg0MDk1NTk0fQ.cncx9k4U2Oh-n6qlITuUOBRLKVv6izzzsPrVM-bYPPE
 
 ### Auflisten aller Nutzer, ohne dass ein Token übergeben wird --> Anfrage scheitert mit 401 
 http://localhost/api/users
@@ -50,13 +61,28 @@ Authorization: {{adminToken}}
 ###
 # @name loginManfredCorrect
 GET http://localhost/api/authenticate
-Authorization: Basic manfred:asdf
+Authorization: Basic manfred:eliasistcool1
 
 @manfredToken = {{loginManfredCorrect.response.headers.Authorization}}
 
 ### Auflisten aller Nutzer mit Token von manfred, das sollte nicht möglich sein
 GET http://localhost/api/users
 Authorization: {{manfredToken}}
+
+### ?
+GET http://localhost/api/users/admin
+Authorization: {{manfredToken}}
+
+###
+
+PUT http://localhost/api/users/manfred
+Content-Type: application/json
+Authorization: {{manfredToken}}
+
+{
+    "firstName": "Sandra",
+    "lastName": "Test"
+}
 
 ### Auflisten aller Studiengänge
 GET http://localhost/api/degreeCourses

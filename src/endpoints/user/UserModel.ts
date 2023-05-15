@@ -1,6 +1,14 @@
 import mongoose from 'mongoose'
 import bcryptjs from 'bcryptjs'
 
+export interface UserInterface {
+    userID: string,
+    password?: string,
+    firstName?: string,
+    lastName?: string,
+    isAdministrator?: boolean
+}
+
 const userSchema = new mongoose.Schema({
     userID: {
         type: String,
@@ -33,5 +41,10 @@ userSchema.pre('save', async function (next) {
     this.password = bcryptjs.hashSync(this.password, salt)
     next()
 })
+
+userSchema.methods.comparePW = async function(candidatePW: string) {//, next: Function) {
+    const isAuthenticated = await bcryptjs.compare(candidatePW, this.password)
+    return isAuthenticated
+}
 
 export default mongoose.model('User', userSchema)

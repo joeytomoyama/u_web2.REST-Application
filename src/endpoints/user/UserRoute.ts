@@ -15,6 +15,7 @@ router.get('/', async (req, res) => {
 
 // Getting one
 router.get('/:userID', async (req: any, res: any) => {
+    if (!req.params.userID) return res.status(400).send('ID missing.')
     const user = await Services.getOneUser(req.params.userID)
     user ? res.status(201).json(user) : res.status(404).json({ Error: 'User not found' })
 })
@@ -37,7 +38,7 @@ router.post('/', async (req: any, res: any) => {
 
 // Updating one
 router.put('/:userID', async(req: any, res: any) => {
-    if (req.params.userID) res.status(400).send('ID missing.')
+    if (!req.params.userID) return res.status(400).send('ID missing.')
     try {
         const updatedUser = await Services.updateOneUser(req.params.userID, req.body)
         if (updatedUser) {
@@ -52,10 +53,14 @@ router.put('/:userID', async(req: any, res: any) => {
 
 // Deleting one
 router.delete('/:userID', async (req: any, res: any) => {
-    if (req.params.userID) res.status(400).send('ID missing.')
+    if (!req.params.userID) return res.status(400).send('ID missing.')
     try {
-        await Services.deleteOneUser(req.params.userID)
-        res.status(200).json(`User ${req.params.userID} deleted.`)
+        const test = await Services.deleteOneUser(req.params.userID)
+        if (test.deletedCount > 0) {
+            res.status(200).json(`User ${req.params.userID} deleted.`)
+        } else {
+            res.status(404).json(`User ${req.params.userID} not found.`)
+        }
     } catch(error: any) {
         res.status(500).json({ message: error.message })
     }
