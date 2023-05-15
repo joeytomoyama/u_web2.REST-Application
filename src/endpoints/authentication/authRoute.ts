@@ -18,7 +18,7 @@ router.get('/', async (req: any, res: any) => {
 
     const user = await Services.getOneUser(nameAndPW[0])
     if (!user) {
-        return res.status(404).send('not found')
+        return res.status(404).json({ Error: 'not found' })
     }
     const isAuthenticated = await bcryptjs.compare(nameAndPW[1], user.password)
     if (!isAuthenticated) {

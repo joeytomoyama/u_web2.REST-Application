@@ -119,7 +119,7 @@ Authorization: {{adminToken}}
 Content-Type: application/json
 
 {
-    "name": "Tulpenzucht"
+    "name": "Medieninformatik"
 }
 
 ### Auflisten der Studiengänge einer bestimmten Hochschule

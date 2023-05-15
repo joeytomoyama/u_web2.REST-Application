@@ -77,9 +77,19 @@ const router = express.Router()
 
 dotenv.config()
 
+// router.get('/', isAuthorized, async (req: any, res: any) => {
+//     console.log(req.query)
+// })
+
 // Getting all
 router.get('/', isAuthorized, async (req: any, res: any) => {
     console.log('getting all')
+    if (req.query.universityShortName) {
+        const courses = await Services.getManyCourses(req.query)
+        console.log('courses: ')
+        console.log(courses)
+        return res.send(cleanCourse(courses as Record<any, any>))
+    }
     if (!res.decodedCourse.isAdministrator) return res.status(400).json({ Error: 'Not Authorized.' })
     try {
         const courses = await Services.getAllCourses()
@@ -156,8 +166,19 @@ router.delete('/:id', async (req: any, res: any) => {
     }
 })
 
+async function checkParams(req: any, res: any, next: Function) {
+    console.log(req.query)
+    if (req.query.universityShortName) {
+        const courses = await Services.getManyCourses(req.query)
+        console.log('courses: ')
+        console.log(courses)
+        return res.send(cleanCourse(courses as Record<any, any>))
+    }
+    next()
+}
+
 export function isAuthorized(req: any, res: any, next: Function) {//authorization: string): jwt.JwtPayload | null {
-    if (!req.headers.authorization) return res.status(401).send('Please enter a Token.')
+    if (!req.headers.authorization) return res.status(401).json({ Error: 'Please enter a Token.' })
     const token = req.headers.authorization.split(' ')[1]
 
     let decode
@@ -181,6 +202,7 @@ export function isAdmin(req: any, res: any, next: Function) {
 
 export function cleanCourse(course: Record<any, any> | Record<any, any>[]): object | object[] {
     if (Array.isArray(course)) {
+        console.log('test')
         const courses = course
         const cleanCourses: Record<any, any>[] = courses.map((course) => ({
             universityName: course.universityName,

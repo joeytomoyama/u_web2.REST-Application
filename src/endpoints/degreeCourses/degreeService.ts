@@ -8,6 +8,13 @@ export async function getOneCourse(courseID: string) {
     return await Course.findOne({ _id: courseID })
 }
 
+export async function getManyCourses(filter: Record<any, any>) {
+    const courses = await Course.find(filter)
+    // console.log(courses)
+    if (!courses) return null
+    return courses
+}
+
 export async function postOneCourse(bodyCourse: Record<any, any>) {
     const course = new Course({
         universityName: bodyCourse.universityName,

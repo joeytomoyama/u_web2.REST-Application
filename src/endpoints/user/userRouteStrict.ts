@@ -87,7 +87,7 @@ router.delete('/:userID', async (req: any, res: any) => {
 })
 
 export function isAuthorized(req: any, res: any, next: Function) {//authorization: string): jwt.JwtPayload | null {
-    if (!req.headers.authorization) return res.status(401).send('Please enter a Token.')
+    if (!req.headers.authorization) return res.status(401).json({ Error: 'Please enter a Token.' })
     const token = req.headers.authorization.split(' ')[1]
 
     let decode
