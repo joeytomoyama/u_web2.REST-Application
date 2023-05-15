@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
 
 // import User from './UserModel'
-import * as Services from './userService'
+import * as Services from '../user/userService'
 
 const router = express.Router()
 
