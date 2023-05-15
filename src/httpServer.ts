@@ -3,9 +3,9 @@ import dotenv from 'dotenv'
 
 import { startDB } from './db/Database'
 
-import userRoute from './endpoints/user/UserRoute'
-import userRouteStrict from './endpoints/user/UserRouteStrict'
-import authRoute from './endpoints/authentication/AuthRoute'
+import userRoute from './endpoints/user/userRoute'
+import userRouteStrict from './endpoints/user/userRouteStrict'
+import authRoute from './endpoints/authentication/authRoute'
 import degreeRoute from './endpoints/degreeCourses/degreeRoute'
 
 dotenv.config()

@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import { getAllUsers } from '../endpoints/user/userService'
-import User, { UserInterface } from '../endpoints/user/UserModel'
+import User, { UserInterface } from '../endpoints/user/userModel'
 
 dotenv.config()
 

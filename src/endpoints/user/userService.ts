@@ -1,4 +1,4 @@
-import User from './UserModel'
+import User from './userModel'
 
 export async function getAllUsers(): Promise<Array<object>> {
     return await User.find()

@@ -24,7 +24,7 @@ router.get('/', async (req: any, res: any) => {
     if (!isAuthenticated) {
         return res.status(401).json({Error: 'password incorrect'})
     }
-    const token = jwt.sign(user.toObject(), process.env.ACCESS_TOKEN_SECRET as jwt.Secret, { expiresIn: '60s' })
+    const token = jwt.sign(user.toObject(), process.env.ACCESS_TOKEN_SECRET as jwt.Secret, { expiresIn: '1000s' })
     res.set('Authorization', 'Bearer ' + token)
     res.status(201).json({ Success: 'Token created successfully.' })
 })

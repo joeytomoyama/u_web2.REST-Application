@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
         const users = await Services.getAllUsers()
         res.status(200).send(users)
     } catch (error: any) {
-        res.status(500).json({ message: error.message })
+        res.status(500).json({ Error: error })
     }
 })
 
@@ -31,7 +31,7 @@ router.post('/', async (req: any, res: any) => {
         } else if (error.name === "ValidationError") {
             res.status(400).json({ message: 'Required property missing.' }) 
         } else {
-            res.status(500).json({ message: error })
+            res.status(500).json({ Error: error })
         }
     }
 })
@@ -47,7 +47,7 @@ router.put('/:userID', async(req: any, res: any) => {
             res.status(404).json({ message: 'User not found' })
         }
     } catch (error: any) {
-        res.status(500).json({ message: error })
+        res.status(500).json({ Error: error })
     }
 })
 
@@ -62,7 +62,7 @@ router.delete('/:userID', async (req: any, res: any) => {
             res.status(404).json(`User ${req.params.userID} not found.`)
         }
     } catch(error: any) {
-        res.status(500).json({ message: error.message })
+        res.status(500).json({ Error: error })
     }
 })
 

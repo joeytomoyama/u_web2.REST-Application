@@ -3,7 +3,6 @@ import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
 
 import * as Services from './userService'
-import { UserInterface } from './UserModel'
 
 const router = express.Router()
 
@@ -12,13 +11,12 @@ dotenv.config()
 // Getting all
 router.get('/', isAuthorized, async (req: any, res: any) => {
     console.log('getting all')
-    if (!res.decodedUser.isAdministrator) return res.status(400).send('Not Authorized.')
+    if (!res.decodedUser.isAdministrator) return res.status(400).json({ Error: 'Not Authorized.' })
     try {
         const users = await Services.getAllUsers()
-        users.forEach((user: Record<any, any>) => user.password = 'hidden')
-        res.status(200).send(users)
+        res.status(200).send(cleanUser(users))
     } catch (error: any) {
-        res.status(500).json({ message: error.message })
+        res.status(500).json({ Error: error })
     }
 })
 
@@ -30,25 +28,24 @@ router.get('/:userID', isAuthorized, async (req: any, res: any) => {
     if (!res.decodedUser.isAdministrator && req.params.userID !== res.decodedUser.userID) return res.status(404).json({ Error: 'Not Authorized.' })
         const user = await Services.getOneUser(req.params.userID)
         if (user) {
-            user.password = 'hidden'
-            res.status(201).json(user)
+            res.status(200).json(cleanUser(user))
         } else {
             res.status(404).json({ Error: 'User not found' })
         }
 })
 
 // Creating one
-router.post('/', async (req: any, res: any) => {
+router.post('/', isAuthorized, async (req: any, res: any) => {
     try {
-        await Services.postOneUser(req.body)
-        res.status(201).json('User has been posted.')
+        const user = await Services.postOneUser(req.body)
+        res.status(201).json(cleanUser(user))
     } catch(error: any) {
         if (error.code === 11000) {
             res.status(400).json({ message: 'Duplicate ID not allowed.' })
         } else if (error.name === "ValidationError") {
             res.status(400).json({ message: 'Required property missing.' }) 
         } else {
-            res.status(500).json({ message: error })
+            res.status(500).json({ Error: error })
         }
     }
 })
@@ -65,8 +62,7 @@ router.put('/:userID', isAuthorized, async (req: any, res: any) => {
     try {
         const updatedUser = await Services.updateOneUser(req.params.userID, req.body)
         if (updatedUser) {
-            updatedUser.password = 'hidden'
-            res.status(200).json(updatedUser)
+            res.status(200).json(cleanUser(updatedUser))
         } else {
             res.status(404).json({ message: 'User not found' })
         }
@@ -79,14 +75,14 @@ router.put('/:userID', isAuthorized, async (req: any, res: any) => {
 router.delete('/:userID', async (req: any, res: any) => {
     if (!req.params.userID) return res.status(400).send('ID missing.')
     try {
-        const test = await Services.deleteOneUser(req.params.userID)
-        if (test.deletedCount > 0) {
-            res.status(200).json(`User ${req.params.userID} deleted.`)
+        const deleted = await Services.deleteOneUser(req.params.userID)
+        if (deleted.deletedCount > 0) {
+            res.sendStatus(204) // .json(`User ${req.params.userID} deleted.`) // no body
         } else {
             res.status(404).json(`User ${req.params.userID} not found.`)
         }
     } catch(error: any) {
-        res.status(500).json({ message: error.message })
+        res.status(500).json({ Error: error })
     }
 })
 
@@ -103,7 +99,7 @@ export function isAuthorized(req: any, res: any, next: Function) {//authorizatio
         console.log(decodedObject)
         res.decodedUser = decodedObject
     } catch (error: any) {
-        return res.status(500).send(error)
+        return res.status(500).json({ Error: error })
     }
     next()
 }
@@ -111,6 +107,27 @@ export function isAuthorized(req: any, res: any, next: Function) {//authorizatio
 export function isAdmin(req: any, res: any, next: Function) {
     if (!res.decodedUser.isAdministrator) return res.status(401).send('You are not an administrator.')
     next()
+}
+
+export function cleanUser(user: Record<any, any> | Record<any, any>[]): object | object[] {
+    if (Array.isArray(user)) {
+        const users = user
+        const cleanUsers: Record<any, any>[] = users.map((user) => ({
+            userID: user.userID,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            isAdministrator: user.isAdministrator
+          }));
+        return cleanUsers
+    } else {
+        const cleanUser: Record<any, any> = {
+            userID: user.userID,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            isAdministrator: user.isAdministrator
+        }
+        return cleanUser
+    }
 }
 
 export default router

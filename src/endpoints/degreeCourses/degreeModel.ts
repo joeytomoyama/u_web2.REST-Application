@@ -17,10 +17,6 @@ const courseSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    id: {
-        type: String,
-        required: true
-    },
     shortName: {
         type: String,
         required: true
