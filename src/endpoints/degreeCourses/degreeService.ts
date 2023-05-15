@@ -40,5 +40,5 @@ export async function updateOneCourse(courseID: string, newCourse: Record<any, a
 }
 
 export async function deleteOneCourse(courseID: string) {
-    return await Course.deleteOne({ id: courseID })
+    return await Course.deleteOne({ _id: courseID })
 }

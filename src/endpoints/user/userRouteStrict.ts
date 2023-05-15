@@ -11,7 +11,7 @@ dotenv.config()
 // Getting all
 router.get('/', isAuthorized, async (req: any, res: any) => {
     console.log('getting all')
-    if (!res.decodedUser.isAdministrator) return res.status(400).json({ Error: 'Not Authorized.' })
+    if (!res.decodedUser.isAdministrator) return res.status(403).json({ Error: 'Not Authorized.' })
     try {
         const users = await Services.getAllUsers()
         res.status(200).send(cleanUser(users))
@@ -23,9 +23,9 @@ router.get('/', isAuthorized, async (req: any, res: any) => {
 // Getting one
 router.get('/:userID', isAuthorized, async (req: any, res: any) => {
     console.log('getting one')
-    if (!req.params.userID) return res.status(400).send('ID missing.')
+    if (!req.params.userID) return res.status(400).json({ Error: 'ID missing.' })
     // if not admin and not self
-    if (!res.decodedUser.isAdministrator && req.params.userID !== res.decodedUser.userID) return res.status(404).json({ Error: 'Not Authorized.' })
+    if (!res.decodedUser.isAdministrator && req.params.userID !== res.decodedUser.userID) return res.status(403).json({ Error: 'Not Authorized.' })
         const user = await Services.getOneUser(req.params.userID)
         if (user) {
             res.status(200).json(cleanUser(user))
@@ -36,6 +36,9 @@ router.get('/:userID', isAuthorized, async (req: any, res: any) => {
 
 // Creating one
 router.post('/', isAuthorized, async (req: any, res: any) => {
+    console.log('creating one')
+    // console.log(res.decodedCourse)
+    if (!res.decodedUser.isAdministrator) return res.status(403).json({ Error: 'Not Authorized.' })
     try {
         const user = await Services.postOneUser(req.body)
         res.status(201).json(cleanUser(user))
@@ -52,13 +55,14 @@ router.post('/', isAuthorized, async (req: any, res: any) => {
 
 // Updating one
 router.put('/:userID', isAuthorized, async (req: any, res: any) => {
-    if (!req.params.userID) return res.status(400).send('ID missing.')
-    if (req.body.userID) return res.status(400).send('Changing user ID not allowd.')
+    console.log('updating one')
+    if (!req.params.userID) return res.status(400).json({ Error: 'ID missing.' })
+    if (req.body.userID) return res.status(403).json({ Error: 'Changing user ID not allowd.' })
 
     // not admin and trying to update isAdministrator property
-    if (!res.decodedUser.isAdministrator && req.body.isAdministrator !== undefined) return res.status(400).send('Not Allowed.') 
+    if (!res.decodedUser.isAdministrator && req.body.isAdministrator !== undefined) return res.status(403).json({ Error: 'Not Allowed.' }) 
     // not admin and manipulating not self document
-    if (!res.decodedUser.isAdministrator && req.params.userID !== res.decodedUser.userID) return res.status(400).send('Not Allowed.') 
+    if (!res.decodedUser.isAdministrator && req.params.userID !== res.decodedUser.userID) return res.status(403).json({ Error: 'Not Allowed.' }) 
     try {
         const updatedUser = await Services.updateOneUser(req.params.userID, req.body)
         if (updatedUser) {
@@ -72,8 +76,8 @@ router.put('/:userID', isAuthorized, async (req: any, res: any) => {
 })
 
 // Deleting one
-router.delete('/:userID', async (req: any, res: any) => {
-    if (!req.params.userID) return res.status(400).send('ID missing.')
+router.delete('/:userID', isAuthorized, async (req: any, res: any) => {
+    if (!req.params.userID) return res.status(400).json({ Error: 'ID missing.' })
     try {
         const deleted = await Services.deleteOneUser(req.params.userID)
         if (deleted.deletedCount > 0) {
@@ -90,24 +94,22 @@ export function isAuthorized(req: any, res: any, next: Function) {//authorizatio
     if (!req.headers.authorization) return res.status(401).json({ Error: 'Please enter a Token.' })
     const token = req.headers.authorization.split(' ')[1]
 
-    let decode
-    let decodedObject
     try {
-        decode = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET as jwt.Secret)
-        decodedObject = decode as jwt.JwtPayload
+        const decode = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET as jwt.Secret)
+        const decodedObject = decode as jwt.JwtPayload
         // const decodedObject = eval(decode as string)
         console.log(decodedObject)
         res.decodedUser = decodedObject
     } catch (error: any) {
-        return res.status(500).json({ Error: error })
+        return res.status(401).json({ Error: error })
     }
     next()
 }
 
-export function isAdmin(req: any, res: any, next: Function) {
-    if (!res.decodedUser.isAdministrator) return res.status(401).send('You are not an administrator.')
-    next()
-}
+// export function isAdmin(req: any, res: any, next: Function) {
+//     if (!res.decodedUser.isAdministrator) return res.status(401).send('You are not an administrator.')
+//     next()
+// }
 
 export function cleanUser(user: Record<any, any> | Record<any, any>[]): object | object[] {
     if (Array.isArray(user)) {

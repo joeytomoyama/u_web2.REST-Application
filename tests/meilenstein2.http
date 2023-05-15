@@ -70,9 +70,25 @@ Authorization: {{manfredToken}}
 GET http://localhost/api/users/admin
 Authorization: {{manfredToken}}
 
+### ?
+GET http://localhost/api/users/manfred
+Authorization: {{manfredToken}}
+
 ###
 
 PUT http://localhost/api/users/manfred
+Content-Type: application/json
+Authorization: {{manfredToken}}
+
+{
+    "firstName": "Sandra",
+    "lastName": "Meyer",
+    "password": "meinekatze123"
+}
+
+###
+
+PUT http://localhost/api/users/admin
 Content-Type: application/json
 Authorization: {{manfredToken}}
 
@@ -119,11 +135,19 @@ Authorization: {{adminToken}}
 Content-Type: application/json
 
 {
-    "name": "Medieninformatik"
+    "name": "Tested"
 }
 
 ### Auflisten der Studiengänge einer bestimmten Hochschule
 GET http://localhost/api/degreeCourses?universityShortName=Beuth HS
+Authorization: {{adminToken}}
+
+###
+GET http://localhost/api/degreeCourses?departmentName=Anthropologie
+Authorization: {{adminToken}}
+
+###
+GET http://localhost/api/degreeCourses?departmentName=blablo
 Authorization: {{adminToken}}
 
 ### Lösche den angelegten Studiengang
