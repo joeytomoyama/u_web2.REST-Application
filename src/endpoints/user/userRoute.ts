@@ -15,9 +15,12 @@ router.get('/', async (req, res) => {
 
 // Getting one
 router.get('/:userID', async (req: any, res: any) => {
-    if (!req.params.userID) return res.status(400).send('ID missing.')
-    const user = await Services.getOneUser(req.params.userID)
-    user ? res.status(201).json(user) : res.status(404).json({ Error: 'User not found' })
+    try {
+        const user = await Services.getOneUser(req.params.userID)
+        user ? res.status(201).json(user) : res.status(404).json({ Error: 'User not found' })
+    } catch (error: any) {
+        res.status(500).json({ Error: error })
+    }
 })
 
 // Creating one
@@ -38,7 +41,6 @@ router.post('/', async (req: any, res: any) => {
 
 // Updating one
 router.put('/:userID', async (req: any, res: any) => {
-    if (!req.params.userID) return res.status(400).send('ID missing.')
     try {
         const updatedUser = await Services.updateOneUser(req.params.userID, req.body)
         if (updatedUser) {
@@ -53,7 +55,6 @@ router.put('/:userID', async (req: any, res: any) => {
 
 // Deleting one
 router.delete('/:userID', async (req: any, res: any) => {
-    if (!req.params.userID) return res.status(400).send('ID missing.')
     try {
         const test = await Services.deleteOneUser(req.params.userID)
         if (test.deletedCount > 0) {
@@ -65,33 +66,5 @@ router.delete('/:userID', async (req: any, res: any) => {
         res.status(500).json({ Error: error })
     }
 })
-
-// Middleware function to find a user
-// async function getUser(req: any, res: any, next: any) {
-//     let user: mongoose.Schema | null
-//     try {
-//         user = await User.findOne({ userID: req.params.userID })
-//         if (user == null) return res.status(404).json({ message: 'User not found' })
-//     } catch (err: any) {
-//         return res.status(500).json({ message: err.message })
-//     }
-//     res.user = user
-//     next()
-// }
-
-// Just for testing password hashing
-// router.post('/login', async (req: any, res: any) => {
-//     const user = await User.findOne({ userID: req.body.userID })
-//     if (user === null) return
-//     try {
-//         if (await bcryptjs.compare(req.body.password, user.password)) {
-//             res.send('Success')
-//         } else {
-//             res.send('Not Allowed')
-//         }
-//     } catch {
-//         res.status(500).send()
-//     }
-// })
 
 export default router

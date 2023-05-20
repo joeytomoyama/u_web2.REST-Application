@@ -36,7 +36,6 @@ router.get('/', isAuthorized, async (req: any, res: any) => {
 // Getting one
 router.get('/:id', isAuthorized, idProvided, async (req: any, res: any) => {
     console.log('getting one')
-    // if (!req.params.id) return res.status(400).send('ID missing.')
         try {
             const course = await Services.getOneCourse(req.params.id)
             if (course) {
@@ -69,7 +68,6 @@ router.post('/', isAuthorized, isAdmin, async (req: any, res: any) => {
 // Updating one
 router.put('/:id', isAuthorized, isAdmin, idProvided, async (req: any, res: any) => {
     console.log('updating one')
-    // if (!req.params.id) return res.status(400).json({ Error: 'ID missing.' })
     if (req.body.id) return res.status(400).json({ Error: 'Changing course ID not allowed.' })
 
     try {
@@ -87,7 +85,6 @@ router.put('/:id', isAuthorized, isAdmin, idProvided, async (req: any, res: any)
 // Deleting one
 router.delete('/:id', isAuthorized, isAdmin, idProvided, async (req: any, res: any) => {
     console.log('deleting one')
-    // if (!req.params.id) return res.status(400).json({ Error: 'ID missing.' })
     try {
         const deleted = await Services.deleteOneCourse(req.params.id)
         if (deleted.deletedCount > 0) {
