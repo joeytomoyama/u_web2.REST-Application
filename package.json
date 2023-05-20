@@ -4,7 +4,7 @@
   "main": "./src/httpServer.ts",
   "scripts": {
     "start": "nodemon ./src/httpServer.ts",
-    "sudo": "sudo nodemon ./src/httpServer.ts",
+    "build": "tsc",
     "debug": "export DEBUG=* && npm run stat",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
