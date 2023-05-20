@@ -3,15 +3,15 @@ import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
 
 import * as Services from './userService'
+import { isAuthorized, isAdmin } from '../middleware'
 
 const router = express.Router()
 
 dotenv.config()
 
 // Getting all
-router.get('/', isAuthorized, async (req: any, res: any) => {
+router.get('/', isAuthorized, isAdmin, async (req: any, res: any) => {
     console.log('getting all')
-    if (!res.decodedUser.isAdministrator) return res.status(403).json({ Error: 'Not Authorized.' })
     try {
         const users = await Services.getAllUsers()
         res.status(200).send(cleanUser(users))
@@ -35,10 +35,8 @@ router.get('/:userID', isAuthorized, async (req: any, res: any) => {
 })
 
 // Creating one
-router.post('/', isAuthorized, async (req: any, res: any) => {
+router.post('/', isAuthorized, isAdmin, async (req: any, res: any) => {
     console.log('creating one')
-    // console.log(res.decodedCourse)
-    if (!res.decodedUser.isAdministrator) return res.status(403).json({ Error: 'Not Authorized.' })
     try {
         const user = await Services.postOneUser(req.body)
         res.status(201).json(cleanUser(user))
@@ -89,27 +87,6 @@ router.delete('/:userID', isAuthorized, async (req: any, res: any) => {
         res.status(500).json({ Error: error })
     }
 })
-
-export function isAuthorized(req: any, res: any, next: Function) {//authorization: string): jwt.JwtPayload | null {
-    if (!req.headers.authorization) return res.status(401).json({ Error: 'Please enter a Token.' })
-    const token = req.headers.authorization.split(' ')[1]
-
-    try {
-        const decode = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET as jwt.Secret)
-        const decodedObject = decode as jwt.JwtPayload
-        // const decodedObject = eval(decode as string)
-        console.log(decodedObject)
-        res.decodedUser = decodedObject
-    } catch (error: any) {
-        return res.status(401).json({ Error: error })
-    }
-    next()
-}
-
-// export function isAdmin(req: any, res: any, next: Function) {
-//     if (!res.decodedUser.isAdministrator) return res.status(401).send('You are not an administrator.')
-//     next()
-// }
 
 export function cleanUser(user: Record<any, any> | Record<any, any>[]): object | object[] {
     if (Array.isArray(user)) {
