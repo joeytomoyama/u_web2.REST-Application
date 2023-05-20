@@ -54,7 +54,6 @@ router.post('/', isAuthorized, isAdmin, async (req: any, res: any) => {
 // Updating one
 router.put('/:userID', isAuthorized, async (req: any, res: any) => {
     console.log('updating one')
-    if (!req.params.userID) return res.status(400).json({ Error: 'ID missing.' })
     if (req.body.userID) return res.status(403).json({ Error: 'Changing user ID not allowd.' })
 
     // not admin and trying to update isAdministrator property
@@ -75,7 +74,9 @@ router.put('/:userID', isAuthorized, async (req: any, res: any) => {
 
 // Deleting one
 router.delete('/:userID', isAuthorized, async (req: any, res: any) => {
-    if (!req.params.userID) return res.status(400).json({ Error: 'ID missing.' })
+    // if (!req.params.userID) return res.status(400).json({ Error: 'ID missing.' })
+    // not admin and manipulating not self document
+    if (!res.decodedUser.isAdministrator && req.params.userID !== res.decodedUser.userID) return res.status(403).json({ Error: 'Not Allowed.' }) 
     try {
         const deleted = await Services.deleteOneUser(req.params.userID)
         if (deleted.deletedCount > 0) {
