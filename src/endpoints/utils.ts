@@ -24,3 +24,74 @@ export function idProvided(req: any, res: any, next: Function) { // kinda useles
     if (!req.params.id) return res.status(400).json({ Error: 'ID missing.' })
     next()
 }
+
+export function cleanUser(user: Record<any, any> | Record<any, any>[]): object | object[] {
+    if (Array.isArray(user)) {
+        const users = user
+        const cleanUsers: Record<any, any>[] = users.map((user) => ({
+            userID: user.userID,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            isAdministrator: user.isAdministrator
+          }));
+        return cleanUsers
+    } else {
+        const cleanUser: Record<any, any> = {
+            userID: user.userID,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            isAdministrator: user.isAdministrator
+        }
+        return cleanUser
+    }
+}
+
+export function cleanCourse(course: Record<any, any> | Record<any, any>[]): object | object[] {
+    if (Array.isArray(course)) {
+        const courses = course
+        const cleanCourses: Record<any, any>[] = courses.map((course) => ({
+            universityName: course.universityName,
+            universityShortName: course.universityShortName,
+            departmentName: course.departmentName,
+            departmentShortName: course.departmentShortName,
+            name: course.name,
+            id: course._id,
+            shortName: course.shortName
+        }))
+        return cleanCourses
+    } else {
+        const cleanCourse: Record<any, any> = {
+            universityName: course.universityName,
+            universityShortName: course.universityShortName,
+            departmentName: course.departmentName,
+            departmentShortName: course.departmentShortName,
+            name: course.name,
+            id: course._id,
+            shortName: course.shortName
+        }
+        return cleanCourse
+    }
+}
+
+export function cleanApplication(application: Record<any, any> | Record<any, any>[]): object | object[] {
+    if (Array.isArray(application)) {
+        const applications = application
+        const cleanApplications: Record<any, any>[] = applications.map((application) => ({
+            applicantUserID: application.applicantUserID,
+            degreeCourseID: application.degreeCourseID,
+            targetPeriodYear: application.targetPeriodYear,
+            targetPeriodShortName: application.targetPeriodShortName,
+            id: application._id
+        }))
+        return cleanApplications
+    } else {
+        const cleanApplication: Record<any, any> = {
+            applicantUserID: application.applicantUserID,
+            degreeCourseID: application.degreeCourseID,
+            targetPeriodYear: application.targetPeriodYear,
+            targetPeriodShortName: application.targetPeriodShortName,
+            id: application._id
+        }
+        return cleanApplication
+    }
+}

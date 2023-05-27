@@ -2,7 +2,7 @@ import express from 'express'
 import dotenv from 'dotenv'
 
 import * as Services from './userService'
-import { isAuthorized, isAdmin } from '../utils'
+import { isAuthorized, isAdmin, cleanUser } from '../utils'
 
 const router = express.Router()
 
@@ -87,26 +87,5 @@ router.delete('/:userID', isAuthorized, async (req: any, res: any) => {
         res.status(500).json({ Error: error })
     }
 })
-
-export function cleanUser(user: Record<any, any> | Record<any, any>[]): object | object[] {
-    if (Array.isArray(user)) {
-        const users = user
-        const cleanUsers: Record<any, any>[] = users.map((user) => ({
-            userID: user.userID,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            isAdministrator: user.isAdministrator
-          }));
-        return cleanUsers
-    } else {
-        const cleanUser: Record<any, any> = {
-            userID: user.userID,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            isAdministrator: user.isAdministrator
-        }
-        return cleanUser
-    }
-}
 
 export default router

@@ -1,7 +1,5 @@
 import express from 'express'
-import { isAdmin, isAuthorized } from '../utils'
-import { cleanUser } from '../user/userRouteStrict'
-import { cleanCourse } from '../degreeCourses/degreeRoute'
+import { isAdmin, isAuthorized, cleanUser, cleanCourse, cleanApplication } from '../utils'
 import * as applicationServices from './degreeApplicationService'
 import * as courseServices from '../degreeCourses/degreeService'
 import * as userServices from '../user/userService'
@@ -9,32 +7,20 @@ import * as userServices from '../user/userService'
 
 const router = express.Router()
 
-// router.get('/:applicantUserID', isAuthorized, (req: any, res: any) => {
-//     res.send(`user id: ${req.params.applicantUserID}`)
-// })
-
 router.get('/', isAuthorized, isAdmin, async (req: express.Request, res: any) => {
     console.log('Getting applications.')
     console.log(req.query)
 
     try {
         const applications = await applicationServices.getManyApplications(req.query)
-        // if (!applications) return res.json({ Error: 'Something went wrong.'})
-        console.log(applications)
+        if (!applications) return res.json({ Error: 'Something went wrong.'})
         res.json(cleanApplication(applications as Record<any, any>[]))
     } catch (error) {
         res.json({ Error: error })
     }
-
-    // res.json(applications)
-
-
-    // const applications = await applicationServices.getAllApplications()
-    // res.json(applications)
 })
 
 router.get('/myApplications', isAuthorized, async (req: any, res: any) => {
-    // res.send('my applications')
     console.log('My Applications.')
     const userID = res.decodedUser.userID
     console.log(res.decodedUser)
@@ -113,28 +99,5 @@ router.delete('/:id', async (req: express.Request, res: express.Response) => {
         res.json({ Error: error })
     }
 })
-
-export function cleanApplication(application: Record<any, any> | Record<any, any>[]): object | object[] {
-    if (Array.isArray(application)) {
-        const applications = application
-        const cleanApplications: Record<any, any>[] = applications.map((application) => ({
-            applicantUserID: application.applicantUserID,
-            degreeCourseID: application.degreeCourseID,
-            targetPeriodYear: application.targetPeriodYear,
-            targetPeriodShortName: application.targetPeriodShortName,
-            id: application._id
-        }))
-        return cleanApplications
-    } else {
-        const cleanApplication: Record<any, any> = {
-            applicantUserID: application.applicantUserID,
-            degreeCourseID: application.degreeCourseID,
-            targetPeriodYear: application.targetPeriodYear,
-            targetPeriodShortName: application.targetPeriodShortName,
-            id: application._id
-        }
-        return cleanApplication
-    }
-}
 
 export default router
