@@ -13,20 +13,20 @@ dotenv.config()
 router.get('/', async (req: any, res: any) => {
     // decode id and password
     const base64string = req.headers.authorization.split(' ')[1]
-    const decodedString = Buffer.from(base64string, 'base64').toString('utf-8');
+    const decodedString = Buffer.from(base64string, 'base64').toString('utf-8')
     const nameAndPW = decodedString.split(':')
 
     const user = await Services.getOneUser(nameAndPW[0])
     if (!user) {
-        return res.status(404).json({ Error: 'not found' })
+        return res.status(401).json({ Error: 'Invalid login.' })
     }
     const isAuthenticated = await bcryptjs.compare(nameAndPW[1], user.password)
     if (!isAuthenticated) {
-        return res.status(401).json({Error: 'password incorrect'})
+        return res.status(401).json({ Error: 'Invalid login.' })
     }
-    const token = jwt.sign(user.toObject(), process.env.ACCESS_TOKEN_SECRET as jwt.Secret, { expiresIn: '1000s' })
+    const token = jwt.sign(user.toObject(), process.env.ACCESS_TOKEN_SECRET as jwt.Secret, { expiresIn: '3000s' })
     res.set('Authorization', 'Bearer ' + token)
-    res.status(201).json({ Success: 'Token created successfully.' })
+    res.status(200).json({ Success: 'Token created successfully.' })
 })
 
 

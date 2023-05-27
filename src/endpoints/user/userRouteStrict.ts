@@ -1,9 +1,8 @@
 import express from 'express'
-import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
 
 import * as Services from './userService'
-import { isAuthorized, isAdmin } from '../middleware'
+import { isAuthorized, isAdmin } from '../utils'
 
 const router = express.Router()
 

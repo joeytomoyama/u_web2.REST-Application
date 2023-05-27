@@ -14,7 +14,7 @@ export async function getManyApplications(filter: Record<any, any>) {
     return applications
 }
 
-export async function postOneApplication(bodyApplication: Record<any, any>) {
+export async function postOneApplication(bodyApplication: Record<string, string>) {
     const application = new Application({
         applicantUserID: bodyApplication.applicantUserID,
         degreeCourseID: bodyApplication.degreeCourseID,

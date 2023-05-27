@@ -47,6 +47,21 @@ Content-Type: application/json
 }
 
 ###
+
+POST https://127.0.0.1/api/degreeCourses
+Authorization: {{adminToken}}
+Content-Type: application/json
+
+{
+    "universityName": "Beuth Hochschule für Technik Berlin",
+    "universityShortName": "Beuth HS",
+    "departmentName": "Informatik und Medien",
+    "departmentShortName": "FB VI",
+    "name": "Robotik Bachelor",
+    "shortName": "RO-BA"
+}
+
+###
 @degreeCourseID = {{createDegreeCourseRequest.response.body.id}}
 
 ### Abrufen von dem angelegten Studiengang

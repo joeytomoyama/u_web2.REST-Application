@@ -2,7 +2,7 @@ import express from 'express'
 import dotenv from 'dotenv'
 
 import * as Services from './degreeService'
-import { isAuthorized, isAdmin, idProvided } from '../middleware'
+import { isAuthorized, isAdmin, idProvided } from '../utils'
 
 const router = express.Router()
 

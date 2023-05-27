@@ -7,15 +7,15 @@ const applicationSchema = new mongoose.Schema({
         },
         degreeCourseID: {
             type: String,
-            required: true
+            required: false
         },
         targetPeriodYear: {
             type: String,
-            required: true
+            required: false
         },
         targetPeriodShortName: {
             type: String,
-            required: true
+            required: false
         }
 })
 
