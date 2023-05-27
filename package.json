@@ -1,6 +1,6 @@
 {
   "name": "expressserver",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "main": "./src/httpServer.ts",
   "scripts": {
     "start": "nodemon ./src/httpServer.ts",
@@ -8,10 +8,10 @@
     "debug": "export DEBUG=* && npm run stat",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
+  "keywords": ["mongodb", "express", "nodejs", "mongoose", "server"],
   "author": "Joey Prüssing",
   "license": "ISC",
-  "description": "express server",
+  "description": "express server for web enginnering 2 class",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.0.3",
