@@ -1,5 +1,5 @@
 import express from 'express'
-import { isAdmin, isAuthorized, cleanUser, cleanCourse, cleanApplication } from '../utils'
+import { isAdmin, isAuthorized, cleanApplication } from '../utils'
 import * as applicationServices from './degreeApplicationService'
 import * as courseServices from '../degreeCourses/degreeService'
 import * as userServices from '../user/userService'
@@ -7,17 +7,25 @@ import * as userServices from '../user/userService'
 
 const router = express.Router()
 
-router.get('/', isAuthorized, isAdmin, async (req: express.Request, res: any) => {
+router.get('/', isAuthorized, isAdmin, async (req: express.Request, res: express.Response) => {
     console.log('Getting applications.')
-    console.log(req.query)
 
-    try {
-        const applications = await applicationServices.getManyApplications(req.query)
-        if (!applications) return res.json({ Error: 'Something went wrong.'})
-        res.json(cleanApplication(applications as Record<any, any>[]))
-    } catch (error) {
-        res.json({ Error: error })
-    }
+    // if (Object.values(req.query).length > 0) {
+        try {
+            const applications = await applicationServices.getManyApplications(req.query)
+            if (!applications) return res.json({ Error: 'Something went wrong.'})
+            res.json(cleanApplication(applications as Record<any, any>[]))
+        } catch (error) {
+            res.json({ Error: error })
+        }
+    // } else {
+    //     try {
+    //         const applications = await applicationServices.getAllApplications()
+    //         res.status(200).json(applications)
+    //     } catch (error) {
+    //         res.json({ Error: error })
+    //     }
+    // }
 })
 
 router.get('/myApplications', isAuthorized, async (req: any, res: any) => {
