@@ -22,10 +22,8 @@ export async function postOneUser(bodyUser: Record<any, any>) {
 export async function updateOneUser(userID: string, newUser: Record<any, any>) {
     const user = await getOneUser(userID)
     if (!user) return null
-    if (newUser.firstName) user.firstName = newUser.firstName
-    if (newUser.lastName) user.lastName = newUser.lastName
-    if (newUser.password) user.password = newUser.password
-    if (newUser.isAdministrator) user.isAdministrator = newUser.isAdministrator
+
+    Object.assign(user, newUser)
     return await user.save()
 }
 

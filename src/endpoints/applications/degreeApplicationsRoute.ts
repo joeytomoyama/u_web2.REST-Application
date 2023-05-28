@@ -80,7 +80,7 @@ router.post('/', isAuthorized, async (req: any, res: any) => {
             targetPeriodYear: req.body.targetPeriodYear,
             targetPeriodShortName: req.body.targetPeriodShortName
         })
-        res.status(200).json(cleanApplication(application))
+        res.status(201).json(cleanApplication(application))
     } catch (error) {
         res.status(500).json({ Erorr: error })
     }

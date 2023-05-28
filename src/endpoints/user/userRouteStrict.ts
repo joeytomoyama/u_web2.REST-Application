@@ -13,7 +13,7 @@ router.get('/', isAuthorized, isAdmin, async (req: any, res: any) => {
     console.log('getting all')
     try {
         const users = await Services.getAllUsers()
-        res.status(200).send(cleanUser(users))
+        res.status(200).json(cleanUser(users))
     } catch (error: any) {
         res.status(500).json({ Error: error })
     }
@@ -22,7 +22,7 @@ router.get('/', isAuthorized, isAdmin, async (req: any, res: any) => {
 // Getting one
 router.get('/:userID', isAuthorized, async (req: any, res: any) => {
     console.log('getting one')
-    if (!req.params.userID) return res.status(400).json({ Error: 'ID missing.' })
+
     // if not admin and not self
     if (!res.decodedUser.isAdministrator && req.params.userID !== res.decodedUser.userID) return res.status(403).json({ Error: 'Not Authorized.' })
         const user = await Services.getOneUser(req.params.userID)
@@ -53,12 +53,14 @@ router.post('/', isAuthorized, isAdmin, async (req: any, res: any) => {
 // Updating one
 router.put('/:userID', isAuthorized, async (req: any, res: any) => {
     console.log('updating one')
-    if (req.body.userID) return res.status(403).json({ Error: 'Changing user ID not allowd.' })
+    if (req.body.userID) return res.status(403).json({ Error: 'Changing user ID not allowed.' })
 
     // not admin and trying to update isAdministrator property
     if (!res.decodedUser.isAdministrator && req.body.isAdministrator !== undefined) return res.status(403).json({ Error: 'Not Allowed.' }) 
+
     // not admin and manipulating not self document
     if (!res.decodedUser.isAdministrator && req.params.userID !== res.decodedUser.userID) return res.status(403).json({ Error: 'Not Allowed.' }) 
+
     try {
         const updatedUser = await Services.updateOneUser(req.params.userID, req.body)
         if (updatedUser) {
@@ -73,13 +75,11 @@ router.put('/:userID', isAuthorized, async (req: any, res: any) => {
 
 // Deleting one
 router.delete('/:userID', isAuthorized, async (req: any, res: any) => {
-    // if (!req.params.userID) return res.status(400).json({ Error: 'ID missing.' })
-    // not admin and manipulating not self document
     if (!res.decodedUser.isAdministrator && req.params.userID !== res.decodedUser.userID) return res.status(403).json({ Error: 'Not Allowed.' }) 
     try {
         const deleted = await Services.deleteOneUser(req.params.userID)
         if (deleted.deletedCount > 0) {
-            res.sendStatus(204) // .json(`User ${req.params.userID} deleted.`) // no body
+            res.sendStatus(204)
         } else {
             res.status(404).json(`User ${req.params.userID} not found.`)
         }

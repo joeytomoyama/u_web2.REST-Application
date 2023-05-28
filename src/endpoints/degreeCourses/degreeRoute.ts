@@ -27,7 +27,7 @@ router.get('/', isAuthorized, async (req: express.Request, res: any) => {
     }
     try {
         const courses = await courseServices.getAllCourses()
-        res.status(200).send(cleanCourse(courses))
+        res.status(200).json(cleanCourse(courses))
     } catch (error: any) {
         res.status(500).json({ Error: error })
     }
@@ -98,7 +98,7 @@ router.delete('/:id', isAuthorized, isAdmin, async (req: express.Request, res: a
     try {
         const deleted = await courseServices.deleteOneCourse(req.params.id)
         if (deleted.deletedCount > 0) {
-            res.sendStatus(204) // .json(`Course ${req.params.id} deleted.`) // no body
+            res.sendStatus(204)
         } else {
             res.status(404).json(`Course ${req.params.id} not found.`)
         }
