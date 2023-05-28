@@ -27,10 +27,8 @@ export async function postOneApplication(bodyApplication: Record<string, string>
 export async function updateOneApplication(applicationID: string, newApplication: Record<any, any>) { // Object.assign(obj1, obj2)
     const application = await getOneApplication(applicationID)
     if (!application) return null
-    if (newApplication.applicantUserID) application.applicantUserID = newApplication.applicantUserID
-    if (newApplication.degreeCourseID) application.degreeCourseID = newApplication.degreeCourseID
-    if (newApplication.targetPeriodYear) application.targetPeriodYear = newApplication.targetPeriodYear
-    if (newApplication.targetPeriodShortName) application.targetPeriodShortName = newApplication.targetPeriodShortName
+
+    Object.assign(application, newApplication)
     return await application.save()
 }
 

@@ -53,10 +53,10 @@ Authorization: {{adminToken}}
 Content-Type: application/json
 
 {
-    "universityName": "Beuth Hochschule für Technik Berlin",
-    "universityShortName": "Beuth HS",
-    "departmentName": "Informatik und Medien",
-    "departmentShortName": "FB VI",
+    "universityName": "Technische Universität München",
+    "universityShortName": "TUM",
+    "departmentName": "Informatik",
+    "departmentShortName": "FB IX",
     "name": "Robotik Bachelor",
     "shortName": "RO-BA"
 }

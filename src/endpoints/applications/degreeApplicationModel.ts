@@ -15,7 +15,7 @@ const applicationSchema = new mongoose.Schema({
         },
         targetPeriodShortName: {
             type: String,
-            required: true
+            required: false
         }
 })
 

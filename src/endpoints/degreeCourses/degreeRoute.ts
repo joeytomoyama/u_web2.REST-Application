@@ -34,9 +34,13 @@ router.get('/', isAuthorized, async (req: express.Request, res: any) => {
 })
 
 router.get('/:id/:degreeCourseApplications', async (req: express.Request, res: any)  => {
-    console.log('applications on')
-    const applications = await applicationServices.getManyApplications({ degreeCourseID: req.params.id })
-    res.json(applications)
+    console.log('Getting applications for course.')
+    try {
+        const applications = await applicationServices.getManyApplications({ degreeCourseID: req.params.id })
+        res.status(200).json(applications)
+    } catch (error) {
+        res.status(500).json({ Error: error })
+    }
 })
 
 // Getting one

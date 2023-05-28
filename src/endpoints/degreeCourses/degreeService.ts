@@ -10,7 +10,6 @@ export async function getOneCourse(courseID: string) {
 
 export async function getManyCourses(filter: Record<any, any>) {
     const courses = await Course.find(filter)
-    // console.log(courses)
     if (!courses) return null
     return courses
 }
@@ -30,12 +29,8 @@ export async function postOneCourse(bodyCourse: Record<any, any>) {
 export async function updateOneCourse(courseID: string, newCourse: Record<any, any>) {
     const course = await getOneCourse(courseID)
     if (!course) return null
-    if (newCourse.universityName) course.universityName = newCourse.universityName
-    if (newCourse.universityShortName) course.universityShortName = newCourse.universityShortName
-    if (newCourse.departmentName) course.departmentName = newCourse.departmentName
-    if (newCourse.name) course.name = newCourse.name
-    if (newCourse.id) course.id = newCourse.id
-    if (newCourse.shortName) course.shortName = newCourse.shortName
+
+    Object.assign(course, newCourse)
     return await course.save()
 }
 
