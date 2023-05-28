@@ -41,3 +41,5 @@ app.listen(port, () => {
 httpsServer.listen(443, () => {
     console.log(`Example app listening at http://localhost:443`)
 })
+
+export default app

@@ -68,7 +68,7 @@ router.post('/', isAuthorized, async (req: any, res: any) => {
         return res.status(404).json({ Error: 'Course not found.'})
     }
 
-    // check if applicant has existing application for given Course.
+    // check if applicant has existing application for given course.
     const existingCourses = await applicationServices.getManyApplications({
         applicantUserID: applicant,
         degreeCourseID: req.body.degreeCourseID
