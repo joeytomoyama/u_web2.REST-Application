@@ -56,10 +56,10 @@ router.put('/:userID', isAuthorized, async (req: any, res: any) => {
     if (req.body.userID) return res.status(403).json({ Error: 'Changing user ID not allowed.' })
 
     // not admin and trying to update isAdministrator property
-    if (!res.decodedUser.isAdministrator && req.body.isAdministrator !== undefined) return res.status(403).json({ Error: 'Not Allowed.' }) 
+    if (!res.decodedUser.isAdministrator && req.body.isAdministrator !== undefined) return res.status(403).json({ Error: 'Not Allowed.' })
 
     // not admin and manipulating not self document
-    if (!res.decodedUser.isAdministrator && req.params.userID !== res.decodedUser.userID) return res.status(403).json({ Error: 'Not Allowed.' }) 
+    if (!res.decodedUser.isAdministrator && req.params.userID !== res.decodedUser.userID) return res.status(403).json({ Error: 'Not Allowed.' })
 
     try {
         const updatedUser = await Services.updateOneUser(req.params.userID, req.body)
@@ -75,7 +75,7 @@ router.put('/:userID', isAuthorized, async (req: any, res: any) => {
 
 // Deleting one
 router.delete('/:userID', isAuthorized, async (req: any, res: any) => {
-    if (!res.decodedUser.isAdministrator && req.params.userID !== res.decodedUser.userID) return res.status(403).json({ Error: 'Not Allowed.' }) 
+    if (!res.decodedUser.isAdministrator && req.params.userID !== res.decodedUser.userID) return res.status(403).json({ Error: 'Not Allowed.' })
     try {
         const deleted = await Services.deleteOneUser(req.params.userID)
         if (deleted.deletedCount > 0) {

@@ -49,6 +49,8 @@ router.post('/', isAuthorized, async (req: any, res: any) => {
             applicant = res.decodedUser.userID
         }
     } else {                                    // user posting self
+        // if ('applicantUserID' in req.body) 
+        if (req.body.applicantUserID && req.body.applicantUserID !== res.decodedUser.userID) return res.status(403).json({ Error: 'Not Allowed.' })
         applicant = res.decodedUser.userID
     }
 
@@ -86,8 +88,15 @@ router.post('/', isAuthorized, async (req: any, res: any) => {
     }
 })
 
-router.put('/:id', async (req: express.Request, res: express.Response) => {
+router.put('/:id', isAuthorized, async (req: express.Request, res: any) => {
     console.log('putting one')
+    if (req.body._id) return res.status(403).json({ Error: 'Changing application ID not allowed.' })
+
+    const isAdmin = res.decodedUser.isAdministrator
+    // if not admin and updating not self
+    if (!isAdmin && req.params.id !== res.decodedUser.applicantUserID) return res.status(403).json({ Error: 'Not Allowed.' })
+    // 
+
     try {
         const application = await applicationServices.updateOneApplication(req.params.id, req.body)
         if (!application) res.status(404).json({ Error: 'Not Found.'})
@@ -97,8 +106,20 @@ router.put('/:id', async (req: express.Request, res: express.Response) => {
     }
 })
 
-router.delete('/:id', async (req: express.Request, res: express.Response) => {
+router.delete('/:id', isAuthorized, async (req: express.Request, res: any) => {
     console.log('delete one')
+    console.log(req.params.id)
+    const isAdmin = res.decodedUser.isAdministrator
+    try {
+        const application = await applicationServices.getOneApplication(req.params.id)
+    // if application doesn't exist
+    if (!application) return res.status(404).json({ Error: 'Application not found.' })
+    // if not admin and updating not self
+    if (!isAdmin && res.decodedUser.userID !== application.applicantUserID) return res.status(403).json({ Error: 'Not Allowed.' })
+    } catch (error) {
+        return res.status(500).json({ Error: error })
+    }
+
     try {
         await applicationServices.deleteOneApplication(req.params.id)
         res.sendStatus(204)

@@ -1,4 +1,7 @@
 import jwt from 'jsonwebtoken'
+import * as applicationServices from './applications/degreeApplicationService'
+import * as courseServices from './degreeCourses/degreeService'
+import * as userServices from './user/userService'
 
 export function isAuthorized(req: any, res: any, next: Function) {
     if (!req.headers.authorization) return res.status(401).json({ Error: 'Please enter a Token.' })
@@ -25,6 +28,20 @@ export function idProvided(req: any, res: any, next: Function) { // kinda useles
     next()
 }
 
+// TODO
+export function checkUserExists(req: any, res: any, next: Function) {
+    next()
+}
+
+export function checkCourseExists(req: any, res: any, next: Function) {
+    next()
+}
+
+export function checkApplicationExists(req: any, res: any, next: Function) {
+    next()
+}
+
+// CLEANING FUNCTION
 export function cleanUser(user: Record<any, any> | Record<any, any>[]): object | object[] {
     if (Array.isArray(user)) {
         const users = user

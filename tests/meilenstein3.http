@@ -112,10 +112,31 @@ Content-Type: application/json
     "password": "asdf"
 }
 
+// Login mit Basic Authentication als manfred mit korrekten Credentials
+###
+# @name loginSusiCorrect
+GET https://localhost/api/authenticate
+Authorization: Basic susi:asdf
+###
+@susiToken = {{loginSusiCorrect.response.headers.Authorization}}
+
 // In diesem Fall legt der Administrator für den User susi eine Bewerbung an
 ###
 POST https://localhost/api/degreeCourseApplications
 Authorization: {{adminToken}}
+Content-Type: application/json
+
+{
+    "applicantUserID": "susi",
+    "degreeCourseID": "{{degreeCourseID}}",
+    "targetPeriodYear": 2024,
+    "targetPeriodShortName": "WiSe"
+}
+
+// In diesem Fall legt Manfred für den User susi eine Bewerbung an
+###
+POST https://localhost/api/degreeCourseApplications
+Authorization: {{manfredToken}}
 Content-Type: application/json
 
 {
@@ -178,9 +199,31 @@ Content-Type: application/json
     "targetPeriodYear": 2025
 }
 
+### Ändere die ID in der existierenden Bewerbung, sollte nicht gehen.
+PUT https://localhost/api/degreeCourseApplications/{{applicationID}}
+Authorization: {{adminToken}}
+Content-Type: application/json
+
+{
+    "targetPeriodYear": 2025,
+    "_id": "peofs398fjp98sfas98fSFE9"
+}
+
 ### Löschen von der Bewerbung
 DELETE  https://localhost/api/degreeCourseApplications/{{applicationID}}
 Authorization: {{adminToken}}
+
+### Löschen von nicht existierenden Bewerbung
+DELETE  https://localhost/api/degreeCourseApplications/6475d998ee1bf778003dda81
+Authorization: {{adminToken}}
+
+### Löschen von Manfreds Bewerbung über Susi, sollte nicht gehen
+DELETE  https://localhost/api/degreeCourseApplications/{{applicationID}}
+Authorization: {{susiToken}}
+
+### Löschen von Manfreds Bewerbung über Manfred
+DELETE  https://localhost/api/degreeCourseApplications/{{applicationID}}
+Authorization: {{manfredToken}}
 
 ### Löschen des Studiengangs
 DELETE  https://localhost/api/degreeCourses/{{degreeCourseID}}
