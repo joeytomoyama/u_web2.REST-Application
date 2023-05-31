@@ -133,6 +133,19 @@ Content-Type: application/json
     "targetPeriodShortName": "WiSe"
 }
 
+// Nicht existierender Kurs
+###
+POST https://localhost/api/degreeCourseApplications
+Authorization: {{adminToken}}
+Content-Type: application/json
+
+{
+    "applicantUserID": "susi",
+    "degreeCourseID": "6474fe8bfa619fa30415b9f9",
+    "targetPeriodYear": 2024,
+    "targetPeriodShortName": "WiSe"
+}
+
 // In diesem Fall legt Manfred für den User susi eine Bewerbung an
 ###
 POST https://localhost/api/degreeCourseApplications

@@ -34,9 +34,9 @@ app.use('/api/degreeCourses', degreeRoute)
 
 app.use('/api/degreeCourseApplications', degreeApplicationsRoute)
 
-app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`)
-})
+// app.listen(port, () => {
+//     console.log(`Example app listening at http://localhost:${port}`)
+// })
 
 httpsServer.listen(443, () => {
     console.log(`Example app listening at http://localhost:443`)
