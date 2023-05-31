@@ -25,12 +25,12 @@ router.get('/:userID', isAuthorized, async (req: any, res: any) => {
 
     // if not admin and not self
     if (!res.decodedUser.isAdministrator && req.params.userID !== res.decodedUser.userID) return res.status(403).json({ Error: 'Not Authorized.' })
-        const user = await Services.getOneUser(req.params.userID)
-        if (user) {
-            res.status(200).json(cleanUser(user))
-        } else {
-            res.status(404).json({ Error: 'User not found' })
-        }
+    const user = await Services.getOneUser(req.params.userID)
+    if (user) {
+        res.status(200).json(cleanUser(user))
+    } else {
+        res.status(404).json({ Error: 'User not found' })
+    }
 })
 
 // Creating one

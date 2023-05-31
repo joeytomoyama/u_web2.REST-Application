@@ -4,9 +4,9 @@ import https from 'https'
 import fs from 'fs'
 
 import { startDB } from './db/Database'
+import authRoute from './endpoints/authentication/authRoute'
 import userRoute from './endpoints/user/userRoute'
 import userRouteStrict from './endpoints/user/userRouteStrict'
-import authRoute from './endpoints/authentication/authRoute'
 import degreeRoute from './endpoints/degreeCourses/degreeRoute'
 import degreeApplicationsRoute from './endpoints/applications/degreeApplicationsRoute'
 
@@ -19,6 +19,7 @@ const app: express.Express = express()
 const httpsServer = https.createServer({ key: privateKey, cert: certificate }, app)
 
 const port = process.env.PORT
+const securePort = process.env.SECURE_PORT
 
 startDB()
 
@@ -34,10 +35,10 @@ app.use('/api/degreeCourses', degreeRoute)
 
 app.use('/api/degreeCourseApplications', degreeApplicationsRoute)
 
-// app.listen(port, () => {
-//     console.log(`Example app listening at http://localhost:${port}`)
-// })
+app.listen(port, () => {
+    console.log(`Example app listening at http://localhost:${port}`)
+})
 
-httpsServer.listen(443, () => {
-    console.log(`Example app listening at http://localhost:443`)
+httpsServer.listen(securePort, () => {
+    console.log(`Example app listening at http://localhost:${securePort}`)
 })

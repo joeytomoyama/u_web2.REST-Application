@@ -1,7 +1,8 @@
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
+
 import { getAllUsers } from '../endpoints/user/userService'
-import User, { UserInterface } from '../endpoints/user/userModel'
+import User from '../endpoints/user/userModel'
 
 dotenv.config()
 
@@ -13,7 +14,7 @@ export function startDB() {
     const db = mongoose.connection
     db.on('error', (error) => console.log(error))
     db.once('open', () => {
-        console.log('Connected to Database')
+        console.log('Connected to database')
         ensureAdmin()
     })
 }
@@ -29,6 +30,6 @@ export async function ensureAdmin() {
         isAdministrator: true
     })
     await admin.save()
-    console.log('Added admin user.')
+    console.log('Added admin user')
 }
 

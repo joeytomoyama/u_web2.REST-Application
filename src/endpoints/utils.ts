@@ -1,11 +1,12 @@
 import jwt from 'jsonwebtoken'
 import express from 'express'
+
 import * as applicationServices from './applications/degreeApplicationService'
 import * as courseServices from './degreeCourses/degreeService'
 import * as userServices from './user/userService'
 
 export function isAuthorized(req: express.Request, res: any, next: Function) {
-    if (!req.headers.authorization) return res.status(401).json({ Error: 'Please enter a Token.' })
+    if (!req.headers.authorization) return res.status(401).json({ Error: 'Not Authorized.' })
     const token = req.headers.authorization.split(' ')[1]
 
     try {
@@ -29,7 +30,6 @@ export function idProvided(req: express.Request, res: any, next: Function) { // 
     next()
 }
 
-// TODO
 // determine who is being applied
 export async function determineApplicant(req: express.Request, res: any, next: Function) {
     const isAdmin = res.decodedUser.isAdministrator
@@ -54,9 +54,10 @@ export async function determineApplicant(req: express.Request, res: any, next: F
 
 // check if course exists
 export async function checkCourseExists(req: express.Request, res: any, next: Function) {
+    if (!req.body.degreeCourseID) return next()
+    
     try {
         const course = await courseServices.getOneCourse(req.body.degreeCourseID)
-        // res.courseExists = course ? true : false
         if (!course) return res.status(404).json({ Error: 'Course doesn\'t exist' })
     } catch (error: any) {
         if (error.name === 'CastError') return res.status(404).json({ Error: 'Course doesn\'t exist' })

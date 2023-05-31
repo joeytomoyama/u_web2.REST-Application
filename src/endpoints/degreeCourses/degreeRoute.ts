@@ -17,7 +17,7 @@ router.get('/', isAuthorized, async (req: express.Request, res: any) => {
             const courses = await courseServices.getManyCourses(req.query)
             if (!courses) return res.status(500).json({ Error: 'Something went wrong.' })
             if (courses.length > 0) {
-                return res.json(cleanCourse(courses as Record<string, any>))
+                return res.status(200).json(cleanCourse(courses as Record<string, any>))
             } else {
                 return res.status(404).json({ Error: 'Nothing found.' })
             }

@@ -1,8 +1,7 @@
 import express from 'express'
+
 import { isAdmin, isAuthorized, cleanApplication, determineApplicant, checkCourseExists, checkApplicationIsValid } from '../utils'
 import * as applicationServices from './degreeApplicationService'
-import * as courseServices from '../degreeCourses/degreeService'
-import * as userServices from '../user/userService'
 
 
 const router = express.Router()
@@ -19,8 +18,9 @@ router.get('/', isAuthorized, isAdmin, async (req: express.Request, res: express
     }
 })
 
-router.get('/myApplications', isAuthorized, async (req: any, res: any) => {
+router.get('/myApplications', isAuthorized, async (req: express.Request, res: any) => {
     console.log('My applications.')
+
     const userID = res.decodedUser.userID
     try {
         const applications = await applicationServices.getManyApplications({ applicantUserID: userID })
@@ -30,9 +30,8 @@ router.get('/myApplications', isAuthorized, async (req: any, res: any) => {
     }
 })
 
-router.post('/', isAuthorized, determineApplicant, checkCourseExists, checkApplicationIsValid, async (req: any, res: any) => {
+router.post('/', isAuthorized, determineApplicant, checkCourseExists, checkApplicationIsValid, async (req: express.Request, res: any) => {
     console.log('posting one.')
-    if (!res.courseExists) return res.status(404).json({ Error: 'Course not found.' })
 
     // post valid application
     try {
@@ -55,7 +54,6 @@ router.put('/:id', isAuthorized, determineApplicant, checkCourseExists, checkApp
     const isAdmin = res.decodedUser.isAdministrator
     // if not admin and updating not self
     if (!isAdmin && req.params.id !== res.decodedUser.applicantUserID) return res.status(403).json({ Error: 'Not Allowed.' })
-    // 
 
     try {
         const application = await applicationServices.updateOneApplication(req.params.id, req.body)
@@ -68,8 +66,9 @@ router.put('/:id', isAuthorized, determineApplicant, checkCourseExists, checkApp
 
 router.delete('/:id', isAuthorized, async (req: express.Request, res: any) => {
     console.log('delete one')
-    console.log(req.params.id)
     const isAdmin = res.decodedUser.isAdministrator
+
+    // check if application exists
     try {
         const application = await applicationServices.getOneApplication(req.params.id)
         // if application doesn't exist
@@ -80,6 +79,7 @@ router.delete('/:id', isAuthorized, async (req: express.Request, res: any) => {
         return res.status(500).json({ Error: error })
     }
 
+    // delete application
     try {
         await applicationServices.deleteOneApplication(req.params.id)
         res.sendStatus(204)
