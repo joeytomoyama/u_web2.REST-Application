@@ -42,3 +42,5 @@ app.listen(port, () => {
 httpsServer.listen(securePort, () => {
     console.log(`Example app listening at http://localhost:${securePort}`)
 })
+
+export default app
