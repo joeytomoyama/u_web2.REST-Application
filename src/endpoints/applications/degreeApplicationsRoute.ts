@@ -42,7 +42,8 @@ router.post('/', isAuthorized, determineApplicant, checkCourseExists, checkAppli
             targetPeriodShortName: req.body.targetPeriodShortName
         })
         res.status(201).json(cleanApplication(application))
-    } catch (error) {
+    } catch (error: any) {
+        if (error.name === "ValidationError") return res.status(400).json({ Error: 'Missing properties.' })
         res.status(500).json({ Erorr: error })
     }
 })

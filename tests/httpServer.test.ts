@@ -235,6 +235,15 @@ describe("Meilenstein 3", () => {
                 targetPeriodShortName: "WiSe"
             })
         expect(invalidApplicantApplication.statusCode).toBe(403)
+
+        const missingPropsApplication = await request(app)
+            .post("/api/degreeCourseApplications")
+            .set('Authorization', `Bearer ${manfredToken}`)
+            .send({
+                applicationID: 'manfred',
+                targetperiodYear: 2024
+            })
+        expect(missingPropsApplication.statusCode).toBe(400)
     })
 
     it("get applications", async () => {
