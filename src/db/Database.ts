@@ -10,13 +10,12 @@ const url = process.env.DATABASE_URL
 
 export function startDB() {
     console.log(`Connecting to database ${url}`)
-    if (url) mongoose.connect(url)
-    const db = mongoose.connection
-    db.on('error', (error) => console.log(error))
-    db.once('open', () => {
+    mongoose.connect(url as string)
+    .then(() => {
         console.log('Connected to database')
         ensureAdmin()
     })
+    .catch((error) => console.log(error))
 }
 
 export async function ensureAdmin() {

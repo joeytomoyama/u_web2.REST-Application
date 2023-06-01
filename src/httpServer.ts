@@ -21,7 +21,12 @@ const httpsServer = https.createServer({ key: privateKey, cert: certificate }, a
 const port = process.env.PORT
 const securePort = process.env.SECURE_PORT
 
-startDB()
+if (process.env.TESTING !== 'true') {
+    console.log('Production mode.')
+    startDB()
+} else {
+    console.log('Testing mode.')
+}
 
 app.use(express.json())
 
