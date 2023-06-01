@@ -68,6 +68,9 @@ export async function checkCourseExists(req: express.Request, res: any, next: Fu
 
 // check if applicant has existing application for given course.
 export async function checkApplicationIsValid(req: express.Request, res: any, next: Function) {
+    console.log('many')
+    console.log(res.applicant)
+    console.log(req.body.degreeCourseID)
     try {
         const existingCourses = await applicationServices.getManyApplications({
             applicantUserID: res.applicant,

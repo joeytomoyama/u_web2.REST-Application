@@ -170,14 +170,25 @@ describe("Meilenstein 3", () => {
             })
         expect(susiApplication.statusCode).toBe(201)
 
+        const deleteSusi = await request(app)
+            .delete(`/api/degreeCourseApplications/${susiApplication.body.id}`)
+            .set('Authorization', `Bearer ${susiToken}`)
+        expect(deleteSusi.statusCode).toBe(204)
+
         const checkApplications = await request(app)
             .get("/api/degreeCourseApplications")
             .set('Authorization', `Bearer ${adminToken}`)
         expect(checkApplications.statusCode).toBe(200)
-        expect(checkApplications.body.length).toBe(2)
+        expect(checkApplications.body.length).toBe(1)
     })
 
     it("post invalid applications", async () => {
+        const checkApplications = await request(app)
+            .get("/api/degreeCourseApplications")
+            .set('Authorization', `Bearer ${adminToken}`)
+        expect(checkApplications.statusCode).toBe(200)
+        expect(checkApplications.body.length).toBe(1)
+
         const manfredDuplicateApplication = await request(app)
             .post("/api/degreeCourseApplications")
             .set('Authorization', `Bearer ${manfredToken}`)
@@ -194,8 +205,8 @@ describe("Meilenstein 3", () => {
             .post("/api/degreeCourseApplications")
             .set('Authorization', `Bearer ${adminToken}`)
             .send({
-                applicantuserID: 'manfred',
-                degreeCourseID: degreeCourseID.replace('1', '2').replace('a', 'b'),
+                applicantUserID: 'manfred',
+                degreeCourseID: degreeCourseID.replace('1', '2').replace('a', 'b').replace('c', 'd').replace('e', 'f').replace('g', 'h').replace('i', 'j').replace('k', 'l').replace('m', 'n').replace('o', 'p').replace('q', 'r').replace('s', 't').replace('u', 'v').replace('w', 'x').replace('y', 'z'),
                 targetPeriodYear: 2024,
                 targetPeriodShortName: "WiSe"
             })
@@ -205,23 +216,25 @@ describe("Meilenstein 3", () => {
             .post("/api/degreeCourseApplications")
             .set('Authorization', `Bearer ${manfredToken}`)
             .send({
-                applicantuserID: 'susi',
+                applicantUserID: 'susi',
                 degreeCourseID: degreeCourseID,
                 targetPeriodYear: 2024,
                 targetPeriodShortName: "WiSe"
             })
+            console.log('here')
+        console.log(invalidSusiApplication.body)
         expect(invalidSusiApplication.statusCode).toBe(403)
 
         const invalidApplicantApplication = await request(app)
             .post("/api/degreeCourseApplications")
             .set('Authorization', `Bearer ${manfredToken}`)
             .send({
-                applicantuserID: 'unobtanium',
+                applicantUserID: 'unobtanium',
                 degreeCourseID: degreeCourseID,
                 targetPeriodYear: 2024,
                 targetPeriodShortName: "WiSe"
             })
-        expect(invalidApplicantApplication.statusCode).toBe(400)
+        expect(invalidApplicantApplication.statusCode).toBe(403)
     })
 
     it("get applications", async () => {
