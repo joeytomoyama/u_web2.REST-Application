@@ -53,8 +53,17 @@ router.put('/:id', isAuthorized, determineApplicant, checkCourseExists, checkApp
     if (req.body._id) return res.status(403).json({ Error: 'Changing application ID not allowed.' })
 
     const isAdmin = res.decodedUser.isAdministrator
-    // if not admin and updating not self
-    if (!isAdmin && req.params.id !== res.decodedUser.applicantUserID) return res.status(403).json({ Error: 'Not Allowed.' })
+    // check if not admin user is updating self
+    if (!isAdmin) {
+        try {
+            const application = await applicationServices.getOneApplication(req.params.id)
+            if (!application) return res.status(404).json({ Error: 'Application not found.' })
+            if (application.applicantUserID !== res.decodedUser.userID) return res.status(403).json({ Error: 'Not Allowed.' })
+        } catch (error: any) {
+            if (error.name === 'CastError') return res.status(404).json({ Error: 'Application not found.' })
+            return res.status(500).json({ Error: error })
+        }
+    }
 
     try {
         const application = await applicationServices.updateOneApplication(req.params.id, req.body)
@@ -76,7 +85,8 @@ router.delete('/:id', isAuthorized, async (req: express.Request, res: any) => {
         if (!application) return res.status(404).json({ Error: 'Application not found.' })
         // if not admin and updating not self
         if (!isAdmin && res.decodedUser.userID !== application.applicantUserID) return res.status(403).json({ Error: 'Not Allowed.' })
-    } catch (error) {
+    } catch (error: any) {
+        if (error.name === 'CastError') return res.status(404).json({ Error: 'Application not found.' })
         return res.status(500).json({ Error: error })
     }
 

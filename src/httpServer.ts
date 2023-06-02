@@ -21,12 +21,13 @@ const httpsServer = https.createServer({ key: privateKey, cert: certificate }, a
 const port = process.env.PORT
 const securePort = process.env.SECURE_PORT
 
-if (process.env.TESTING !== 'true') {
-    console.log('Production mode.')
-    startDB()
-} else {
+if (process.env.TESTING === 'true') {
     console.log('Testing mode.')
+} else {
+    console.log('Production mode.')
+    startDB(process.env.DATABASE_URL as string)
 }
+
 
 app.use(express.json())
 
@@ -40,12 +41,17 @@ app.use('/api/degreeCourses', degreeRoute)
 
 app.use('/api/degreeCourseApplications', degreeApplicationsRoute)
 
-app.listen(port, () => {
+const httpServer = app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
 })
 
 httpsServer.listen(securePort, () => {
     console.log(`Example app listening at http://localhost:${securePort}`)
 })
+
+export function closeServers(): void {
+    httpsServer.close()
+    httpServer.close()
+}
 
 export default app

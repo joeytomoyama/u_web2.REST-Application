@@ -6,9 +6,9 @@ import User from '../endpoints/user/userModel'
 
 dotenv.config()
 
-const url = process.env.DATABASE_URL
+// const url = process.env.DATABASE_URL
 
-export function startDB() {
+export function startDB(url: string): void {
     console.log(`Connecting to database ${url}`)
     mongoose.connect(url as string)
     .then(() => {
@@ -18,9 +18,14 @@ export function startDB() {
     .catch((error) => console.log(error))
 }
 
-export async function ensureAdmin() {
-    const users = await getAllUsers()
-    if (users.length > 0) return
+export async function ensureAdmin(): Promise<void> {
+    try {
+        const users = await getAllUsers()
+        if (users.length > 0) return
+    } catch (error) {
+        console.log(error)
+        return
+    }
     const admin = new User({
         userID: 'admin',
         firstName: 'admin',
@@ -31,4 +36,3 @@ export async function ensureAdmin() {
     await admin.save()
     console.log('Added admin user')
 }
-

@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import request from 'supertest'
 
-import app from '../src/httpServer'
+import app, { closeServers } from '../src/httpServer'
 import { ensureAdmin } from '../src/db/Database'
 
 dotenv.config()
@@ -16,6 +16,7 @@ beforeAll(async () => {
 afterAll(async () => {
     await mongoose.connection.db.dropDatabase()
     await mongoose.connection.close()
+    closeServers()
 })
 
 describe("Admin exists", () => {
@@ -34,7 +35,7 @@ describe("Meilenstein 3", () => {
 
     let degreeCourseID: string
 
-    let applicationID: string
+    let manfredApplicationID: string
 
     it("admin authentication", async () => {
         // authenticate
@@ -154,7 +155,7 @@ describe("Meilenstein 3", () => {
                 targetPeriodYear: 2024,
                 targetPeriodShortName: "WiSe"
             })
-        applicationID = manfredApplication.body.id
+        manfredApplicationID = manfredApplication.body.id
 
         expect(manfredApplication.statusCode).toBe(201)
         expect(manfredApplication.body.degreeCourseID).toEqual(degreeCourseID)
@@ -197,7 +198,6 @@ describe("Meilenstein 3", () => {
                 targetPeriodYear: 2024,
                 targetPeriodShortName: "WiSe"
             })
-        applicationID = manfredDuplicateApplication.body.id
 
         expect(manfredDuplicateApplication.statusCode).toBe(400)
 
@@ -240,7 +240,7 @@ describe("Meilenstein 3", () => {
             .post("/api/degreeCourseApplications")
             .set('Authorization', `Bearer ${manfredToken}`)
             .send({
-                applicationID: 'manfred',
+                manfredApplicationID: 'manfred',
                 targetperiodYear: 2024
             })
         expect(missingPropsApplication.statusCode).toBe(400)
@@ -251,5 +251,110 @@ describe("Meilenstein 3", () => {
             .get("/api/degreeCourseApplications/myApplications")
             .set('Authorization', `Bearer ${manfredToken}`)
         expect(checkApplications.statusCode).toBe(200)
+        expect(checkApplications.body.length).toBe(1)
+
+        const checkManfredApplications = await request(app)
+            .get("/api/degreeCourseApplications?applicantUserID=manfred")
+            .set('Authorization', `Bearer ${adminToken}`)
+        expect(checkManfredApplications.statusCode).toBe(200)
+        expect(checkManfredApplications.body[0].applicantUserID).toBe('manfred')
+
+        const checkCourseApplications = await request(app)
+            .get(`/api/degreeCourseApplications/?degreeCourseID=${degreeCourseID}`)
+            .set('Authorization', `Bearer ${adminToken}`)
+        expect(checkCourseApplications.statusCode).toBe(200)
+        expect(checkCourseApplications.body[0].degreeCourseID).toBe(degreeCourseID)
+
+        const invalidApplications = await request(app)
+            .get(`/api/degreeCourseApplications/?degreeCourseID=asifejlsahfw83s89us`)
+            .set('Authorization', `Bearer ${adminToken}`)
+        expect(invalidApplications.body).toHaveLength(0)
+    })
+
+    it("getting applications over degreeCourse endpoint", async () => {
+        const getApplications = await request(app)
+            .get(`/api/degreeCourses/${degreeCourseID}/degreeCourseApplications`)
+            .set('Authorization', `Bearer ${adminToken}`)
+        expect(getApplications.statusCode).toBe(200)
+        expect(getApplications.body.length).toBe(1)
+    })
+
+    it("valid put applications", async () => {
+        const putYearAdmin = await request(app)
+            .put(`/api/degreeCourseApplications/${manfredApplicationID}`)
+            .set('Authorization', `Bearer ${adminToken}`)
+            .send({
+                targetPeriodYear: 2025
+            })
+        expect(putYearAdmin.statusCode).toBe(200)
+        expect(putYearAdmin.body.targetPeriodYear).toBe('2025')
+
+        const putYearManfred = await request(app)
+            .put(`/api/degreeCourseApplications/${manfredApplicationID}`)
+            .set('Authorization', `Bearer ${manfredToken}`)
+            .send({
+                targetPeriodYear: 2026
+            })
+        expect(putYearManfred.statusCode).toBe(200)
+        expect(putYearManfred.body.targetPeriodYear).toBe('2026')
+        expect(putYearManfred.body.applicantUserID).toBe('manfred')
+
+        const putYearManfred2 = await request(app)
+            .put(`/api/degreeCourseApplications/${manfredApplicationID}`)
+            .set('Authorization', `Bearer ${manfredToken}`)
+            .send({
+                applicantUserID: 'manfred',
+                targetPeriodYear: 2027
+            })
+        expect(putYearManfred2.statusCode).toBe(200)
+        expect(putYearManfred2.body.targetPeriodYear).toBe('2027')
+        expect(putYearManfred2.body.applicantUserID).toBe('manfred')
+    })
+
+    it("invalid put applications", async () => {
+        const wrongApplication = await request(app)
+            .put(`/api/degreeCourseApplications/awejf98jfo9af8j3wf98wj3lf`)
+            .set('Authorization', `Bearer ${manfredToken}`)
+            .send({
+                targetPeriodYear: 2025
+            })
+        expect(wrongApplication.statusCode).toBe(404)
+
+        const manfredPutSusi = await request(app)
+            .put(`/api/degreeCourseApplications/${manfredApplicationID}`)
+            .set('Authorization', `Bearer ${manfredToken}`)
+            .send({
+                applicantUserID: 'susi',
+                targetPeriodYear: 2028
+            })
+        expect(manfredPutSusi.statusCode).toBe(403)
+
+        const putID = await request(app)
+            .put(`/api/degreeCourseApplications/${manfredApplicationID}`)
+            .set('Authorization', `Bearer ${manfredToken}`)
+            .send({
+                targetPeridYear: 2029,
+                _id: 'something'
+            })
+        expect(putID.statusCode).toBe(403)
+    })
+
+    it("invalid delete applications", async () => {
+        const deleteNonExistentApplication = await request(app)
+            .delete(`/api/degreeCourseApplications/awejf98jfo9af8j3wf98wj3lf`)
+            .set('Authorization', `Bearer ${manfredToken}`)
+        expect(deleteNonExistentApplication.statusCode).toBe(404)
+
+        const susiDeleteManfred = await request(app)
+            .delete(`/api/degreeCourseApplications/${manfredApplicationID}`)
+            .set('Authorization', `Bearer ${susiToken}`)
+        expect(susiDeleteManfred.statusCode).toBe(403)
+    })
+
+    it("valid delete applications", async () => {
+        const deleteManfredApp = await request(app)
+            .delete(`/api/degreeCourseApplications/${manfredApplicationID}`)
+            .set('Authorization', `Bearer ${manfredToken}`)
+        expect(deleteManfredApp.statusCode).toBe(204)
     })
 })
