@@ -3,9 +3,10 @@
   "version": "3.0.0",
   "main": "./src/httpServer.ts",
   "scripts": {
-    "start": "nodemon ./src/httpServer.ts",
+    "start": "ts-node ./src/httpServer.ts",
     "build": "tsc",
-    "debug": "export DEBUG=* && npm run stat",
+    "dev": "nodemon ./src/httpServer.ts",
+    "debug": "echo \"Press F5\" && exit 1",
     "test": "cross-env TESTING=true jest"
   },
   "keywords": [
