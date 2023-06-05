@@ -9,6 +9,7 @@ import userRoute from './endpoints/user/userRoute'
 import userRouteStrict from './endpoints/user/userRouteStrict'
 import degreeRoute from './endpoints/degreeCourses/degreeRoute'
 import degreeApplicationsRoute from './endpoints/applications/degreeApplicationsRoute'
+import cors from 'cors'
 
 dotenv.config()
 
@@ -28,6 +29,16 @@ if (process.env.TESTING === 'true') {
     startDB(process.env.DATABASE_URL as string)
 }
 
+app.use('*', cors({
+    exposedHeaders: ['*'],
+}))
+
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Expose-Headers","Authorization");
+    next();
+});
 
 app.use(express.json())
 
