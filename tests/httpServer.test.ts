@@ -357,4 +357,12 @@ describe("Meilenstein 3", () => {
             .set('Authorization', `Bearer ${manfredToken}`)
         expect(deleteManfredApp.statusCode).toBe(204)
     })
+
+    // test remove user functionality
+    it("remove user", async () => {
+        const deleteUser = await request(app)
+            .delete(`/api/users/manfred`)
+            .set('Authorization', `Bearer ${adminToken}`)
+        expect(deleteUser.statusCode).toBe(204)
+    })
 })
