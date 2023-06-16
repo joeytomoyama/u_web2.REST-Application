@@ -12,7 +12,7 @@ export default function Login({ setLoggedIn }: LoginProps) {
                     e.preventDefault()
                     const username = (document.getElementById('username') as HTMLInputElement).value
                     const password = (document.getElementById('password') as HTMLInputElement).value
-                    fetch('http://localhost/api/authenticate', {
+                    fetch('https://localhost/api/authenticate', {
                             method: 'GET',
                             headers: {
                                 'Content-Type': 'application/json',
