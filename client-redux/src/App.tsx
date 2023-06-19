@@ -2,14 +2,14 @@ import "./App.css"
 import { useAppSelector } from "./app/hooks"
 import LandingPage from "./components/LandingPage"
 import Startseite from "./components/Startseite"
-import { selectLogin } from "./features/loginSlice"
+import { selectAuth } from "./features/authSlice"
 
 function App() {
-  const isLoggedIn = useAppSelector(selectLogin)
+  const isAuth = useAppSelector(selectAuth).isAuthenticated
   return (
     <div className="App">
-      {!isLoggedIn && <LandingPage />}
-      {isLoggedIn && <Startseite />}
+      {!isAuth && <LandingPage />}
+      {isAuth && <Startseite />}
     </div>
   )
 }

@@ -1,8 +1,8 @@
 import Login from "./Login"
 
-interface LoginProps {
-  setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>
-}
+// interface LoginProps {
+//   setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>
+// }
 
 export default function LandingPage() {
   return (

@@ -1,18 +1,18 @@
 import React from "react"
-import { login, logout, selectLogin } from "../features/loginSlice"
 import { useDispatch } from "react-redux"
 import { useAppSelector } from "../app/hooks"
+import { clearToken, selectAuth, setToken } from "../features/authSlice"
 
-interface LoginProps {
-  setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>
-}
+// interface LoginProps {
+//   setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>
+// }
 
 export default function Login() {
-  const isLoggedIn = useAppSelector(selectLogin)
+  const isAuth = useAppSelector(selectAuth).isAuthenticated
   const dispatch = useDispatch()
   return (
     <div id="LoginDialog">
-      {!isLoggedIn && (
+      {!isAuth && (
         <form
           onSubmit={(e) => {
             e.preventDefault()
@@ -35,7 +35,10 @@ export default function Login() {
             }).then((response) => {
               console.log("Res:", response)
               if (response.status === 200) {
-                dispatch(login())
+                const token: string = response.headers
+                  .get("Authorization")
+                  ?.split(" ")[1] as string
+                dispatch(setToken(token))
                 console.log("Log in successful")
               } else {
                 console.log("Log in failed")
@@ -55,8 +58,8 @@ export default function Login() {
           </button>
         </form>
       )}
-      {isLoggedIn && (
-        <button id="LogoutButton" onClick={() => dispatch(logout())}>
+      {isAuth && (
+        <button id="LogoutButton" onClick={() => dispatch(clearToken())}>
           Logout
         </button>
       )}
