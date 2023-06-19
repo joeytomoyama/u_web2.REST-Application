@@ -1,10 +1,11 @@
-import React, { MouseEventHandler } from "react"
+import React from "react"
 import { useDispatch } from "react-redux"
 import { useAppSelector } from "../app/hooks"
-import { clearToken, selectAuth, setToken } from "../features/authSlice"
+// import { clearToken, selectAuth, setToken } from "../features/authSlice.old"
 import Form from "react-bootstrap/Form"
 import Modal from "react-bootstrap/Modal"
 import Button from "react-bootstrap/Button"
+import { selectAuth, setToken, clearToken } from "../features/authSlice"
 
 // interface LoginProps {
 //   setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>
@@ -16,7 +17,7 @@ export default function Login() {
 
   const [showLogin, setShowLogin] = React.useState(false)
   return (
-    <div id="LoginDialog">
+    <div>
       {!isAuth && (
         <>
           {!showLogin && (
@@ -27,7 +28,7 @@ export default function Login() {
               Show dialogue
             </Button>
           )}
-          <Modal show={showLogin}>
+          <Modal id="LoginDialog" show={showLogin}>
             <Modal.Dialog>
               <Modal.Header>
                 <Modal.Title>Login Dialogue</Modal.Title>
@@ -120,6 +121,8 @@ export default function Login() {
                         console.log("Log in failed")
                       }
                     })
+                    // const credentials = btoa(`${username}:${password}`)
+                    // dispatch(authenticateAsync(credentials))
                   }}
                 >
                   <Form.Group>

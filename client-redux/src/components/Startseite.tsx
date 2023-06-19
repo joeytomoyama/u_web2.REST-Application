@@ -12,7 +12,7 @@ export default function Startseite() {
         <Login />
       </header>
       <h1>Successfully logged in!</h1>
-      <p>Token: {token}</p>
+      {/* <p>Token: {token}</p> */}
       {/* {users.map((user: any) => (
             <div key={user.id}>
                 <h1>{user.firstName}</h1>
