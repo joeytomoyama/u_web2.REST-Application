@@ -4,6 +4,7 @@ import { RootState } from "../app/store"
 interface AuthState {
   token: string | undefined
   isAuthenticated: boolean
+  isAdministrator: boolean
   status: "idle" | "loading" | "failed"
   error: string | undefined
 }
@@ -11,6 +12,7 @@ interface AuthState {
 const initialState: AuthState = {
   token: undefined,
   isAuthenticated: false,
+  isAdministrator: false,
   status: "idle",
   error: undefined,
 }
@@ -33,6 +35,10 @@ export const authenticateAsync = createAsyncThunk(
         .get("Authorization")
         ?.split(" ")[1] as string
       return token
+      // return {
+      //   token: token,
+      //   isAdministrator: btoa(token),
+      // }
     } else {
       throw new Error("Authentication failed")
     }
@@ -59,6 +65,13 @@ const authSlice = createSlice({
           state.status = "idle"
           state.token = action.payload
           state.isAuthenticated = true
+          try {
+            state.isAdministrator = JSON.parse(
+              atob(action.payload.split(".")[1]),
+            ).isAdministrator
+          } catch (error) {
+            console.error(error)
+          }
         },
       )
       .addCase(authenticateAsync.rejected, (state, action) => {
