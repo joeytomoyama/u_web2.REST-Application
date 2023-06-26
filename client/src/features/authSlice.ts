@@ -35,10 +35,6 @@ export const authenticateAsync = createAsyncThunk(
         .get("Authorization")
         ?.split(" ")[1] as string
       return token
-      // return {
-      //   token: token,
-      //   isAdministrator: btoa(token),
-      // }
     } else {
       throw new Error("Authentication failed")
     }
