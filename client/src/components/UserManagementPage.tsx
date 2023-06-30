@@ -10,7 +10,9 @@ export default function UserManagementPage() {
   const [users, setUsers] = useState<UserType[]>([])
   const [showCreate, setShowCreate] = useState(false)
   const [showEdit, setShowEdit] = useState(false)
+  const [showDelete, setShowDelete] = useState(false)
   const [userToEdit, setUserToEdit] = useState("")
+  // const [userToEdit, setUserToEdit] = useState("")
 
   useEffect(() => {
     console.log(authSlice.token)
@@ -273,6 +275,8 @@ export default function UserManagementPage() {
                 user={user}
                 setShowEdit={setShowEdit}
                 setUserToEdit={setUserToEdit}
+                users={users}
+                setUsers={setUsers}
               />
             }
           </li>
