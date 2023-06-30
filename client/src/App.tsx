@@ -12,6 +12,7 @@ function App() {
     return (
       <Routes>
         <Route path="/" element={<LandingPage />} />
+        <Route path="*" element={<div>404</div>} />
       </Routes>
     )
   } else {
@@ -19,25 +20,10 @@ function App() {
       <Routes>
         <Route path="/" element={<Startseite />} />
         <Route path="/usermanagement" element={<UserManagementPage />} />
+        <Route path="*" element={<div>404</div>} />
       </Routes>
     )
   }
-  // return (
-  //   <div className="App">
-
-  //     <Routes>
-  //       <Route path="/">
-  //         {!isAuth && <LandingPage />}
-  //         {isAuth && <Startseite />}
-  //       </Route>
-  //       <Route path="/usermanagement">
-  //         <UserManagementPage
-  //       </Route>
-  //     </Routes>
-  //     // {!isAuth && <LandingPage />}
-  //     // {isAuth && <Startseite />}
-  //   </div>
-  // )
 }
 
 export default App

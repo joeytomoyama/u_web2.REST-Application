@@ -8,6 +8,7 @@ import * as userServices from './user/userService'
 export function isAuthorized(req: express.Request, res: any, next: Function) {
     if (!req.headers.authorization) return res.status(401).json({ Error: 'Not Authorized.' })
     const token = req.headers.authorization.split(' ')[1]
+    console.log(token)
 
     try {
         const decode = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET as jwt.Secret)

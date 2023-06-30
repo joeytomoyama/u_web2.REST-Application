@@ -132,3 +132,5 @@ dist
 *.zip
 
 certificates/
+
+*prettier*

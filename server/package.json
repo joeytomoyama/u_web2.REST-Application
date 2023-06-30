@@ -7,7 +7,7 @@
     "build": "rimraf dist/ && tsc",
     "dev": "nodemon ./src/httpServer.ts",
     "debug": "echo \"Press F5\" && exit 1",
-    "test": "cross-env TESTING=true jest"
+    "testServ": "cross-env TESTING=true jest"
   },
   "keywords": [
     "mongodb",
