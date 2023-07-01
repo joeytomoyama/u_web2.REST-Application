@@ -3,16 +3,18 @@ import { useAppSelector } from "../app/hooks"
 import { selectAuth } from "../features/authSlice"
 import { useEffect, useState } from "react"
 import User, { UserType } from "./User"
-import { Link, json } from "react-router-dom"
+import { LinkContainer } from "react-router-bootstrap"
 
 export default function UserManagementPage() {
-  const authSlice = useAppSelector(selectAuth)
+  const authSlice: any = useAppSelector(selectAuth)
+
   const [users, setUsers] = useState<UserType[]>([])
-  const [showCreate, setShowCreate] = useState(false)
-  const [showEdit, setShowEdit] = useState(false)
-  const [showDelete, setShowDelete] = useState(false)
-  const [userToEdit, setUserToEdit] = useState("")
-  // const [userToEdit, setUserToEdit] = useState("")
+  const [showCreate, setShowCreate] = useState<boolean>(false)
+  const [showEdit, setShowEdit] = useState<boolean>(false)
+  const [showDelete, setShowDelete] = useState<boolean>(false)
+  const [clickedUser, setClickedUser] = useState<UserType | undefined>(
+    undefined,
+  )
 
   useEffect(() => {
     console.log(authSlice.token)
@@ -24,6 +26,7 @@ export default function UserManagementPage() {
     })
       .then((response) => response.json())
       .then((data) => {
+        console.log(data)
         setUsers(data)
       })
       .catch((error) => {
@@ -42,6 +45,7 @@ export default function UserManagementPage() {
       >
         Add User
       </Button>
+      {/* CREATE */}
       <Modal show={showCreate} id="UserManagementPageCreateComponent">
         <Modal.Dialog>
           <Modal.Header>
@@ -90,7 +94,7 @@ export default function UserManagementPage() {
                 />
               </Form.Group>
               <Button
-                id="createUserButton"
+                id="CreateUserComponentCreateUserButton"
                 variant="primary"
                 onClick={() => {
                   const userId = (
@@ -154,14 +158,25 @@ export default function UserManagementPage() {
           </Modal.Footer>
         </Modal.Dialog>
       </Modal>
-
+      {/* EDIT */}
       <Modal show={showEdit} id="UserManagementPageEditComponent">
         <Modal.Dialog>
           <Modal.Header>
-            <Modal.Title>{"Edit User: " + userToEdit}</Modal.Title>
+            <Modal.Title>
+              {`Edit User: ${clickedUser?.firstName} ${clickedUser?.lastName}`}
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form>
+              <Form.Group>
+                <Form.Label>firstName:</Form.Label>
+                <Form.Control
+                  id="EditUserComponentEditUserID"
+                  type="text"
+                  placeholder={clickedUser?.userID}
+                  disabled={true}
+                />
+              </Form.Group>
               <Form.Group>
                 <Form.Label>firstName:</Form.Label>
                 <Form.Control
@@ -195,7 +210,7 @@ export default function UserManagementPage() {
                 />
               </Form.Group>
               <Button
-                id="editUserButton"
+                id="EditUserComponentSaveUserButton"
                 variant="primary"
                 onClick={() => {
                   const firstName =
@@ -232,7 +247,7 @@ export default function UserManagementPage() {
 
                   const editedUserString = JSON.stringify(editedUser)
 
-                  fetch("https://localhost/api/users/" + userToEdit, {
+                  fetch("https://localhost/api/users/" + clickedUser?.userID, {
                     method: "PUT",
                     headers: {
                       "Content-Type": "application/json",
@@ -243,7 +258,7 @@ export default function UserManagementPage() {
                     .then((response) => response.json())
                     .then((data) => {
                       const newUsers = users.map((user) => {
-                        if (user.userID === userToEdit) {
+                        if (user.userID === clickedUser?.userID) {
                           return { ...user, ...editedUser }
                         } else {
                           return user
@@ -260,8 +275,53 @@ export default function UserManagementPage() {
             </Form>
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={() => setShowEdit(false)} variant="secondary">
+            <Button
+              id="OpenUserManagementPageListComponentButton"
+              onClick={() => setShowEdit(false)}
+              variant="secondary"
+            >
               Close
+            </Button>
+          </Modal.Footer>
+        </Modal.Dialog>
+      </Modal>
+      {/* DELETE */}
+      <Modal show={showDelete} id={`DeleteDialogUser${clickedUser?.userID}`}>
+        <Modal.Dialog>
+          <Modal.Header>
+            <Modal.Title>
+              {`Delete User ${clickedUser?.firstName} ${clickedUser?.lastName}?`}
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>{`Soll User ${clickedUser?.firstName} ${clickedUser?.lastName} gelöscht werden?`}</Modal.Body>
+          <Modal.Footer>
+            <Button
+              id="DeleteDialogCancelButton"
+              onClick={() => setShowDelete(false)}
+              variant="secondary"
+            >
+              Cancel
+            </Button>
+            <Button
+              id="DeleteDialogConfirmButton"
+              onClick={() => {
+                fetch("https://localhost/api/users/" + clickedUser?.userID, {
+                  method: "DELETE",
+                  headers: {
+                    Authorization: "Basic " + authSlice.token,
+                  },
+                }).then((response) => {
+                  const newUsers = users.filter(
+                    (u: UserType) => u.userID !== clickedUser?.userID,
+                  ) as UserType[]
+                  setUsers(newUsers)
+                  setShowDelete(false)
+                  // console.log(data)
+                })
+              }}
+              variant="primary"
+            >
+              Delete
             </Button>
           </Modal.Footer>
         </Modal.Dialog>
@@ -274,15 +334,16 @@ export default function UserManagementPage() {
                 id={"UserItem" + user.userID}
                 user={user}
                 setShowEdit={setShowEdit}
-                setUserToEdit={setUserToEdit}
-                users={users}
-                setUsers={setUsers}
+                setShowDelete={setShowDelete}
+                setClickedUser={setClickedUser}
               />
             }
           </li>
         ))}
       </ul>
-      <Link to={"/"}>Start Page</Link>
+      <LinkContainer to="/">
+        <Button id="OpenStartPageButton">Start Page</Button>
+      </LinkContainer>
     </div>
   )
 }
