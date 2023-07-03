@@ -11,10 +11,6 @@ import {
   authenticateAsync,
 } from "../features/authSlice"
 
-// interface LoginProps {
-//   setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>
-// }
-
 export default function Login() {
   const isAuth = useAppSelector(selectAuth).isAuthenticated
   const dispatch = useDispatch()

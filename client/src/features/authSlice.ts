@@ -29,6 +29,7 @@ export const authenticateAsync = createAsyncThunk(
         )}`,
       },
     })
+    console.log(response)
 
     if (response.status === 200) {
       const token: string = response.headers

@@ -58,7 +58,7 @@ export default function UserManagementPage() {
                 <Form.Control
                   id="CreateUserComponentEditUserID"
                   type="text"
-                  placeholder="Your username"
+                  placeholder=""
                 />
               </Form.Group>
               <Form.Group>
@@ -72,7 +72,7 @@ export default function UserManagementPage() {
               <Form.Group>
                 <Form.Label>lastName:</Form.Label>
                 <Form.Control
-                  id="„CreateUserComponentEditLastName“"
+                  id="CreateUserComponentEditLastName"
                   type="text"
                   placeholder=""
                 />
@@ -109,7 +109,7 @@ export default function UserManagementPage() {
                   ).value
                   const lastName = (
                     document.getElementById(
-                      "„CreateUserComponentEditLastName“",
+                      "CreateUserComponentEditLastName",
                     ) as HTMLInputElement
                   ).value
                   const password = (
@@ -117,11 +117,12 @@ export default function UserManagementPage() {
                       "CreateUserComponentEditPassword",
                     ) as HTMLInputElement
                   ).value
-                  const isAdministrator = (
-                    document.getElementById(
-                      "CreateUserComponentEditIsAdministrator",
-                    ) as HTMLInputElement
-                  ).checked
+                  const isAdministrator =
+                    (
+                      document.getElementById(
+                        "CreateUserComponentEditIsAdministrator",
+                      ) as HTMLInputElement
+                    )?.checked ?? false
 
                   const createdUser: UserType = {
                     userID: userId,
@@ -142,7 +143,7 @@ export default function UserManagementPage() {
                     .then((response) => response.json())
                     .then((data) => {
                       console.log("data:", data)
-                      if (data) setUsers([...users, data])
+                      if ("userID" in data) setUsers([...users, data])
                       setShowCreate(false)
                     })
                 }}
@@ -158,6 +159,7 @@ export default function UserManagementPage() {
           </Modal.Footer>
         </Modal.Dialog>
       </Modal>
+
       {/* EDIT */}
       <Modal show={showEdit} id="UserManagementPageEditComponent">
         <Modal.Dialog>
@@ -169,7 +171,7 @@ export default function UserManagementPage() {
           <Modal.Body>
             <Form>
               <Form.Group>
-                <Form.Label>firstName:</Form.Label>
+                <Form.Label>userID:</Form.Label>
                 <Form.Control
                   id="EditUserComponentEditUserID"
                   type="text"
@@ -285,6 +287,7 @@ export default function UserManagementPage() {
           </Modal.Footer>
         </Modal.Dialog>
       </Modal>
+
       {/* DELETE */}
       <Modal show={showDelete} id={`DeleteDialogUser${clickedUser?.userID}`}>
         <Modal.Dialog>
@@ -316,7 +319,6 @@ export default function UserManagementPage() {
                   ) as UserType[]
                   setUsers(newUsers)
                   setShowDelete(false)
-                  // console.log(data)
                 })
               }}
               variant="primary"
