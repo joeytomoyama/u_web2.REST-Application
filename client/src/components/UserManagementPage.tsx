@@ -17,7 +17,6 @@ export default function UserManagementPage() {
   )
 
   useEffect(() => {
-    console.log(authSlice.token)
     fetch("https://localhost/api/users", {
       method: "GET",
       headers: {
@@ -36,7 +35,7 @@ export default function UserManagementPage() {
 
   return (
     <div className="UserManagementPage">
-      <p>User-List</p>
+      <h2>User-List</h2>
       <Button
         id="UserManagementPageCreateUserButton"
         onClick={() => {
@@ -124,6 +123,7 @@ export default function UserManagementPage() {
                       ) as HTMLInputElement
                     )?.checked ?? false
 
+                  //auslagern UserService
                   const createdUser: UserType = {
                     userID: userId,
                     firstName: firstName,
@@ -328,7 +328,20 @@ export default function UserManagementPage() {
           </Modal.Footer>
         </Modal.Dialog>
       </Modal>
-      <ul>
+      <ul
+        style={{
+          // display: "grid",
+          // justifyContent: "flex-start",
+          // gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+          // gridGap: "10px",
+          // listStyleType: "none",
+          // padding: "0",
+          display: "flex",
+          flexWrap: "wrap",
+          listStyleType: "none",
+          padding: "0",
+        }}
+      >
         {users.map((user: UserType) => (
           <li key={user.userID}>
             {

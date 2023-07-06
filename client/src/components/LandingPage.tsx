@@ -2,13 +2,31 @@ import Login from "./Login"
 
 export default function LandingPage() {
   return (
-    <div id="LandingPage">
-      <header
-        style={{ position: "absolute", top: "0", right: "0", margin: "10px" }}
+    <div
+      id="LandingPage"
+      className="centered"
+      // style={{
+      //   display: "flex",
+      //   justifyContent: "center",
+      //   alignItems: "center",
+      //   height: "100%",
+      // }}
+    >
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+          borderRadius: "5px",
+          backgroundColor: "grey",
+          height: "20rem",
+          width: "40rem",
+        }}
       >
+        <h3>{`Welcome to the ${import.meta.env.VITE_UNI_NAME} Webpage`}</h3>
         <Login />
-      </header>
-      <h1>Landing Page</h1>
+      </div>
     </div>
   )
 }

@@ -25,7 +25,7 @@ export default function Login() {
               id="OpenLoginDialogButton"
               onClick={() => setShowLogin(true)}
             >
-              Show dialogue
+              Log in
             </Button>
           )}
           <Modal id="LoginDialog" show={showLogin}>
@@ -90,7 +90,14 @@ export default function Login() {
         </>
       )}
       {isAuth && (
-        <Button id="LogoutButton" onClick={() => dispatch(clearToken())}>
+        <Button
+          id="LogoutButton"
+          style={{
+            right: "0",
+            position: "absolute",
+          }}
+          onClick={() => dispatch(clearToken())}
+        >
           Logout
         </Button>
       )}

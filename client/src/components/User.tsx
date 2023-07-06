@@ -30,6 +30,7 @@ export default function User({
     <div
       id={id}
       style={{
+        width: "fit-content",
         borderRadius: "5px",
         backgroundColor: "grey",
         margin: "10px",
