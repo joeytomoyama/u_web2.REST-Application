@@ -10,6 +10,7 @@ import {
   clearToken,
   authenticateAsync,
 } from "../features/authSlice"
+import { LinkContainer } from "react-router-bootstrap"
 
 export default function Login() {
   const isAuth = useAppSelector(selectAuth).isAuthenticated
@@ -90,16 +91,21 @@ export default function Login() {
         </>
       )}
       {isAuth && (
-        <Button
-          id="LogoutButton"
-          style={{
-            right: "0",
-            position: "absolute",
-          }}
-          onClick={() => dispatch(clearToken())}
-        >
-          Logout
-        </Button>
+        <LinkContainer to="/">
+          <Button
+            id="LogoutButton"
+            style={{
+              right: "0",
+              position: "absolute",
+            }}
+            onClick={() => {
+              setShowLogin(false)
+              dispatch(clearToken())
+            }}
+          >
+            Logout
+          </Button>
+        </LinkContainer>
       )}
     </div>
   )
