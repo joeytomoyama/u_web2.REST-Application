@@ -1,7 +1,6 @@
 import React from "react"
 import { useDispatch } from "react-redux"
 import { useAppSelector } from "../app/hooks"
-// import { clearToken, selectAuth, setToken } from "../features/authSlice.old"
 import Form from "react-bootstrap/Form"
 import Modal from "react-bootstrap/Modal"
 import Button from "react-bootstrap/Button"
@@ -10,13 +9,15 @@ import {
   clearToken,
   authenticateAsync,
 } from "../features/authSlice"
-import { LinkContainer } from "react-router-bootstrap"
+import { useNavigate } from "react-router-dom"
 
 export default function Login() {
   const isAuth = useAppSelector(selectAuth).isAuthenticated
   const dispatch = useDispatch()
 
   const [showLogin, setShowLogin] = React.useState(false)
+
+  const navigate = useNavigate()
   return (
     <div>
       {!isAuth && (
@@ -60,7 +61,7 @@ export default function Login() {
                     <Form.Control
                       id="LoginDialogUserIDText"
                       type="text"
-                      placeholder="Your username"
+                      placeholder=""
                     />
                   </Form.Group>
                   <Form.Group>
@@ -91,21 +92,20 @@ export default function Login() {
         </>
       )}
       {isAuth && (
-        <LinkContainer to="/">
-          <Button
-            id="LogoutButton"
-            style={{
-              right: "0",
-              position: "absolute",
-            }}
-            onClick={() => {
-              setShowLogin(false)
-              dispatch(clearToken())
-            }}
-          >
-            Logout
-          </Button>
-        </LinkContainer>
+        <Button
+          id="LogoutButton"
+          style={{
+            right: "0",
+            position: "absolute",
+          }}
+          onClick={() => {
+            setShowLogin(false)
+            dispatch(clearToken())
+            navigate("/")
+          }}
+        >
+          Logout
+        </Button>
       )}
     </div>
   )

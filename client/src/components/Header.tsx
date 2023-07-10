@@ -16,7 +16,7 @@ export default function Header() {
         padding: "10px",
       }}
     >
-      <h1>Your University Name here</h1>
+      <h1>{import.meta.env.VITE_UNI_NAME}</h1>
       <Login />
     </div>
   )
