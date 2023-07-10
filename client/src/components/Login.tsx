@@ -82,7 +82,6 @@ export default function Login() {
                 </Form>
               </Modal.Body>
               <Modal.Footer>
-                {/* <Button variant="primary">Save changes</Button> */}
                 <Button onClick={() => setShowLogin(false)} variant="secondary">
                   Close
                 </Button>

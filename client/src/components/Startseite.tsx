@@ -10,12 +10,6 @@ export default function Startseite() {
   const isAdmin = authSlice.isAdministrator
   return (
     <div id="StartPage" className="centered">
-      {/* <header
-        style={{ position: "absolute", top: "0", right: "0", margin: "10px" }}
-      >
-        <Login />
-      </header> */}
-      {/* <Header /> */}
       <h1>Successfully logged in!</h1>
       {isAdmin && (
         <LinkContainer to="/usermanagement">
