@@ -20,7 +20,7 @@ export default function UserManagementPage() {
     fetch("https://localhost/api/users", {
       method: "GET",
       headers: {
-        Authorization: "Basic " + authSlice.token,
+        Authorization: `Bearer ${authSlice.token}`, //"Bearer " + authSlice.token,
       } as HeadersInit,
     })
       .then((response) => response.json())
