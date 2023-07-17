@@ -25,7 +25,11 @@ function App() {
     )
   } else {
     return (
-      <div>
+      <div
+        style={{
+          height: "100vh",
+        }}
+      >
         <Header />
         <Routes>
           <Route path="/" element={<Startseite />} />

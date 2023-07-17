@@ -1,6 +1,10 @@
+import { useState } from "react"
 import Login from "./Login"
+import LoginModal from "./LoginModal"
 
 export default function LandingPage() {
+  const [showLogin, setShowLogin] = useState(false)
+
   return (
     <div
       id="LandingPage"
@@ -27,6 +31,7 @@ export default function LandingPage() {
         <h3>{`Welcome to the ${import.meta.env.VITE_UNI_NAME} Webpage`}</h3>
         <Login />
       </div>
+      {/* <LoginModal showLogin={showLogin} setShowLogin={setShowLogin} /> */}
     </div>
   )
 }

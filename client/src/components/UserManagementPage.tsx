@@ -2,8 +2,9 @@ import { Button, Modal, Form } from "react-bootstrap"
 import { useAppSelector } from "../app/hooks"
 import { selectAuth } from "../features/authSlice"
 import { useEffect, useState } from "react"
-import User, { UserType } from "./User"
+import User from "./User"
 import { LinkContainer } from "react-router-bootstrap"
+import { UserType } from "../types"
 
 export default function UserManagementPage() {
   const authSlice: any = useAppSelector(selectAuth)

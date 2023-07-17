@@ -22,14 +22,11 @@ export default function Login() {
     <div>
       {!isAuth && (
         <>
-          {!showLogin && (
-            <Button
-              id="OpenLoginDialogButton"
-              onClick={() => setShowLogin(true)}
-            >
-              Log in
-            </Button>
-          )}
+          {/* {!showLogin && ( */}
+          <Button id="OpenLoginDialogButton" onClick={() => setShowLogin(true)}>
+            Log in
+          </Button>
+          {/* )} */}
           <Modal id="LoginDialog" show={showLogin}>
             <Modal.Dialog>
               <Modal.Header>
@@ -93,10 +90,10 @@ export default function Login() {
       {isAuth && (
         <Button
           id="LogoutButton"
-          style={{
-            right: "0",
-            position: "absolute",
-          }}
+          // style={{
+          //   right: "0",
+          //   position: "absolute",
+          // }}
           onClick={() => {
             setShowLogin(false)
             dispatch(clearToken())

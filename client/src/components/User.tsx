@@ -1,4 +1,5 @@
 import { Button } from "react-bootstrap"
+import { UserType } from "../types"
 
 interface UserProps {
   id: string
@@ -8,13 +9,13 @@ interface UserProps {
   setClickedUser: React.Dispatch<React.SetStateAction<UserType | undefined>>
 }
 
-export interface UserType {
-  userID?: string
-  firstName?: string
-  lastName?: string
-  password?: string
-  isAdministrator?: boolean
-}
+// export interface UserType {
+//   userID?: string
+//   firstName?: string
+//   lastName?: string
+//   password?: string
+//   isAdministrator?: boolean
+// }
 
 const editButtonText = "UserItemEditButton"
 const deleteButtonText = "UserItemDeleteButton"
