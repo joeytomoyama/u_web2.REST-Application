@@ -1,8 +1,6 @@
 import React from "react"
 import { useDispatch } from "react-redux"
 import { useAppSelector } from "../app/hooks"
-import Form from "react-bootstrap/Form"
-import Modal from "react-bootstrap/Modal"
 import Button from "react-bootstrap/Button"
 import {
   selectAuth,
@@ -11,7 +9,6 @@ import {
   hideAuthModal,
 } from "../features/authSlice"
 import { useNavigate } from "react-router-dom"
-import LoginModal from "./LoginModal"
 
 export default function Login() {
   const authSlice = useAppSelector(selectAuth)
@@ -31,7 +28,6 @@ export default function Login() {
           >
             Log in
           </Button>
-          {/* <LoginModal /> */}
         </>
       )}
       {isAuth && (

@@ -12,7 +12,7 @@ export interface CourseType {
   departmentName: string
   name: string
   shortName: string
-  id: string
+  id?: string
 }
 
 export interface ApplicationType {

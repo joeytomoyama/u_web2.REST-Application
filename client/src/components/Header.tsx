@@ -47,9 +47,11 @@ export default function Header() {
                   Applications
                 </Link>
               )}
-              <Link to="/profile" className="nav-link">
-                Profile
-              </Link>
+              {user && (
+                <Link to="/profile" className="nav-link">
+                  Profile
+                </Link>
+              )}
               <a
                 href="https://www.bht-berlin.de/"
                 target="_blank"

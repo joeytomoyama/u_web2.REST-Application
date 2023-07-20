@@ -9,8 +9,8 @@ interface CourseProps {
   setClickedCourse: React.Dispatch<React.SetStateAction<CourseType | undefined>>
 }
 
-const editButtonText = "UserItemEditButton"
-const deleteButtonText = "UserItemDeleteButton"
+const editButtonText = "CourseItemEditButton"
+const deleteButtonText = "CourseItemDeleteButton"
 
 export default function Course({
   id,
