@@ -7,96 +7,40 @@ import Button from "react-bootstrap/Button"
 import {
   selectAuth,
   clearToken,
-  authenticateAsync,
+  showAuthModal,
+  hideAuthModal,
 } from "../features/authSlice"
 import { useNavigate } from "react-router-dom"
+import LoginModal from "./LoginModal"
 
 export default function Login() {
-  const isAuth = useAppSelector(selectAuth).isAuthenticated
+  const authSlice = useAppSelector(selectAuth)
+  const isAuth = authSlice.isAuthenticated
   const dispatch = useDispatch()
 
-  const [showLogin, setShowLogin] = React.useState(false)
+  // const [showLogin, setShowLogin] = React.useState(false)
 
   const navigate = useNavigate()
   return (
     <div>
       {!isAuth && (
         <>
-          {/* {!showLogin && ( */}
-          <Button id="OpenLoginDialogButton" onClick={() => setShowLogin(true)}>
+          <Button
+            id="OpenLoginDialogButton"
+            onClick={() => dispatch(showAuthModal())}
+          >
             Log in
           </Button>
-          {/* )} */}
-          <Modal id="LoginDialog" show={showLogin}>
-            <Modal.Dialog>
-              <Modal.Header>
-                <Modal.Title>Login Dialogue</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                <Form
-                  onSubmit={(e) => {
-                    e.preventDefault()
-                    const username = (
-                      document.getElementById(
-                        "LoginDialogUserIDText",
-                      ) as HTMLInputElement
-                    ).value
-                    const password = (
-                      document.getElementById(
-                        "LoginDialogPasswordText",
-                      ) as HTMLInputElement
-                    ).value
-                    const credentials = {
-                      username: username,
-                      password: password,
-                    }
-                    dispatch(authenticateAsync(credentials) as any)
-                  }}
-                >
-                  <Form.Group>
-                    <Form.Label>Username:</Form.Label>
-                    <Form.Control
-                      id="LoginDialogUserIDText"
-                      type="text"
-                      placeholder=""
-                    />
-                  </Form.Group>
-                  <Form.Group>
-                    <Form.Label>Password:</Form.Label>
-                    <Form.Control
-                      id="LoginDialogPasswordText"
-                      type="password"
-                      placeholder=""
-                    />
-                  </Form.Group>
-                  <Button
-                    id="PerformLoginButton"
-                    variant="primary"
-                    type="submit"
-                  >
-                    Log in
-                  </Button>
-                </Form>
-              </Modal.Body>
-              <Modal.Footer>
-                <Button onClick={() => setShowLogin(false)} variant="secondary">
-                  Close
-                </Button>
-              </Modal.Footer>
-            </Modal.Dialog>
-          </Modal>
+          {/* <LoginModal /> */}
         </>
       )}
       {isAuth && (
         <Button
           id="LogoutButton"
-          // style={{
-          //   right: "0",
-          //   position: "absolute",
-          // }}
           onClick={() => {
-            setShowLogin(false)
+            // setShowLogin(false)
             dispatch(clearToken())
+            dispatch(hideAuthModal())
             navigate("/")
           }}
         >

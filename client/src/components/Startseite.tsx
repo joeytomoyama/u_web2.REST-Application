@@ -4,6 +4,7 @@ import { selectAuth } from "../features/authSlice"
 import Login from "./Login"
 import Button from "react-bootstrap/Button"
 import Header from "./Header"
+import MainContent from "./MainContent"
 
 export default function Startseite() {
   const authSlice = useAppSelector(selectAuth)

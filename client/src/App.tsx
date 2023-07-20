@@ -1,9 +1,12 @@
 import "./App.css"
 import { useAppSelector } from "./app/hooks"
+import ApplicationManagementPage from "./components/application/ApplicationManagementPage"
+import CourseManagementPage from "./components/course/CourseManagementPage"
 import Header from "./components/Header"
 import LandingPage from "./components/LandingPage"
+import Profile from "./components/Profile"
 import Startseite from "./components/Startseite"
-import UserManagementPage from "./components/UserManagementPage"
+import UserManagementPage from "./components/user/UserManagementPage"
 import { selectAuth } from "./features/authSlice"
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom"
 
@@ -34,6 +37,12 @@ function App() {
         <Routes>
           <Route path="/" element={<Startseite />} />
           <Route path="/usermanagement" element={<UserManagementPage />} />
+          <Route path="/coursemanagement" element={<CourseManagementPage />} />
+          <Route
+            path="/applicationmanagement"
+            element={<ApplicationManagementPage />}
+          />
+          <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<div>404</div>} />
         </Routes>
       </div>

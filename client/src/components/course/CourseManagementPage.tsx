@@ -1,43 +1,48 @@
 import { Button, Modal, Form } from "react-bootstrap"
-import { useAppSelector } from "../app/hooks"
-import { selectAuth } from "../features/authSlice"
+import { useAppSelector } from "../../app/hooks"
+import { selectAuth } from "../../features/authSlice"
 import { useEffect, useState } from "react"
-import User from "./User"
+import User from "../user/User"
 import { LinkContainer } from "react-router-bootstrap"
-import { UserType } from "../types"
+import { CourseType } from "../../types"
+import Course from "./Course"
 
-export default function UserManagementPage() {
+export default function CoursesManagementPage() {
   const authSlice: any = useAppSelector(selectAuth)
 
-  const [users, setUsers] = useState<UserType[]>([])
+  const [courses, setCourses] = useState<CourseType[]>([])
   const [showCreate, setShowCreate] = useState<boolean>(false)
   const [showEdit, setShowEdit] = useState<boolean>(false)
   const [showDelete, setShowDelete] = useState<boolean>(false)
-  const [clickedUser, setClickedUser] = useState<UserType | undefined>(
+  const [clickedCourse, setClickedCourse] = useState<CourseType | undefined>(
     undefined,
   )
 
+  //   const [userFetchError, setUserFetchError] = useState<boolean>(false)
+
   useEffect(() => {
-    fetch("https://localhost/api/users", {
+    fetch(import.meta.env.VITE_SERVER_URL + "degreeCourses", {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${authSlice.token}`, //"Bearer " + authSlice.token,
+        Authorization: `Bearer ${authSlice.token}`,
       } as HeadersInit,
     })
       .then((response) => response.json())
       .then((data) => {
         console.log(data)
-        setUsers(data)
+        setCourses(data)
+        // setUserFetchError(false)
       })
       .catch((error) => {
         console.error(error)
+        // setUserFetchError(true)
       })
   }, [])
 
   return (
-    <div className="UserManagementPage">
-      <h2>User-List</h2>
-      <Button
+    <div className="CourseManagementPage">
+      <h2>Course-List</h2>
+      {/* <Button
         id="UserManagementPageCreateUserButton"
         onClick={() => {
           setShowCreate(true)
@@ -45,7 +50,6 @@ export default function UserManagementPage() {
       >
         Add User
       </Button>
-      {/* CREATE */}
       <Modal show={showCreate} id="UserManagementPageCreateComponent">
         <Modal.Dialog>
           <Modal.Header>
@@ -133,7 +137,7 @@ export default function UserManagementPage() {
                     isAdministrator: isAdministrator,
                   }
 
-                  fetch("https://localhost/api/users", {
+                  fetch(import.meta.env.VITE_SERVER_URL + "users", {
                     method: "POST",
                     headers: {
                       "Content-Type": "application/json",
@@ -144,7 +148,7 @@ export default function UserManagementPage() {
                     .then((response) => response.json())
                     .then((data) => {
                       console.log("data:", data)
-                      if ("userID" in data) setUsers([...users, data])
+                      if ("userID" in data) setCourses([...users, data])
                       setShowCreate(false)
                     })
                 }}
@@ -161,7 +165,6 @@ export default function UserManagementPage() {
         </Modal.Dialog>
       </Modal>
 
-      {/* EDIT */}
       <Modal show={showEdit} id="UserManagementPageEditComponent">
         <Modal.Dialog>
           <Modal.Header>
@@ -250,14 +253,19 @@ export default function UserManagementPage() {
 
                   const editedUserString = JSON.stringify(editedUser)
 
-                  fetch("https://localhost/api/users/" + clickedUser?.userID, {
-                    method: "PUT",
-                    headers: {
-                      "Content-Type": "application/json",
-                      Authorization: "Basic " + authSlice.token,
+                  fetch(
+                    import.meta.env.VITE_SERVER_URL +
+                      "users/" +
+                      clickedUser?.userID,
+                    {
+                      method: "PUT",
+                      headers: {
+                        "Content-Type": "application/json",
+                        Authorization: "Basic " + authSlice.token,
+                      },
+                      body: editedUserString,
                     },
-                    body: editedUserString,
-                  })
+                  )
                     .then((response) => response.json())
                     .then((data) => {
                       const newUsers = users.map((user) => {
@@ -267,7 +275,7 @@ export default function UserManagementPage() {
                           return user
                         }
                       }) as UserType[]
-                      setUsers(newUsers)
+                      setCourses(newUsers)
                       setShowEdit(false)
                       console.log(data)
                     })
@@ -289,7 +297,6 @@ export default function UserManagementPage() {
         </Modal.Dialog>
       </Modal>
 
-      {/* DELETE */}
       <Modal show={showDelete} id={`DeleteDialogUser${clickedUser?.userID}`}>
         <Modal.Dialog>
           <Modal.Header>
@@ -309,16 +316,21 @@ export default function UserManagementPage() {
             <Button
               id="DeleteDialogConfirmButton"
               onClick={() => {
-                fetch("https://localhost/api/users/" + clickedUser?.userID, {
-                  method: "DELETE",
-                  headers: {
-                    Authorization: "Basic " + authSlice.token,
+                fetch(
+                  import.meta.env.VITE_SERVER_URL +
+                    "users/" +
+                    clickedUser?.userID,
+                  {
+                    method: "DELETE",
+                    headers: {
+                      Authorization: "Basic " + authSlice.token,
+                    },
                   },
-                }).then((response) => {
+                ).then((response) => {
                   const newUsers = users.filter(
                     (u: UserType) => u.userID !== clickedUser?.userID,
                   ) as UserType[]
-                  setUsers(newUsers)
+                  setCourses(newUsers)
                   setShowDelete(false)
                 })
               }}
@@ -328,33 +340,23 @@ export default function UserManagementPage() {
             </Button>
           </Modal.Footer>
         </Modal.Dialog>
-      </Modal>
+      </Modal> */}
       <ul
         style={{
-          // display: "grid",
-          // justifyContent: "flex-start",
-          // gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-          // gridGap: "10px",
-          // listStyleType: "none",
-          // padding: "0",
           display: "flex",
           flexWrap: "wrap",
           listStyleType: "none",
           padding: "0",
         }}
       >
-        {users.map((user: UserType) => (
-          <li key={user.userID}>
-            {
-              <User
-                id={"UserItem" + user.userID}
-                user={user}
-                setShowEdit={setShowEdit}
-                setShowDelete={setShowDelete}
-                setClickedUser={setClickedUser}
-              />
-            }
-          </li>
+        {courses.map((course: CourseType) => (
+          <Course
+            id={"UserItem" + course.id}
+            course={course}
+            setShowEdit={setShowEdit}
+            setShowDelete={setShowDelete}
+            setClickedCourse={setClickedCourse}
+          />
         ))}
       </ul>
       <LinkContainer to="/">

@@ -1,32 +1,26 @@
 import { Button } from "react-bootstrap"
-import { UserType } from "../types"
+import { ApplicationType } from "../../types"
 
-interface UserProps {
+interface ApplicationProps {
   id: string
-  user: UserType
+  application: ApplicationType
   setShowEdit: React.Dispatch<React.SetStateAction<boolean>>
   setShowDelete: React.Dispatch<React.SetStateAction<boolean>>
-  setClickedUser: React.Dispatch<React.SetStateAction<UserType | undefined>>
+  setClickedApplication: React.Dispatch<
+    React.SetStateAction<ApplicationType | undefined>
+  >
 }
-
-// export interface UserType {
-//   userID?: string
-//   firstName?: string
-//   lastName?: string
-//   password?: string
-//   isAdministrator?: boolean
-// }
 
 const editButtonText = "UserItemEditButton"
 const deleteButtonText = "UserItemDeleteButton"
 
-export default function User({
+export default function Application({
   id,
-  user,
+  application,
   setShowEdit,
   setShowDelete,
-  setClickedUser,
-}: UserProps) {
+  setClickedApplication,
+}: ApplicationProps) {
   return (
     <div
       id={id}
@@ -38,26 +32,26 @@ export default function User({
         padding: "10px",
       }}
     >
-      <p>{user.userID}</p>
-      <p>{user.firstName}</p>
-      <p>{user.lastName}</p>
+      <p>{application.status}</p>
+      <p>{application.status}</p>
+      <p>{application.status}</p>
       <Button
-        id={editButtonText + user.userID}
+        id={editButtonText + application.id}
         onClick={() => {
-          setClickedUser(user)
+          setClickedApplication(application)
           setShowEdit(true)
         }}
       >
-        Edit User
+        Edit Application
       </Button>
       <Button
-        id={deleteButtonText + user.userID}
+        id={deleteButtonText + application.id}
         onClick={() => {
-          setClickedUser(user)
+          setClickedApplication(application)
           setShowDelete(true)
         }}
       >
-        Delete User
+        Delete Application
       </Button>
     </div>
   )

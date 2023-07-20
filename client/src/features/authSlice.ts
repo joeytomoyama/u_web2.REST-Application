@@ -8,7 +8,6 @@ interface AuthState {
   isAdministrator: boolean
   body: undefined | UserType
   status: "idle" | "loading" | "failed"
-  // status: "authenticated" | "not authenticated" | "loading"
   error: string | undefined
   showAuthModal: boolean
 }
@@ -26,7 +25,7 @@ const initialState: AuthState = {
 export const authenticateAsync = createAsyncThunk(
   "auth/authenticateAsync",
   async (credentials: { username: string; password: string }) => {
-    // const response = await fetch("https://localhost/api/authenticate", {
+    console.log("thunk:", credentials.username, credentials.password)
     const response = await fetch(
       import.meta.env.VITE_SERVER_URL + "authenticate",
       {
@@ -60,6 +59,12 @@ const authSlice = createSlice({
       state.token = undefined
       state.isAuthenticated = false
     },
+    showAuthModal: (state) => {
+      state.showAuthModal = true
+    },
+    hideAuthModal: (state) => {
+      state.showAuthModal = false
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -86,6 +91,7 @@ const authSlice = createSlice({
           } catch (error) {
             console.error(error)
           }
+          state.showAuthModal = false
         },
       )
       .addCase(authenticateAsync.rejected, (state, action) => {
@@ -95,7 +101,7 @@ const authSlice = createSlice({
   },
 })
 
-export const { clearToken } = authSlice.actions
+export const { clearToken, showAuthModal, hideAuthModal } = authSlice.actions
 
 export const selectAuth = (state: RootState) => state.auth
 

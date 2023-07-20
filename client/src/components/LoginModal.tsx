@@ -1,46 +1,49 @@
 import { Modal, Form, Button } from "react-bootstrap"
-import { authenticateAsync } from "../features/authSlice"
+import {
+  authenticateAsync,
+  hideAuthModal,
+  selectAuth,
+  showAuthModal,
+} from "../features/authSlice"
 import { useDispatch } from "react-redux"
+import { useAppSelector } from "../app/hooks"
 
-interface LoginModalProps {
-  showLogin: boolean
-  setShowLogin: React.Dispatch<React.SetStateAction<boolean>>
-}
+// interface LoginModalProps {
+//   showLogin: boolean
+//   setShowLogin: React.Dispatch<React.SetStateAction<boolean>>
+// }
 
-export default function LoginModal({
-  showLogin,
-  setShowLogin,
-}: LoginModalProps) {
+export default function LoginModal() {
   const dispatch = useDispatch()
+  const authSlice = useAppSelector(selectAuth)
+  // const showModal = authSlice.showAuthModal
+
+  const handleFormSubmit = (e: any) => {
+    e.preventDefault()
+    // const username = (
+    //   document.getElementById("LoginDialogUserIDText") as HTMLInputElement
+    // ).value
+    // const password = (
+    //   document.getElementById("LoginDialogPasswordText") as HTMLInputElement
+    // ).value
+    const username = e.target.elements[0].value
+    const password = e.target.elements[1].value
+    const credentials = {
+      username: username,
+      password: password,
+    }
+    dispatch(authenticateAsync(credentials) as any)
+  }
 
   return (
     <div>
-      <Modal id="LoginDialog" show={showLogin}>
+      <Modal id="LoginDialog" show={authSlice.showAuthModal}>
         <Modal.Dialog>
           <Modal.Header>
             <Modal.Title>Login Dialogue</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Form
-              onSubmit={(e) => {
-                e.preventDefault()
-                const username = (
-                  document.getElementById(
-                    "LoginDialogUserIDText",
-                  ) as HTMLInputElement
-                ).value
-                const password = (
-                  document.getElementById(
-                    "LoginDialogPasswordText",
-                  ) as HTMLInputElement
-                ).value
-                const credentials = {
-                  username: username,
-                  password: password,
-                }
-                dispatch(authenticateAsync(credentials) as any)
-              }}
-            >
+            <Form onSubmit={handleFormSubmit}>
               <Form.Group>
                 <Form.Label>Username:</Form.Label>
                 <Form.Control
@@ -63,7 +66,10 @@ export default function LoginModal({
             </Form>
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={() => setShowLogin(false)} variant="secondary">
+            <Button
+              onClick={() => dispatch(hideAuthModal())}
+              variant="secondary"
+            >
               Close
             </Button>
           </Modal.Footer>
