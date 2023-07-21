@@ -1,6 +1,8 @@
 import { Button, Card } from "react-bootstrap"
 import { CourseType } from "../../../types"
 import * as IDS from "../../../ids"
+import { useAppSelector } from "../../../app/hooks"
+import { selectAuth } from "../../authentication/features/authSlice"
 
 interface CourseProps {
   course: CourseType
@@ -15,6 +17,34 @@ export default function Course({
   setShowDelete,
   setClickedCourse,
 }: CourseProps) {
+  const authSlice = useAppSelector(selectAuth)
+  const handleApplication = (e: any) => {
+    e.preventDefault()
+
+    const application = {
+      applicantUserID: authSlice.body?.userID,
+      degreeCourseID: course.id,
+      targetPeriodYear: "2023",
+      targetPeriodShortName: "WS",
+    }
+
+    fetch(import.meta.env.VITE_SERVER_URL + "degreeCourseApplications", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Basic " + authSlice.token,
+      },
+      body: JSON.stringify(application),
+    })
+      .then((response) => response.json())
+      .catch((error) => {
+        console.error(error)
+        // navigate("/")
+      })
+      .then((data) => {
+        console.log(data)
+      })
+  }
   return (
     <Card
       id={IDS.DegreeCourseItem + course.id}
@@ -58,9 +88,7 @@ export default function Course({
         </Button>
         <Button
           id={IDS.CreateDegreeCourseApplicationForDegreeCourse + course.id}
-          onClick={() => {
-            console.log("TODO")
-          }}
+          onClick={handleApplication}
         >
           Apply
         </Button>

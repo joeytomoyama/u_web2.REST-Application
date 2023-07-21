@@ -1,6 +1,6 @@
 import "./App.css"
 import { useAppSelector } from "./app/hooks"
-import ApplicationManagementPage from "./components/application/ApplicationManagementPage"
+import ApplicationManagementPage from "./components/application/components/ApplicationManagementPage"
 import CourseManagementPage from "./components/course/components/CourseManagementPage"
 import Header from "./components/Header"
 import LandingPage from "./components/LandingPage"

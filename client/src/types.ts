@@ -17,9 +17,9 @@ export interface CourseType {
 }
 
 export interface ApplicationType {
-  userID: string
+  applicantUserID: string
   degreeCourseID: string
-  status: string
-  date: string
+  targetPeriodYear: string
+  targetPeriodShortName: string
   id: string
 }
