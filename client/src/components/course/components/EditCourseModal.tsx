@@ -1,8 +1,10 @@
 import { Modal, Form, Button } from "react-bootstrap"
-import { selectAuth } from "../../features/authSlice"
-import { CourseType } from "../../types"
-import { useAppSelector } from "../../app/hooks"
+import { selectAuth } from "../../authentication/features/authSlice"
+import { CourseType } from "../../../types"
+import { useAppSelector } from "../../../app/hooks"
 import { useNavigate } from "react-router-dom"
+import * as IDS from "../../../ids"
+import { editCourse } from "../CourseService"
 
 interface EditCourseModalProps {
   showEdit: boolean
@@ -11,12 +13,6 @@ interface EditCourseModalProps {
   setCourses: React.Dispatch<React.SetStateAction<CourseType[]>>
   clickedCourse: CourseType | undefined
 }
-
-const editUniversityName = "EditCourseComponentEditUniversityName"
-const editUniversityShortName = "EditCourseComponentEditUniversityShortName"
-const editDepartmentName = "EditCourseComponentEditDepartmentName"
-const editName = "EditCourseComponentEditName"
-const editShortName = "EditCourseComponentEditShortName"
 
 export default function EditCourseModal({
   showEdit,
@@ -31,27 +27,8 @@ export default function EditCourseModal({
 
   const handleCourseEdit = (e: any) => {
     e.preventDefault()
-    const universityName =
-      (document.getElementById(editUniversityName) as HTMLInputElement)
-        ?.value ?? ""
-    const universityShortName =
-      (document.getElementById(editUniversityShortName) as HTMLInputElement)
-        ?.value ?? ""
-    const departmentName =
-      (document.getElementById(editDepartmentName) as HTMLInputElement)
-        ?.value ?? ""
-    const name =
-      (document.getElementById(editName) as HTMLInputElement)?.value ?? ""
-    const shortName =
-      (document.getElementById(editShortName) as HTMLInputElement)?.value ?? ""
 
-    const editedCourse: CourseType | Record<any, any> = {}
-    if (universityName) editedCourse.universityName = universityName
-    if (universityShortName)
-      editedCourse.universityShortName = universityShortName
-    if (departmentName) editedCourse.departmentName = departmentName
-    if (name) editedCourse.name = name
-    if (shortName) editedCourse.shortName = shortName
+    const editedCourse = editCourse()
 
     const editedCourseString = JSON.stringify(editedCourse)
 
@@ -67,6 +44,10 @@ export default function EditCourseModal({
       },
     )
       .then((response) => response.json())
+      .catch((error) => {
+        console.error(error)
+        navigate("/")
+      })
       .then((data) => {
         const newCourses = courses.map((course) => {
           if (course.id === clickedCourse?.id) {
@@ -85,7 +66,7 @@ export default function EditCourseModal({
       })
   }
   return (
-    <Modal show={showEdit} id="CourseManagementPageEditComponent">
+    <Modal show={showEdit} id={IDS.DegreeCourseManagementPageEditComponent}>
       <Modal.Dialog>
         <Modal.Header>
           <Modal.Title>
@@ -97,6 +78,7 @@ export default function EditCourseModal({
             <Form.Group>
               <Form.Label>id:</Form.Label>
               <Form.Control
+                // own id, not in IDS:
                 id="EditCourseComponentEditId"
                 type="text"
                 placeholder={clickedCourse?.id}
@@ -106,7 +88,7 @@ export default function EditCourseModal({
             <Form.Group>
               <Form.Label>universityName:</Form.Label>
               <Form.Control
-                id={editUniversityName}
+                id={IDS.EditDegreeCourseComponentEditUniversityName}
                 type="text"
                 placeholder=""
               />
@@ -114,7 +96,7 @@ export default function EditCourseModal({
             <Form.Group>
               <Form.Label>universityShortName:</Form.Label>
               <Form.Control
-                id={editUniversityShortName}
+                id={IDS.EditDegreeCourseComponentEditUniversityShortName}
                 type="text"
                 placeholder=""
               />
@@ -122,21 +104,37 @@ export default function EditCourseModal({
             <Form.Group>
               <Form.Label>departmentName:</Form.Label>
               <Form.Control
-                id={editDepartmentName}
+                id={IDS.EditDegreeCourseComponentEditDepartmentName}
+                type="text"
+                placeholder=""
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>departmentShortName:</Form.Label>
+              <Form.Control
+                id={IDS.EditDegreeCourseComponentEditDepartmentShortName}
                 type="text"
                 placeholder=""
               />
             </Form.Group>
             <Form.Group>
               <Form.Label>name:</Form.Label>
-              <Form.Control id={editName} type="text" placeholder="" />
+              <Form.Control
+                id={IDS.EditDegreeCourseComponentEditName}
+                type="text"
+                placeholder=""
+              />
             </Form.Group>
             <Form.Group>
               <Form.Label>shortName:</Form.Label>
-              <Form.Control id={editShortName} type="text" placeholder="" />
+              <Form.Control
+                id={IDS.EditDegreeCourseComponentEditShortName}
+                type="text"
+                placeholder=""
+              />
             </Form.Group>
             <Button
-              id="EditCourseComponentSaveCourseButton"
+              id={IDS.EditDegreeCourseComponentSaveDegreeCourseButton}
               variant="primary"
               onClick={handleCourseEdit}
             >
@@ -146,7 +144,7 @@ export default function EditCourseModal({
         </Modal.Body>
         <Modal.Footer>
           <Button
-            id="OpenCourseManagementPageListComponentButton"
+            id={IDS.OpenDegreeCourseManagementPageListComponentButton}
             onClick={() => setShowEdit(false)}
             variant="secondary"
           >

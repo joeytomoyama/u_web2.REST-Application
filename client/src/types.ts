@@ -10,6 +10,7 @@ export interface CourseType {
   universityName: string
   universityShortName: string
   departmentName: string
+  departmentShortName: string
   name: string
   shortName: string
   id?: string

@@ -1,8 +1,10 @@
 import { Modal, Form, Button } from "react-bootstrap"
-import { selectAuth } from "../../features/authSlice"
-import { UserType } from "../../types"
-import { useAppSelector } from "../../app/hooks"
+import { selectAuth } from "../../authentication/features/authSlice"
+import { UserType } from "../../../types"
+import { useAppSelector } from "../../../app/hooks"
 import { useNavigate } from "react-router-dom"
+import * as IDS from "../../../ids"
+import { editUser } from "../UserService"
 
 interface EditUserModalProps {
   showEdit: boolean
@@ -11,11 +13,6 @@ interface EditUserModalProps {
   setUsers: React.Dispatch<React.SetStateAction<UserType[]>>
   clickedUser: UserType | undefined
 }
-
-const editFirstName = "EditUserComponentEditFirstName"
-const editLastName = "EditUserComponentEditLastName"
-const editPassword = "EditUserComponentEditPassword"
-const editIsAdministrator = "EditUserComponentEditIsAdministrator"
 
 export default function EditUserModal({
   showEdit,
@@ -30,21 +27,8 @@ export default function EditUserModal({
 
   const handleUserEdit = (e: any) => {
     e.preventDefault()
-    const firstName =
-      (document.getElementById(editFirstName) as HTMLInputElement)?.value ?? ""
-    const lastName =
-      (document.getElementById(editLastName) as HTMLInputElement)?.value ?? ""
-    const password =
-      (document.getElementById(editPassword) as HTMLInputElement)?.value ?? ""
-    const isAdministrator =
-      (document.getElementById(editIsAdministrator) as HTMLInputElement)
-        ?.checked ?? false
 
-    const editedUser: UserType = {}
-    if (firstName) editedUser.firstName = firstName
-    if (lastName) editedUser.lastName = lastName
-    if (password) editedUser.password = password
-    if (isAdministrator) editedUser.isAdministrator = isAdministrator
+    const editedUser = editUser()
 
     const editedUserString = JSON.stringify(editedUser)
 
@@ -75,7 +59,7 @@ export default function EditUserModal({
       })
   }
   return (
-    <Modal show={showEdit} id="UserManagementPageEditComponent">
+    <Modal show={showEdit} id={IDS.UserManagementPageEditComponent}>
       <Modal.Dialog>
         <Modal.Header>
           <Modal.Title>
@@ -87,7 +71,7 @@ export default function EditUserModal({
             <Form.Group>
               <Form.Label>userID:</Form.Label>
               <Form.Control
-                id="EditUserComponentEditUserID"
+                id={IDS.EditUserComponentEditUserID}
                 type="text"
                 placeholder={clickedUser?.userID}
                 disabled={true}
@@ -95,26 +79,38 @@ export default function EditUserModal({
             </Form.Group>
             <Form.Group>
               <Form.Label>firstName:</Form.Label>
-              <Form.Control id={editFirstName} type="text" placeholder="" />
+              <Form.Control
+                id={IDS.EditUserComponentEditFirstName}
+                type="text"
+                placeholder=""
+              />
             </Form.Group>
             <Form.Group>
               <Form.Label>lastName:</Form.Label>
-              <Form.Control id={editLastName} type="text" placeholder="" />
+              <Form.Control
+                id={IDS.EditUserComponentEditLastName}
+                type="text"
+                placeholder=""
+              />
             </Form.Group>
             <Form.Group>
               <Form.Label>password:</Form.Label>
-              <Form.Control id={editPassword} type="password" placeholder="" />
+              <Form.Control
+                id={IDS.EditUserComponentEditPassword}
+                type="password"
+                placeholder=""
+              />
             </Form.Group>
             <Form.Group>
               <Form.Label>is Administrator:</Form.Label>
               <Form.Switch
-                id={editIsAdministrator}
+                id={IDS.EditUserComponentEditIsAdministrator}
                 type="checkbox"
                 placeholder=""
               />
             </Form.Group>
             <Button
-              id="EditUserComponentSaveUserButton"
+              id={IDS.EditUserComponentSaveUserButton}
               variant="primary"
               onClick={handleUserEdit}
             >
@@ -124,7 +120,7 @@ export default function EditUserModal({
         </Modal.Body>
         <Modal.Footer>
           <Button
-            id="OpenUserManagementPageListComponentButton"
+            id={IDS.OpenUserManagementPageListComponentButton}
             onClick={() => setShowEdit(false)}
             variant="secondary"
           >

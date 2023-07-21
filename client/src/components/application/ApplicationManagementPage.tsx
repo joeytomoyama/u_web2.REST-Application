@@ -1,6 +1,6 @@
 import { Button, Modal, Form } from "react-bootstrap"
 import { useAppSelector } from "../../app/hooks"
-import { selectAuth } from "../../features/authSlice"
+import { selectAuth } from "../authentication/features/authSlice"
 import { useEffect, useState } from "react"
 import User from "../user/User"
 import { LinkContainer } from "react-router-bootstrap"

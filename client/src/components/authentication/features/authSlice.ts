@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { RootState } from "../app/store"
-import { UserType } from "../types"
+import { RootState } from "../../../app/store"
+import { UserType } from "../../../types"
 
 interface AuthState {
   token: string | undefined

@@ -1,5 +1,5 @@
 import { NavItem } from "react-bootstrap"
-import Login from "./Login"
+import Login from "./authentication/components/Login"
 
 import Container from "react-bootstrap/Container"
 import Nav from "react-bootstrap/Nav"
@@ -7,7 +7,7 @@ import Navbar from "react-bootstrap/Navbar"
 import NavDropdown from "react-bootstrap/NavDropdown"
 import { Link, NavLink } from "react-router-dom"
 import { useAppSelector } from "../app/hooks"
-import { selectAuth } from "../features/authSlice"
+import { selectAuth } from "./authentication/features/authSlice"
 import { LinkContainer } from "react-router-bootstrap"
 
 export default function Header() {

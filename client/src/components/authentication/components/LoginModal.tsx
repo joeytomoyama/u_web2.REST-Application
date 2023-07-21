@@ -3,20 +3,13 @@ import {
   authenticateAsync,
   hideAuthModal,
   selectAuth,
-  showAuthModal,
 } from "../features/authSlice"
 import { useDispatch } from "react-redux"
-import { useAppSelector } from "../app/hooks"
-
-// interface LoginModalProps {
-//   showLogin: boolean
-//   setShowLogin: React.Dispatch<React.SetStateAction<boolean>>
-// }
+import { useAppSelector } from "../../../app/hooks"
 
 export default function LoginModal() {
   const dispatch = useDispatch()
   const authSlice = useAppSelector(selectAuth)
-  // const showModal = authSlice.showAuthModal
 
   const handleFormSubmit = (e: any) => {
     e.preventDefault()

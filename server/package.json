@@ -4,6 +4,7 @@
   "main": "./src/httpServer.ts",
   "scripts": {
     "start": "ts-node ./src/httpServer.ts",
+    "startJs": "node ./dist/httpServer.js",
     "build": "rimraf dist/ && tsc",
     "dev": "nodemon ./src/httpServer.ts",
     "debug": "echo \"Press F5\" && exit 1",

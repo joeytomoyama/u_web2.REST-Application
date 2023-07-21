@@ -1,6 +1,6 @@
 import React from "react"
 import { useDispatch } from "react-redux"
-import { useAppSelector } from "../app/hooks"
+import { useAppSelector } from "../../../app/hooks"
 import Button from "react-bootstrap/Button"
 import {
   selectAuth,
@@ -24,7 +24,10 @@ export default function Login() {
         <>
           <Button
             id="OpenLoginDialogButton"
-            onClick={() => dispatch(showAuthModal())}
+            onClick={() => {
+              dispatch(showAuthModal())
+              navigate("/")
+            }}
           >
             Log in
           </Button>

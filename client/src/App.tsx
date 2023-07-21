@@ -1,13 +1,13 @@
 import "./App.css"
 import { useAppSelector } from "./app/hooks"
 import ApplicationManagementPage from "./components/application/ApplicationManagementPage"
-import CourseManagementPage from "./components/course/CourseManagementPage"
+import CourseManagementPage from "./components/course/components/CourseManagementPage"
 import Header from "./components/Header"
 import LandingPage from "./components/LandingPage"
 import Profile from "./components/Profile"
 import Startseite from "./components/Startseite"
-import UserManagementPage from "./components/user/UserManagementPage"
-import { selectAuth } from "./features/authSlice"
+import UserManagementPage from "./components/user/components/UserManagementPage"
+import { selectAuth } from "./components/authentication/features/authSlice"
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom"
 
 function App() {

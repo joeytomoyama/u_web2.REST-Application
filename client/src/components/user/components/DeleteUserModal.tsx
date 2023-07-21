@@ -1,9 +1,11 @@
-import { Modal, Form, Button } from "react-bootstrap"
-import authSlice, { selectAuth } from "../../features/authSlice"
-import { UserType } from "../../types"
-import { useAppSelector } from "../../app/hooks"
+import { Modal, Button } from "react-bootstrap"
+import { selectAuth } from "../../authentication/features/authSlice"
+import { UserType } from "../../../types"
+import { useAppSelector } from "../../../app/hooks"
+import { useNavigate } from "react-router-dom"
+import * as IDS from "../../../ids"
 
-interface DeleteCourseModalProps {
+interface DeleteUserModalProps {
   showDelete: boolean
   setShowDelete: React.Dispatch<React.SetStateAction<boolean>>
   users: UserType[]
@@ -11,14 +13,16 @@ interface DeleteCourseModalProps {
   clickedUser: UserType | undefined
 }
 
-export default function DeleteCourseModal({
+export default function DeleteUserModal({
   showDelete,
   setShowDelete,
   users,
   setUsers,
   clickedUser,
-}: DeleteCourseModalProps) {
+}: DeleteUserModalProps) {
   const authSlice = useAppSelector(selectAuth)
+
+  const navigate = useNavigate()
 
   const handleUserDelete = (e: any) => {
     e.preventDefault()
@@ -27,16 +31,21 @@ export default function DeleteCourseModal({
       headers: {
         Authorization: "Basic " + authSlice.token,
       },
-    }).then((response) => {
-      const newUsers = users.filter(
-        (u: UserType) => u.userID !== clickedUser?.userID,
-      ) as UserType[]
-      setUsers(newUsers)
-      setShowDelete(false)
     })
+      .then((response) => {
+        const newUsers = users.filter(
+          (u: UserType) => u.userID !== clickedUser?.userID,
+        ) as UserType[]
+        setUsers(newUsers)
+        setShowDelete(false)
+      })
+      .catch((error) => {
+        console.error(error)
+        navigate("/")
+      })
   }
   return (
-    <Modal show={showDelete} id={`DeleteDialogUser${clickedUser?.userID}`}>
+    <Modal show={showDelete} id={IDS.DeleteDialogUser + clickedUser?.userID}>
       <Modal.Dialog>
         <Modal.Header>
           <Modal.Title>
@@ -46,14 +55,14 @@ export default function DeleteCourseModal({
         <Modal.Body>{`Soll User ${clickedUser?.firstName} ${clickedUser?.lastName} gelöscht werden?`}</Modal.Body>
         <Modal.Footer>
           <Button
-            id="DeleteDialogCancelButton"
+            id={IDS.DeleteDialogCancelButton}
             onClick={() => setShowDelete(false)}
             variant="secondary"
           >
             Cancel
           </Button>
           <Button
-            id="DeleteDialogConfirmButton"
+            id={IDS.DeleteDialogConfirmButton}
             onClick={handleUserDelete}
             variant="primary"
           >

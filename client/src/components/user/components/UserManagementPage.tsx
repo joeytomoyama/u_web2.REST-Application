@@ -1,14 +1,15 @@
 import { Button } from "react-bootstrap"
-import { useAppSelector } from "../../app/hooks"
-import { selectAuth } from "../../features/authSlice"
+import { useAppSelector } from "../../../app/hooks"
+import { selectAuth } from "../../authentication/features/authSlice"
 import { useEffect, useState } from "react"
 import User from "./User"
 import { LinkContainer } from "react-router-bootstrap"
-import { UserType } from "../../types"
+import { UserType } from "../../../types"
 import CreateModal from "./CreateUserModal"
 import EditModal from "./EditUserModal"
 import DeleteModal from "./DeleteUserModal"
 import { useNavigate } from "react-router-dom"
+import * as IDS from "../../../ids"
 
 export default function UserManagementPage() {
   const authSlice: any = useAppSelector(selectAuth)
@@ -44,13 +45,14 @@ export default function UserManagementPage() {
         // setUserFetchError(true)
         navigate("/")
       })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
-    <div className="UserManagementPage">
+    <div className={IDS.UserManagementPage}>
       <h2>User-List</h2>
       <Button
-        id="UserManagementPageCreateUserButton"
+        id={IDS.UserManagementPageCreateUserButton}
         onClick={() => {
           setShowCreate(true)
         }}
@@ -89,7 +91,6 @@ export default function UserManagementPage() {
           <li key={user.userID}>
             {
               <User
-                id={"UserItem" + user.userID}
                 user={user}
                 setShowEdit={setShowEdit}
                 setShowDelete={setShowDelete}
@@ -100,7 +101,7 @@ export default function UserManagementPage() {
         ))}
       </ul>
       <LinkContainer to="/">
-        <Button id="OpenStartPageButton">Start Page</Button>
+        <Button id={IDS.OpenStartPageButton}>Start Page</Button>
       </LinkContainer>
     </div>
   )

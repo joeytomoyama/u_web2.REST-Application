@@ -1,8 +1,10 @@
 import { Modal, Form, Button } from "react-bootstrap"
-import { selectAuth } from "../../features/authSlice"
-import { CourseType } from "../../types"
-import { useAppSelector } from "../../app/hooks"
+import { selectAuth } from "../../authentication/features/authSlice"
+import { CourseType } from "../../../types"
+import { useAppSelector } from "../../../app/hooks"
 import { useNavigate } from "react-router-dom"
+import * as IDS from "../../../ids"
+import { createCourse } from "../CourseService"
 
 interface CreateCourseModalProps {
   showCreate: boolean
@@ -10,12 +12,6 @@ interface CreateCourseModalProps {
   courses: CourseType[]
   setCourses: React.Dispatch<React.SetStateAction<CourseType[]>>
 }
-
-const editUniversityName = "CreateCourseComponentEditUniversityName"
-const editUniversityShortName = "CreateCourseComponentEditUniversityShortName"
-const editUniversityDepartmentName = "CreateCourseComponentEditDepartmentName"
-const editName = "CreateCourseComponentEditName"
-const editShortName = "CreateCourseComponentEditShortName"
 
 export default function CreateCourseModal({
   showCreate,
@@ -29,29 +25,10 @@ export default function CreateCourseModal({
 
   const handleFormSubmit = (e: any) => {
     e.preventDefault()
-    const universityName = (
-      document.getElementById(editUniversityName) as HTMLInputElement
-    ).value
-    const universityShortName = (
-      document.getElementById(editUniversityShortName) as HTMLInputElement
-    ).value
-    const departmentName = (
-      document.getElementById(editUniversityDepartmentName) as HTMLInputElement
-    ).value
-    const name = (document.getElementById(editName) as HTMLInputElement).value
-    const shortName =
-      (document.getElementById(editShortName) as HTMLInputElement)?.value ?? ""
 
-    //auslagern CourseService
-    const createdCourse: CourseType = {
-      universityName: universityName,
-      universityShortName: universityShortName,
-      departmentName: departmentName,
-      name: name,
-      shortName: shortName,
-    }
+    const createdCourse = createCourse()
 
-    fetch(import.meta.env.VITE_SERVER_URL + "courses", {
+    fetch(import.meta.env.VITE_SERVER_URL + "degreeCourses", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -60,18 +37,22 @@ export default function CreateCourseModal({
       body: JSON.stringify(createdCourse),
     })
       .then((response) => response.json())
+      .catch((error) => {
+        console.error(error)
+        navigate("/")
+      })
       .then((data) => {
         console.log("data:", data)
-        if ("courseID" in data) setCourses([...courses, data])
+        if ("id" in data) setCourses([...courses, data])
         setShowCreate(false)
       })
       .catch((error) => {
-        console.error("Error:", error)
+        console.error(error)
         navigate("/")
       })
   }
   return (
-    <Modal show={showCreate} id="CourseManagementPageCreateComponent">
+    <Modal show={showCreate} id={IDS.DegreeCourseManagementPageCreateComponent}>
       <Modal.Dialog>
         <Modal.Header>
           <Modal.Title>Add Course</Modal.Title>
@@ -79,47 +60,55 @@ export default function CreateCourseModal({
         <Modal.Body>
           <Form>
             <Form.Group>
-              <Form.Label>courseId:</Form.Label>
+              <Form.Label>universityName:</Form.Label>
               <Form.Control
-                id="CreateCourseComponentEditCourseID"
+                id={IDS.CreateDegreeCourseComponentEditUniversityName}
                 type="text"
                 placeholder=""
               />
             </Form.Group>
             <Form.Group>
-              <Form.Label>firstName:</Form.Label>
+              <Form.Label>universityShortName:</Form.Label>
               <Form.Control
-                id="CreateCourseComponentEditFirstName"
+                id={IDS.CreateDegreeCourseComponentEditUniversityShortName}
                 type="text"
                 placeholder=""
               />
             </Form.Group>
             <Form.Group>
-              <Form.Label>lastName:</Form.Label>
+              <Form.Label>departmentName:</Form.Label>
               <Form.Control
-                id="CreateCourseComponentEditLastName"
+                id={IDS.CreateDegreeCourseComponentEditDepartmentName}
                 type="text"
                 placeholder=""
               />
             </Form.Group>
             <Form.Group>
-              <Form.Label>password:</Form.Label>
+              <Form.Label>departmentShortName:</Form.Label>
               <Form.Control
-                id="CreateCourseComponentEditPassword"
-                type="password"
+                id={IDS.CreateDegreeCourseComponentEditDepartmentShortName}
+                type="text"
                 placeholder=""
               />
             </Form.Group>
             <Form.Group>
-              <Form.Label>is Administrator:</Form.Label>
-              <Form.Switch
-                id="CreateCourseComponentEditIsAdministrator"
-                type="checkbox"
+              <Form.Label>name:</Form.Label>
+              <Form.Control
+                id={IDS.CreateDegreeCourseComponentEditName}
+                type="text"
+                placeholder=""
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>shortName:</Form.Label>
+              <Form.Control
+                id={IDS.CreateDegreeCourseComponentEditShortName}
+                type="text"
                 placeholder=""
               />
             </Form.Group>
             <Button
-              id="CreateCourseComponentCreateCourseButton"
+              id={IDS.CreateDegreeCourseComponentCreateDegreeCourseButton}
               variant="primary"
               onClick={handleFormSubmit}
             >

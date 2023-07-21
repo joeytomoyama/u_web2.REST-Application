@@ -1,8 +1,10 @@
 import { Modal, Form, Button } from "react-bootstrap"
-import { selectAuth } from "../../features/authSlice"
-import { UserType } from "../../types"
-import { useAppSelector } from "../../app/hooks"
+import { selectAuth } from "../../authentication/features/authSlice"
+import { UserType } from "../../../types"
+import { useAppSelector } from "../../../app/hooks"
 import { useNavigate } from "react-router-dom"
+import * as IDS from "../../../ids"
+import { createUser } from "../UserService"
 
 interface CreateUserModalProps {
   showCreate: boolean
@@ -10,12 +12,6 @@ interface CreateUserModalProps {
   users: UserType[]
   setUsers: React.Dispatch<React.SetStateAction<UserType[]>>
 }
-
-const editUserID = "CreateUserComponentEditUserID"
-const editFirstName = "CreateUserComponentEditUniversityShortName"
-const editLastName = "CreateUserComponentEditLastName"
-const editPassword = "CreateUserComponentEditPassword"
-const editIsAdministrator = "CreateUserComponentEditShortName"
 
 export default function CreateUserModal({
   showCreate,
@@ -29,26 +25,8 @@ export default function CreateUserModal({
 
   const handleFormSubmit = (e: any) => {
     e.preventDefault()
-    const userId =
-      (document.getElementById(editUserID) as HTMLInputElement)?.value ?? ""
-    const firstName =
-      (document.getElementById(editFirstName) as HTMLInputElement)?.value ?? ""
-    const lastName =
-      (document.getElementById(editLastName) as HTMLInputElement)?.value ?? ""
-    const password =
-      (document.getElementById(editPassword) as HTMLInputElement)?.value ?? ""
-    const isAdministrator =
-      (document.getElementById(editIsAdministrator) as HTMLInputElement)
-        ?.checked ?? false
 
-    //auslagern UserService
-    const createdUser: UserType = {
-      userID: userId,
-      firstName: firstName,
-      lastName: lastName,
-      password: password,
-      isAdministrator: isAdministrator,
-    }
+    const createdUser = createUser()
 
     fetch(import.meta.env.VITE_SERVER_URL + "users", {
       method: "POST",
@@ -70,7 +48,7 @@ export default function CreateUserModal({
       })
   }
   return (
-    <Modal show={showCreate} id="UserManagementPageCreateComponent">
+    <Modal show={showCreate} id={IDS.UserManagementPageCreateComponent}>
       <Modal.Dialog>
         <Modal.Header>
           <Modal.Title>Add User</Modal.Title>
@@ -79,30 +57,46 @@ export default function CreateUserModal({
           <Form>
             <Form.Group>
               <Form.Label>userId:</Form.Label>
-              <Form.Control id={editUserID} type="text" placeholder="" />
+              <Form.Control
+                id={IDS.CreateUserComponentEditUserID}
+                type="text"
+                placeholder=""
+              />
             </Form.Group>
             <Form.Group>
               <Form.Label>firstName:</Form.Label>
-              <Form.Control id={editFirstName} type="text" placeholder="" />
+              <Form.Control
+                id={IDS.CreateUserComponentEditFirstName}
+                type="text"
+                placeholder=""
+              />
             </Form.Group>
             <Form.Group>
               <Form.Label>lastName:</Form.Label>
-              <Form.Control id={editLastName} type="text" placeholder="" />
+              <Form.Control
+                id={IDS.CreateUserComponentEditLastName}
+                type="text"
+                placeholder=""
+              />
             </Form.Group>
             <Form.Group>
               <Form.Label>password:</Form.Label>
-              <Form.Control id={editPassword} type="password" placeholder="" />
+              <Form.Control
+                id={IDS.CreateUserComponentEditPassword}
+                type="password"
+                placeholder=""
+              />
             </Form.Group>
             <Form.Group>
               <Form.Label>is Administrator:</Form.Label>
               <Form.Switch
-                id={editIsAdministrator}
+                id={IDS.CreateUserComponentEditIsAdministrator}
                 type="checkbox"
                 placeholder=""
               />
             </Form.Group>
             <Button
-              id="CreateUserComponentCreateUserButton"
+              id={IDS.CreateUserComponentCreateUserButton}
               variant="primary"
               onClick={handleFormSubmit}
             >
