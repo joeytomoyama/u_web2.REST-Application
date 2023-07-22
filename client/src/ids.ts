@@ -114,6 +114,8 @@ export const CreateDegreeCourseApplicationEditTargetPeriodName =
   "CreateDegreeCourseApplicationEditTargetPeriodName"
 export const CreateDegreeCourseApplicationCreate =
   "CreateDegreeCourseApplicationCreate"
+export const CreateDegreeCourseApplicationCreateButton =
+  "CreateDegreeCourseApplicationCreateButton"
 
 export const DegreeCourseApplicationManagementPageListComponent =
   "DegreeCourseApplicationManagementPageListComponent"

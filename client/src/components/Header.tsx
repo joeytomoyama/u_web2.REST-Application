@@ -37,7 +37,7 @@ export default function Header() {
                   Users
                 </Link>
               )}
-              {isAdmin && (
+              {user && (
                 <Link to="/coursemanagement" className="nav-link">
                   Courses
                 </Link>

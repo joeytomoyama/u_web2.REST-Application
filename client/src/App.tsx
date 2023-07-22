@@ -22,6 +22,7 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/coursemanagement" element={<CourseManagementPage />} />
           <Route path="*" element={<div>404</div>} />
         </Routes>
       </div>

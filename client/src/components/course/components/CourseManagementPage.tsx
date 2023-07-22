@@ -10,6 +10,7 @@ import CreateCourseModal from "./CreateCourseModal"
 import EditCourseModal from "./EditCourseModal"
 import DeleteCourseModal from "./DeleteCourseModal"
 import * as IDS from "../../../ids"
+import ApplyCourseModal from "./ApplyCourseModal"
 
 export default function CourseManagementPage() {
   const authSlice: any = useAppSelector(selectAuth)
@@ -18,6 +19,7 @@ export default function CourseManagementPage() {
   const [showCreate, setShowCreate] = useState<boolean>(false)
   const [showEdit, setShowEdit] = useState<boolean>(false)
   const [showDelete, setShowDelete] = useState<boolean>(false)
+  const [showApply, setShowApply] = useState<boolean>(false)
   const [clickedCourse, setClickedCourse] = useState<CourseType | undefined>(
     undefined,
   )
@@ -83,6 +85,12 @@ export default function CourseManagementPage() {
         setCourses={setCourses}
         clickedCourse={clickedCourse}
       />
+      <ApplyCourseModal
+        showApply={showApply}
+        setShowApply={setShowApply}
+        clickedCourse={clickedCourse}
+        setClickedCourse={setClickedCourse}
+      />
 
       <ul
         id={IDS.DegreeCourseManagementPageListComponent}
@@ -100,6 +108,7 @@ export default function CourseManagementPage() {
                 course={course}
                 setShowEdit={setShowEdit}
                 setShowDelete={setShowDelete}
+                setShowApply={setShowApply}
                 setClickedCourse={setClickedCourse}
               />
             }
