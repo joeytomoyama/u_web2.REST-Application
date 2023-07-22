@@ -6,8 +6,6 @@ import { LinkContainer } from "react-router-bootstrap"
 import { ApplicationType } from "../../types"
 import Application from "./Application"
 import { useNavigate } from "react-router-dom"
-import CreateApplicationModal from "./CreateApplicationModal"
-import EditApplicationModal from "./EditApplicationModal"
 import DeleteApplicationModal from "./DeleteApplicationModal"
 import * as IDS from "../../ids"
 
@@ -15,8 +13,6 @@ export default function ApplicationManagementPage() {
   const authSlice: any = useAppSelector(selectAuth)
 
   const [applications, setApplications] = useState<ApplicationType[]>([])
-  const [showCreate, setShowCreate] = useState<boolean>(false)
-  const [showEdit, setShowEdit] = useState<boolean>(false)
   const [showDelete, setShowDelete] = useState<boolean>(false)
   const [clickedApplication, setClickedApplication] = useState<
     ApplicationType | undefined
@@ -55,34 +51,21 @@ export default function ApplicationManagementPage() {
   return (
     <div className={IDS.DegreeCourseApplicationManagementPage}>
       <h2>Application-List</h2>
-      <Button
+      {/* <Button
         id={IDS.UserManagementPageCreateUserButton}
         onClick={() => {
           setShowCreate(true)
         }}
       >
         Add Application
-      </Button>
-      {/* <CreateApplicationModal
-        showCreate={showCreate}
-        setShowCreate={setShowCreate}
-        applications={applications}
-        setApplications={setApplications}
-      />
-      <EditApplicationModal
-        showEdit={showEdit}
-        setShowEdit={setShowEdit}
-        applications={applications}
-        setApplications={setApplications}
-        clickedApplication={clickedApplication}
-      />
+      </Button> */}
       <DeleteApplicationModal
         showDelete={showDelete}
         setShowDelete={setShowDelete}
         applications={applications}
         setApplications={setApplications}
         clickedApplication={clickedApplication}
-      /> */}
+      />
 
       <ul
         id={IDS.DegreeCourseApplicationManagementPageListComponent}
@@ -98,7 +81,6 @@ export default function ApplicationManagementPage() {
             {
               <Application
                 application={application}
-                setShowEdit={setShowEdit}
                 setShowDelete={setShowDelete}
                 setClickedApplication={setClickedApplication}
               />

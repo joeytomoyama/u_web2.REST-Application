@@ -4,7 +4,6 @@ import * as IDS from "../../ids"
 
 interface ApplicationProps {
   application: ApplicationType
-  setShowEdit: React.Dispatch<React.SetStateAction<boolean>>
   setShowDelete: React.Dispatch<React.SetStateAction<boolean>>
   setClickedApplication: React.Dispatch<
     React.SetStateAction<ApplicationType | undefined>
@@ -13,7 +12,6 @@ interface ApplicationProps {
 
 export default function Application({
   application,
-  setShowEdit,
   setShowDelete,
   setClickedApplication,
 }: ApplicationProps) {
@@ -31,44 +29,28 @@ export default function Application({
         <Card.Subtitle className="mb-2 text-muted">
           {application.degreeCourseID}
         </Card.Subtitle>
-        <Card.Text>Applicant ID: {application.applicantUserID}</Card.Text>
-        <Card.Text>Degree Course ID: {application.degreeCourseID}</Card.Text>
-        <Card.Text>
+        <Card.Text id={IDS.ApplicantUserID}>
+          Applicant ID: {application.applicantUserID}
+        </Card.Text>
+        <Card.Text id={IDS.DegreeCourseName}>
+          Degree Course ID: {application.degreeCourseID}
+        </Card.Text>
+        <Card.Text id={IDS.TargetPeriodYear}>
           Target Period Year: {application.targetPeriodYear}
         </Card.Text>
-        <Card.Text>
+        <Card.Text id={IDS.TargetPeriodShortName}>
           Target Period Short Name: {application.targetPeriodShortName}
         </Card.Text>
         <Card.Text>ID: {application.id}</Card.Text>
-        {/* <Button
-          id={IDS.DegreeApplicationItemEditButton + application.id}
-          onClick={() => {
-            setClickedApplication(application)
-            setShowEdit(true)
-          }}
-        >
-          Edit Application
-        </Button>
         <Button
-          id={IDS.DegreeApplicationItemDeleteButton + application.id}
+          id={IDS.DeleteDialogDegreeCourseApplication + application.id}
           onClick={() => {
             setClickedApplication(application)
             setShowDelete(true)
           }}
         >
           Delete Application
-        </Button> */}
-        {/* <Button
-          id={
-            IDS.CreateDegreeApplicationApplicationForDegreeApplication +
-            application.id
-          }
-          onClick={() => {
-            console.log("TODO")
-          }}
-        >
-          Apply
-        </Button> */}
+        </Button>
       </Card.Body>
     </Card>
   )

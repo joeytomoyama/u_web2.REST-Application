@@ -12,29 +12,15 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom"
 
 function App() {
   const isAuth = useAppSelector(selectAuth).isAuthenticated
-  if (!isAuth) {
-    return (
-      <div
-        style={{
-          height: "100%",
-        }}
-      >
-        <Header />
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/coursemanagement" element={<CourseManagementPage />} />
-          <Route path="*" element={<div>404</div>} />
-        </Routes>
-      </div>
-    )
-  } else {
-    return (
-      <div
-        style={{
-          height: "100%",
-        }}
-      >
-        <Header />
+  const isAdmin = useAppSelector(selectAuth).isAdministrator
+  return (
+    <div
+      style={{
+        height: "100%",
+      }}
+    >
+      <Header />
+      {isAuth ? (
         <Routes>
           <Route path="/" element={<Startseite />} />
           <Route path="/usermanagement" element={<UserManagementPage />} />
@@ -46,29 +32,41 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<div>404</div>} />
         </Routes>
-      </div>
-    )
-  }
-  // return (
-  //   <div
-  //     style={{
-  //       height: "100%",
-  //     }}
-  //   >
-  //     <Header />
-  //     <Routes>
-  //       <Route path="/" element={<Startseite />} />
-  //       <Route path="/usermanagement" element={<UserManagementPage />} />
-  //       <Route path="/coursemanagement" element={<CourseManagementPage />} />
-  //       <Route
-  //         path="/applicationmanagement"
-  //         element={<ApplicationManagementPage />}
-  //       />
-  //       <Route path="/profile" element={<Profile />} />
-  //       <Route path="*" element={<div>404</div>} />
-  //     </Routes>
-  //   </div>
-  // )
+      ) : (
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/usermanagement" element={<div>not allowed</div>} />
+          <Route path="/coursemanagement" element={<div>not allowed</div>} />
+          <Route
+            path="/applicationmanagement"
+            element={<div>not allowed</div>}
+          />
+          <Route path="/profile" element={<div>not allowed</div>} />
+          <Route path="*" element={<div>404</div>} />
+        </Routes>
+      )}
+      {/* <Routes>
+        {isAuth ? (
+          <Route path="/" element={<Startseite />} />
+        ) : (
+          <Route path="/" element={<LandingPage />} />
+        )}
+        {isAdmin && (
+          <Route path="/usermanagement" element={<UserManagementPage />} />
+        )}
+        <Route path="/coursemanagement" element={<CourseManagementPage />} />
+        {isAdmin && (
+          <Route
+            path="/applicationmanagement"
+            element={<ApplicationManagementPage />}
+          />
+        )}
+        {isAuth && <Route path="/profile" element={<Profile />} />}
+        <Route path="/profile" element={<Profile />} />
+        <Route path="*" element={<div>404</div>} />
+      </Routes> */}
+    </div>
+  )
 }
 
 export default App

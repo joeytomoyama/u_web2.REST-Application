@@ -1,30 +1,32 @@
 import { Modal, Button } from "react-bootstrap"
 import { selectAuth } from "../../authentication/features/authSlice"
-import { CourseType } from "../../types"
+import { ApplicationType } from "../../types"
 import { useAppSelector } from "../../app/hooks"
 import * as IDS from "../../ids"
 
-interface DeleteCourseModalProps {
+interface DeleteApplicationModalProps {
   showDelete: boolean
   setShowDelete: React.Dispatch<React.SetStateAction<boolean>>
-  courses: CourseType[]
-  setCourses: React.Dispatch<React.SetStateAction<CourseType[]>>
-  clickedCourse: CourseType | undefined
+  applications: ApplicationType[]
+  setApplications: React.Dispatch<React.SetStateAction<ApplicationType[]>>
+  clickedApplication: ApplicationType | undefined
 }
 
-export default function DeleteCourseModal({
+export default function DeleteApplicationModal({
   showDelete,
   setShowDelete,
-  courses,
-  setCourses,
-  clickedCourse,
-}: DeleteCourseModalProps) {
+  applications,
+  setApplications,
+  clickedApplication,
+}: DeleteApplicationModalProps) {
   const authSlice = useAppSelector(selectAuth)
 
-  const handleCourseDelete = (e: any) => {
+  const handleApplicationDelete = (e: any) => {
     e.preventDefault()
     fetch(
-      import.meta.env.VITE_SERVER_URL + "degreeCourses/" + clickedCourse?.id,
+      import.meta.env.VITE_SERVER_URL +
+        "degreeCourseApplications/" +
+        clickedApplication?.id,
       {
         method: "DELETE",
         headers: {
@@ -33,25 +35,25 @@ export default function DeleteCourseModal({
       },
     ).then((response) => {
       if (response.status !== 204) return
-      const newCourses = courses.filter(
-        (u: CourseType) => u.id !== clickedCourse?.id,
-      ) as CourseType[]
-      setCourses(newCourses)
+      const newApplications = applications.filter(
+        (u: ApplicationType) => u.id !== clickedApplication?.id,
+      ) as ApplicationType[]
+      setApplications(newApplications)
       setShowDelete(false)
     })
   }
   return (
     <Modal
       show={showDelete}
-      id={IDS.DeleteDialogDegreeCourse + clickedCourse?.id}
+      id={IDS.DeleteDialogDegreeCourseApplication + clickedApplication?.id}
     >
       <Modal.Dialog>
         <Modal.Header>
           <Modal.Title>
-            {`Delete Course ${clickedCourse?.name} ${clickedCourse?.universityName}?`}
+            {`Delete Application for ${clickedApplication?.degreeCourseID} by ${clickedApplication?.applicantUserID}?`}
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body>{`Soll Course ${clickedCourse?.name} ${clickedCourse?.universityName} gelöscht werden?`}</Modal.Body>
+        <Modal.Body>{`Soll Application für ${clickedApplication?.applicantUserID} gelöscht werden?`}</Modal.Body>
         <Modal.Footer>
           <Button
             id={IDS.DeleteDialogCancelButton}
@@ -62,7 +64,7 @@ export default function DeleteCourseModal({
           </Button>
           <Button
             id={IDS.DeleteDialogConfirmButton}
-            onClick={handleCourseDelete}
+            onClick={handleApplicationDelete}
             variant="primary"
           >
             Delete

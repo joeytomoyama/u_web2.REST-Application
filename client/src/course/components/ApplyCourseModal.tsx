@@ -119,9 +119,13 @@ export default function ApplyCourseModal({
               <Form.Label>Target Period Short Name:</Form.Label>
               <Form.Control
                 id={IDS.CreateDegreeCourseApplicationEditTargetPeriodName}
-                type="text"
+                as="select"
                 placeholder=""
-              />
+              >
+                <option value="">Choose semester:</option>
+                <option value="WiSe">Wintersemester</option>
+                <option value="SoSe">Sommersemester</option>
+              </Form.Control>
             </Form.Group>
             <Button
               id={IDS.CreateDegreeCourseApplicationCreateButton}
