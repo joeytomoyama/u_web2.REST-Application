@@ -5,7 +5,7 @@ import {
   selectAuth,
 } from "../features/authSlice"
 import { useDispatch } from "react-redux"
-import { useAppSelector } from "../../../app/hooks"
+import { useAppSelector } from "../../app/hooks"
 
 export default function LoginModal() {
   const dispatch = useDispatch()

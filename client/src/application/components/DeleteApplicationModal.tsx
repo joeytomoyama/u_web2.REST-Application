@@ -1,8 +1,8 @@
 import { Modal, Button } from "react-bootstrap"
 import { selectAuth } from "../../authentication/features/authSlice"
-import { CourseType } from "../../../types"
-import { useAppSelector } from "../../../app/hooks"
-import * as IDS from "../../../ids"
+import { CourseType } from "../../types"
+import { useAppSelector } from "../../app/hooks"
+import * as IDS from "../../ids"
 
 interface DeleteCourseModalProps {
   showDelete: boolean
@@ -19,7 +19,7 @@ export default function DeleteCourseModal({
   setCourses,
   clickedCourse,
 }: DeleteCourseModalProps) {
-  const authSlice: any = useAppSelector(selectAuth)
+  const authSlice = useAppSelector(selectAuth)
 
   const handleCourseDelete = (e: any) => {
     e.preventDefault()
@@ -48,10 +48,10 @@ export default function DeleteCourseModal({
       <Modal.Dialog>
         <Modal.Header>
           <Modal.Title>
-            {`Delete Course ${clickedCourse?.shortName}: ${clickedCourse?.name}?`}
+            {`Delete Course ${clickedCourse?.name} ${clickedCourse?.universityName}?`}
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body>{`Should the Course ${clickedCourse?.shortName}: ${clickedCourse?.name} be deleted?`}</Modal.Body>
+        <Modal.Body>{`Soll Course ${clickedCourse?.name} ${clickedCourse?.universityName} gelöscht werden?`}</Modal.Body>
         <Modal.Footer>
           <Button
             id={IDS.DeleteDialogCancelButton}

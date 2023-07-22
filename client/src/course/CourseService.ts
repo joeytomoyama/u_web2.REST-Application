@@ -1,5 +1,5 @@
-import * as IDS from "../../ids"
-import { CourseType } from "../../types"
+import * as IDS from "../ids"
+import { CourseType } from "../types"
 
 export function createCourse(): CourseType {
   const universityName = (

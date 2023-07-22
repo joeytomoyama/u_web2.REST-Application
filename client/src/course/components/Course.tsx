@@ -1,6 +1,6 @@
 import { Button, Card } from "react-bootstrap"
-import { CourseType } from "../../../types"
-import * as IDS from "../../../ids"
+import { CourseType } from "../../types"
+import * as IDS from "../../ids"
 
 interface CourseProps {
   course: CourseType

@@ -1,49 +1,43 @@
 import { Button } from "react-bootstrap"
-import { useAppSelector } from "../../../app/hooks"
+import { useAppSelector } from "../../app/hooks"
 import { selectAuth } from "../../authentication/features/authSlice"
 import { useEffect, useState } from "react"
+import User from "./User"
 import { LinkContainer } from "react-router-bootstrap"
-import { CourseType } from "../../../types"
-import Course from "./Course"
+import { UserType } from "../../types"
+import CreateModal from "./CreateUserModal"
+import EditModal from "./EditUserModal"
+import DeleteModal from "./DeleteUserModal"
 import { useNavigate } from "react-router-dom"
-import CreateCourseModal from "./CreateCourseModal"
-import EditCourseModal from "./EditCourseModal"
-import DeleteCourseModal from "./DeleteCourseModal"
-import * as IDS from "../../../ids"
-import ApplyCourseModal from "./ApplyCourseModal"
+import * as IDS from "../../ids"
 
-export default function CourseManagementPage() {
+export default function UserManagementPage() {
   const authSlice: any = useAppSelector(selectAuth)
 
-  const [courses, setCourses] = useState<CourseType[]>([])
+  const [users, setUsers] = useState<UserType[]>([])
   const [showCreate, setShowCreate] = useState<boolean>(false)
   const [showEdit, setShowEdit] = useState<boolean>(false)
   const [showDelete, setShowDelete] = useState<boolean>(false)
-  const [showApply, setShowApply] = useState<boolean>(false)
-  const [clickedCourse, setClickedCourse] = useState<CourseType | undefined>(
+  const [clickedUser, setClickedUser] = useState<UserType | undefined>(
     undefined,
   )
 
+  // const [userFetchError, setUserFetchError] = useState<boolean>(false)
+
   const navigate = useNavigate()
 
-  //   const [userFetchError, setUserFetchError] = useState<boolean>(false)
-
   useEffect(() => {
-    fetch(import.meta.env.VITE_SERVER_URL + "degreeCourses", {
+    fetch(import.meta.env.VITE_SERVER_URL + "users", {
       method: "GET",
       headers: {
         Authorization: `Bearer ${authSlice.token}`,
       } as HeadersInit,
     })
       .then((response) => response.json())
-      .catch((error) => {
-        console.error(error)
-        // setUserFetchError(true)
-        navigate("/")
-      })
+      .catch((error) => navigate("/"))
       .then((data) => {
         console.log(data)
-        setCourses(data)
+        setUsers(data)
         // setUserFetchError(false)
       })
       .catch((error) => {
@@ -55,45 +49,37 @@ export default function CourseManagementPage() {
   }, [])
 
   return (
-    <div className={IDS.DegreeCourseManagementPage}>
-      <h2>Course-List</h2>
+    <div className={IDS.UserManagementPage}>
+      <h2>User-List</h2>
       <Button
         id={IDS.UserManagementPageCreateUserButton}
         onClick={() => {
           setShowCreate(true)
         }}
       >
-        Add Course
+        Add User
       </Button>
-      <CreateCourseModal
+      <CreateModal
         showCreate={showCreate}
         setShowCreate={setShowCreate}
-        courses={courses}
-        setCourses={setCourses}
+        users={users}
+        setUsers={setUsers}
       />
-      <EditCourseModal
+      <EditModal
         showEdit={showEdit}
         setShowEdit={setShowEdit}
-        courses={courses}
-        setCourses={setCourses}
-        clickedCourse={clickedCourse}
+        users={users}
+        setUsers={setUsers}
+        clickedUser={clickedUser}
       />
-      <DeleteCourseModal
+      <DeleteModal
         showDelete={showDelete}
         setShowDelete={setShowDelete}
-        courses={courses}
-        setCourses={setCourses}
-        clickedCourse={clickedCourse}
+        users={users}
+        setUsers={setUsers}
+        clickedUser={clickedUser}
       />
-      <ApplyCourseModal
-        showApply={showApply}
-        setShowApply={setShowApply}
-        clickedCourse={clickedCourse}
-        setClickedCourse={setClickedCourse}
-      />
-
       <ul
-        id={IDS.DegreeCourseManagementPageListComponent}
         style={{
           display: "flex",
           flexWrap: "wrap",
@@ -101,15 +87,14 @@ export default function CourseManagementPage() {
           padding: "0",
         }}
       >
-        {courses.map((course: CourseType) => (
-          <li key={course.id}>
+        {users.map((user: UserType) => (
+          <li key={user.userID}>
             {
-              <Course
-                course={course}
+              <User
+                user={user}
                 setShowEdit={setShowEdit}
                 setShowDelete={setShowDelete}
-                setShowApply={setShowApply}
-                setClickedCourse={setClickedCourse}
+                setClickedUser={setClickedUser}
               />
             }
           </li>

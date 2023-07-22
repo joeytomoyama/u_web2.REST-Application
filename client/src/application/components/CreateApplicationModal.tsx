@@ -1,24 +1,23 @@
 import { Modal, Form, Button } from "react-bootstrap"
 import { selectAuth } from "../../authentication/features/authSlice"
-import { CourseType } from "../../../types"
-import { useAppSelector } from "../../../app/hooks"
+import { ApplicationType } from "../../types"
+import { useAppSelector } from "../../app/hooks"
 import { useNavigate } from "react-router-dom"
-import * as IDS from "../../../ids"
-import { createCourse } from "../CourseService"
+import * as IDS from "../../ids"
 
-interface CreateCourseModalProps {
+interface CreateApplicationModalProps {
   showCreate: boolean
   setShowCreate: React.Dispatch<React.SetStateAction<boolean>>
-  courses: CourseType[]
-  setCourses: React.Dispatch<React.SetStateAction<CourseType[]>>
+  applications: ApplicationType[]
+  setApplications: React.Dispatch<React.SetStateAction<ApplicationType[]>>
 }
 
-export default function CreateCourseModal({
+export default function CreateApplicationModal({
   showCreate,
   setShowCreate,
-  courses,
-  setCourses,
-}: CreateCourseModalProps) {
+  applications,
+  setApplications,
+}: CreateApplicationModalProps) {
   const authSlice = useAppSelector(selectAuth)
 
   const navigate = useNavigate()
@@ -26,15 +25,15 @@ export default function CreateCourseModal({
   const handleFormSubmit = (e: any) => {
     e.preventDefault()
 
-    const createdCourse = createCourse()
+    const createdApplication = createApplication()
 
-    fetch(import.meta.env.VITE_SERVER_URL + "degreeCourses", {
+    fetch(import.meta.env.VITE_SERVER_URL + "degreeApplications", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: "Basic " + authSlice.token,
       },
-      body: JSON.stringify(createdCourse),
+      body: JSON.stringify(createdApplication),
     })
       .then((response) => response.json())
       .catch((error) => {
@@ -43,7 +42,7 @@ export default function CreateCourseModal({
       })
       .then((data) => {
         console.log("data:", data)
-        if ("id" in data) setCourses([...courses, data])
+        if ("id" in data) setApplications([...applications, data])
         setShowCreate(false)
       })
       .catch((error) => {
@@ -52,17 +51,20 @@ export default function CreateCourseModal({
       })
   }
   return (
-    <Modal show={showCreate} id={IDS.DegreeCourseManagementPageCreateComponent}>
+    <Modal
+      show={showCreate}
+      id={IDS.DegreeApplicationManagementPageCreateComponent}
+    >
       <Modal.Dialog>
         <Modal.Header>
-          <Modal.Title>Add Course</Modal.Title>
+          <Modal.Title>Add Application</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
             <Form.Group>
               <Form.Label>universityName:</Form.Label>
               <Form.Control
-                id={IDS.CreateDegreeCourseComponentEditUniversityName}
+                id={IDS.CreateDegreeApplicationComponentEditUniversityName}
                 type="text"
                 placeholder=""
               />
@@ -70,7 +72,7 @@ export default function CreateCourseModal({
             <Form.Group>
               <Form.Label>universityShortName:</Form.Label>
               <Form.Control
-                id={IDS.CreateDegreeCourseComponentEditUniversityShortName}
+                id={IDS.CreateDegreeApplicationComponentEditUniversityShortName}
                 type="text"
                 placeholder=""
               />
@@ -78,7 +80,7 @@ export default function CreateCourseModal({
             <Form.Group>
               <Form.Label>departmentName:</Form.Label>
               <Form.Control
-                id={IDS.CreateDegreeCourseComponentEditDepartmentName}
+                id={IDS.CreateDegreeApplicationComponentEditDepartmentName}
                 type="text"
                 placeholder=""
               />
@@ -86,7 +88,7 @@ export default function CreateCourseModal({
             <Form.Group>
               <Form.Label>departmentShortName:</Form.Label>
               <Form.Control
-                id={IDS.CreateDegreeCourseComponentEditDepartmentShortName}
+                id={IDS.CreateDegreeApplicationComponentEditDepartmentShortName}
                 type="text"
                 placeholder=""
               />
@@ -94,7 +96,7 @@ export default function CreateCourseModal({
             <Form.Group>
               <Form.Label>name:</Form.Label>
               <Form.Control
-                id={IDS.CreateDegreeCourseComponentEditName}
+                id={IDS.CreateDegreeApplicationComponentEditName}
                 type="text"
                 placeholder=""
               />
@@ -102,17 +104,19 @@ export default function CreateCourseModal({
             <Form.Group>
               <Form.Label>shortName:</Form.Label>
               <Form.Control
-                id={IDS.CreateDegreeCourseComponentEditShortName}
+                id={IDS.CreateDegreeApplicationComponentEditShortName}
                 type="text"
                 placeholder=""
               />
             </Form.Group>
             <Button
-              id={IDS.CreateDegreeCourseComponentCreateDegreeCourseButton}
+              id={
+                IDS.CreateDegreeApplicationComponentCreateDegreeApplicationButton
+              }
               variant="primary"
               onClick={handleFormSubmit}
             >
-              Create Course
+              Create Application
             </Button>
           </Form>
         </Modal.Body>

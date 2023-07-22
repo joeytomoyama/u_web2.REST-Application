@@ -1,33 +1,35 @@
 import { Button } from "react-bootstrap"
-import { useAppSelector } from "../../../app/hooks"
+import { useAppSelector } from "../../app/hooks"
 import { selectAuth } from "../../authentication/features/authSlice"
 import { useEffect, useState } from "react"
 import { LinkContainer } from "react-router-bootstrap"
-import { ApplicationType } from "../../../types"
-import Application from "./Application"
+import { CourseType } from "../../types"
+import Course from "./Course"
 import { useNavigate } from "react-router-dom"
-import CreateApplicationModal from "./CreateApplicationModal"
-import EditApplicationModal from "./EditApplicationModal"
-import DeleteApplicationModal from "./DeleteApplicationModal"
-import * as IDS from "../../../ids"
+import CreateCourseModal from "./CreateCourseModal"
+import EditCourseModal from "./EditCourseModal"
+import DeleteCourseModal from "./DeleteCourseModal"
+import * as IDS from "../../ids"
+import ApplyCourseModal from "./ApplyCourseModal"
 
-export default function ApplicationManagementPage() {
+export default function CourseManagementPage() {
   const authSlice: any = useAppSelector(selectAuth)
 
-  const [applications, setApplications] = useState<ApplicationType[]>([])
+  const [courses, setCourses] = useState<CourseType[]>([])
   const [showCreate, setShowCreate] = useState<boolean>(false)
   const [showEdit, setShowEdit] = useState<boolean>(false)
   const [showDelete, setShowDelete] = useState<boolean>(false)
-  const [clickedApplication, setClickedApplication] = useState<
-    ApplicationType | undefined
-  >(undefined)
+  const [showApply, setShowApply] = useState<boolean>(false)
+  const [clickedCourse, setClickedCourse] = useState<CourseType | undefined>(
+    undefined,
+  )
 
   const navigate = useNavigate()
 
   //   const [userFetchError, setUserFetchError] = useState<boolean>(false)
 
   useEffect(() => {
-    fetch(import.meta.env.VITE_SERVER_URL + "degreeCourseApplications", {
+    fetch(import.meta.env.VITE_SERVER_URL + "degreeCourses", {
       method: "GET",
       headers: {
         Authorization: `Bearer ${authSlice.token}`,
@@ -41,7 +43,7 @@ export default function ApplicationManagementPage() {
       })
       .then((data) => {
         console.log(data)
-        setApplications(data)
+        setCourses(data)
         // setUserFetchError(false)
       })
       .catch((error) => {
@@ -53,39 +55,45 @@ export default function ApplicationManagementPage() {
   }, [])
 
   return (
-    <div className={IDS.DegreeCourseApplicationManagementPage}>
-      <h2>Application-List</h2>
+    <div className={IDS.DegreeCourseManagementPage}>
+      <h2>Course-List</h2>
       <Button
         id={IDS.UserManagementPageCreateUserButton}
         onClick={() => {
           setShowCreate(true)
         }}
       >
-        Add Application
+        Add Course
       </Button>
-      {/* <CreateApplicationModal
+      <CreateCourseModal
         showCreate={showCreate}
         setShowCreate={setShowCreate}
-        applications={applications}
-        setApplications={setApplications}
+        courses={courses}
+        setCourses={setCourses}
       />
-      <EditApplicationModal
+      <EditCourseModal
         showEdit={showEdit}
         setShowEdit={setShowEdit}
-        applications={applications}
-        setApplications={setApplications}
-        clickedApplication={clickedApplication}
+        courses={courses}
+        setCourses={setCourses}
+        clickedCourse={clickedCourse}
       />
-      <DeleteApplicationModal
+      <DeleteCourseModal
         showDelete={showDelete}
         setShowDelete={setShowDelete}
-        applications={applications}
-        setApplications={setApplications}
-        clickedApplication={clickedApplication}
-      /> */}
+        courses={courses}
+        setCourses={setCourses}
+        clickedCourse={clickedCourse}
+      />
+      <ApplyCourseModal
+        showApply={showApply}
+        setShowApply={setShowApply}
+        clickedCourse={clickedCourse}
+        setClickedCourse={setClickedCourse}
+      />
 
       <ul
-        id={IDS.DegreeCourseApplicationManagementPageListComponent}
+        id={IDS.DegreeCourseManagementPageListComponent}
         style={{
           display: "flex",
           flexWrap: "wrap",
@@ -93,14 +101,15 @@ export default function ApplicationManagementPage() {
           padding: "0",
         }}
       >
-        {applications.map((application: ApplicationType) => (
-          <li key={application.id}>
+        {courses.map((course: CourseType) => (
+          <li key={course.id}>
             {
-              <Application
-                application={application}
+              <Course
+                course={course}
                 setShowEdit={setShowEdit}
                 setShowDelete={setShowDelete}
-                setClickedApplication={setClickedApplication}
+                setShowApply={setShowApply}
+                setClickedCourse={setClickedCourse}
               />
             }
           </li>

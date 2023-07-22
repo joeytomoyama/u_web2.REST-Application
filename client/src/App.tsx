@@ -1,13 +1,13 @@
 import "./App.css"
 import { useAppSelector } from "./app/hooks"
-import ApplicationManagementPage from "./components/application/components/ApplicationManagementPage"
-import CourseManagementPage from "./components/course/components/CourseManagementPage"
+import ApplicationManagementPage from "./application/components/ApplicationManagementPage"
+import CourseManagementPage from "./course/components/CourseManagementPage"
 import Header from "./components/Header"
 import LandingPage from "./components/LandingPage"
 import Profile from "./components/Profile"
 import Startseite from "./components/Startseite"
-import UserManagementPage from "./components/user/components/UserManagementPage"
-import { selectAuth } from "./components/authentication/features/authSlice"
+import UserManagementPage from "./user/components/UserManagementPage"
+import { selectAuth } from "./authentication/features/authSlice"
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom"
 
 function App() {
@@ -49,6 +49,26 @@ function App() {
       </div>
     )
   }
+  // return (
+  //   <div
+  //     style={{
+  //       height: "100%",
+  //     }}
+  //   >
+  //     <Header />
+  //     <Routes>
+  //       <Route path="/" element={<Startseite />} />
+  //       <Route path="/usermanagement" element={<UserManagementPage />} />
+  //       <Route path="/coursemanagement" element={<CourseManagementPage />} />
+  //       <Route
+  //         path="/applicationmanagement"
+  //         element={<ApplicationManagementPage />}
+  //       />
+  //       <Route path="/profile" element={<Profile />} />
+  //       <Route path="*" element={<div>404</div>} />
+  //     </Routes>
+  //   </div>
+  // )
 }
 
 export default App

@@ -1,5 +1,5 @@
-import Login from "./authentication/components/Login"
-import LoginModal from "./authentication/components/LoginModal"
+import Login from "../authentication/components/Login"
+import LoginModal from "../authentication/components/LoginModal"
 
 export default function LandingPage() {
   return (

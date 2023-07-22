@@ -1,9 +1,9 @@
 import { Modal, Button } from "react-bootstrap"
 import { selectAuth } from "../../authentication/features/authSlice"
-import { UserType } from "../../../types"
-import { useAppSelector } from "../../../app/hooks"
+import { UserType } from "../../types"
+import { useAppSelector } from "../../app/hooks"
 import { useNavigate } from "react-router-dom"
-import * as IDS from "../../../ids"
+import * as IDS from "../../ids"
 
 interface DeleteUserModalProps {
   showDelete: boolean

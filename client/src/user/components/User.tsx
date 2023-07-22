@@ -1,6 +1,6 @@
 import { Button, Card, ListGroup } from "react-bootstrap"
-import { UserType } from "../../../types"
-import * as IDS from "../../../ids"
+import { UserType } from "../../types"
+import * as IDS from "../../ids"
 
 interface UserProps {
   user: UserType
@@ -32,9 +32,13 @@ export default function User({
         {/* <Card.Text>Last Name: {user.lastName}</Card.Text> */}
         {/* <Card.Text>Is Admin: {user.isAdministrator ? "✅" : "❌"}</Card.Text> */}
         <ListGroup variant="flush">
-          <ListGroup.Item>First Name: {user.firstName}</ListGroup.Item>
-          <ListGroup.Item>Last Name: {user.lastName}</ListGroup.Item>
-          <ListGroup.Item>
+          <ListGroup.Item style={{ backgroundColor: "inherit" }}>
+            First Name: {user.firstName}
+          </ListGroup.Item>
+          <ListGroup.Item style={{ backgroundColor: "inherit" }}>
+            Last Name: {user.lastName}
+          </ListGroup.Item>
+          <ListGroup.Item style={{ backgroundColor: "inherit" }}>
             Is Admin: {user.isAdministrator ? "✅" : "❌"}
           </ListGroup.Item>
         </ListGroup>

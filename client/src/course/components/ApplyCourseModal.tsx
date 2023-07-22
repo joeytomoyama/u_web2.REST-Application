@@ -1,9 +1,9 @@
 import { Modal, Form, Button } from "react-bootstrap"
 import { selectAuth } from "../../authentication/features/authSlice"
-import { ApplicationType, CourseType } from "../../../types"
-import { useAppSelector } from "../../../app/hooks"
+import { ApplicationType, CourseType } from "../../types"
+import { useAppSelector } from "../../app/hooks"
 import { useNavigate } from "react-router-dom"
-import * as IDS from "../../../ids"
+import * as IDS from "../../ids"
 // import { applyCourse } from "../CourseService"
 
 interface ApplyCourseModalProps {

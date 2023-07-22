@@ -1,5 +1,5 @@
-import * as IDS from "../../ids"
-import { UserType } from "../../types"
+import * as IDS from "../ids"
+import { UserType } from "../types"
 
 export function createUser(): UserType {
   const userId =

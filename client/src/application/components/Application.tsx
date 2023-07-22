@@ -1,6 +1,6 @@
 import { Button, Card } from "react-bootstrap"
-import { ApplicationType } from "../../../types"
-import * as IDS from "../../../ids"
+import { ApplicationType } from "../../types"
+import * as IDS from "../../ids"
 
 interface ApplicationProps {
   application: ApplicationType
