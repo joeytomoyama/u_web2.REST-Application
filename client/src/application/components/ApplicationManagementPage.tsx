@@ -8,11 +8,13 @@ import Application from "./Application"
 import { useNavigate } from "react-router-dom"
 import DeleteApplicationModal from "./DeleteApplicationModal"
 import * as IDS from "../../ids"
+import EditApplicationModal from "./EditApplicationModal"
 
 export default function ApplicationManagementPage() {
   const authSlice: any = useAppSelector(selectAuth)
 
   const [applications, setApplications] = useState<ApplicationType[]>([])
+  const [showEdit, setShowEdit] = useState<boolean>(false)
   const [showDelete, setShowDelete] = useState<boolean>(false)
   const [clickedApplication, setClickedApplication] = useState<
     ApplicationType | undefined
@@ -66,6 +68,13 @@ export default function ApplicationManagementPage() {
         setApplications={setApplications}
         clickedApplication={clickedApplication}
       />
+      <EditApplicationModal
+        showEdit={showEdit}
+        setShowEdit={setShowEdit}
+        applications={applications}
+        setApplications={setApplications}
+        clickedApplication={clickedApplication}
+      />
 
       <ul
         id={IDS.DegreeCourseApplicationManagementPageListComponent}
@@ -81,6 +90,7 @@ export default function ApplicationManagementPage() {
             {
               <Application
                 application={application}
+                setShowEdit={setShowEdit}
                 setShowDelete={setShowDelete}
                 setClickedApplication={setClickedApplication}
               />

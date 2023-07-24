@@ -9,6 +9,7 @@ import { Link, NavLink } from "react-router-dom"
 import { useAppSelector } from "../app/hooks"
 import { selectAuth } from "../authentication/features/authSlice"
 import { LinkContainer } from "react-router-bootstrap"
+import * as IDS from "../ids"
 
 export default function Header() {
   const authSlice = useAppSelector(selectAuth)
@@ -33,17 +34,29 @@ export default function Header() {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
               {isAdmin && (
-                <Link to="/usermanagement" className="nav-link">
+                <Link
+                  id={IDS.OpenUserManagementPageButton}
+                  to="/usermanagement"
+                  className="nav-link"
+                >
                   Users
                 </Link>
               )}
               {user && (
-                <Link to="/coursemanagement" className="nav-link">
+                <Link
+                  id={IDS.OpenDegreeCourseManagementPage}
+                  to="/coursemanagement"
+                  className="nav-link"
+                >
                   Courses
                 </Link>
               )}
               {isAdmin && (
-                <Link to="/applicationmanagement" className="nav-link">
+                <Link
+                  id={IDS.OpenDegreeCourseApplicationManagementPageButton}
+                  to="/applicationmanagement"
+                  className="nav-link"
+                >
                   Applications
                 </Link>
               )}

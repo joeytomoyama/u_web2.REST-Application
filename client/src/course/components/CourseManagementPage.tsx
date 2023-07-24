@@ -58,7 +58,7 @@ export default function CourseManagementPage() {
     <div className={IDS.DegreeCourseManagementPage}>
       <h2>Course-List</h2>
       <Button
-        id={IDS.UserManagementPageCreateUserButton}
+        id={IDS.DegreeCourseManagementPageCreateDegreeCourseButton}
         onClick={() => {
           setShowCreate(true)
         }}

@@ -106,7 +106,7 @@ function searchInDirectory(dir, pattern) {
       stat.isFile() &&
       (dirInner.endsWith(".js") ||
         dirInner.endsWith(".jsx") ||
-        dirInner.endsWith(".ts") ||
+        // dirInner.endsWith(".ts") ||
         dirInner.endsWith(".tsx"))
     ) {
       const content = fs.readFileSync(dirInner, "utf8")
@@ -119,11 +119,18 @@ function searchInDirectory(dir, pattern) {
   return results
 }
 
+const notFoundIds = []
+
+console.log("found:")
 requiredComponentIds.forEach((id) => {
   const matches = searchInDirectory(projectPath, id)
   if (matches.length === 0) {
-    console.error(`ID "${id}" not found in the project.`)
+    notFoundIds.push(id)
   } else {
     console.log(`ID "${id}" found in the following files: `, matches)
   }
 })
+
+console.log()
+console.log("not found:")
+notFoundIds.forEach(id => console.error(id))

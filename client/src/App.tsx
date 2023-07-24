@@ -15,9 +15,11 @@ function App() {
   const isAdmin = useAppSelector(selectAuth).isAdministrator
   return (
     <div
-      style={{
-        height: "100%",
-      }}
+      style={
+        {
+          // height: "100%",
+        }
+      }
     >
       <Header />
       {isAuth ? (

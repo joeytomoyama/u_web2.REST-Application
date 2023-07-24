@@ -4,6 +4,7 @@ import * as IDS from "../../ids"
 
 interface ApplicationProps {
   application: ApplicationType
+  setShowEdit: React.Dispatch<React.SetStateAction<boolean>>
   setShowDelete: React.Dispatch<React.SetStateAction<boolean>>
   setClickedApplication: React.Dispatch<
     React.SetStateAction<ApplicationType | undefined>
@@ -12,6 +13,7 @@ interface ApplicationProps {
 
 export default function Application({
   application,
+  setShowEdit,
   setShowDelete,
   setClickedApplication,
 }: ApplicationProps) {
@@ -43,7 +45,16 @@ export default function Application({
         </Card.Text>
         <Card.Text>ID: {application.id}</Card.Text>
         <Button
-          id={IDS.DeleteDialogDegreeCourseApplication + application.id}
+          id={"DegreeApplicationItemEditButton" + application.id}
+          onClick={() => {
+            setClickedApplication(application)
+            setShowEdit(true)
+          }}
+        >
+          Edit Application
+        </Button>
+        <Button
+          id={IDS.DegreeCourseApplicationDeleteButton + application.id}
           onClick={() => {
             setClickedApplication(application)
             setShowDelete(true)
