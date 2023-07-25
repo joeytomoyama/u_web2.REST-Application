@@ -93,7 +93,9 @@ export default function CourseManagementPage() {
       />
 
       <ul
-        id={IDS.DegreeCourseManagementPageListComponent}
+        id={
+          !showCreate ? IDS.DegreeCourseManagementPageListComponent : undefined
+        }
         style={{
           display: "flex",
           flexWrap: "wrap",

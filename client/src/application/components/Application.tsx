@@ -4,9 +4,9 @@ import * as IDS from "../../ids"
 
 interface ApplicationProps {
   application: ApplicationType
-  setShowEdit: React.Dispatch<React.SetStateAction<boolean>>
-  setShowDelete: React.Dispatch<React.SetStateAction<boolean>>
-  setClickedApplication: React.Dispatch<
+  setShowEdit?: React.Dispatch<React.SetStateAction<boolean>>
+  setShowDelete?: React.Dispatch<React.SetStateAction<boolean>>
+  setClickedApplication?: React.Dispatch<
     React.SetStateAction<ApplicationType | undefined>
   >
 }
@@ -44,24 +44,28 @@ export default function Application({
           Target Period Short Name: {application.targetPeriodShortName}
         </Card.Text>
         <Card.Text>ID: {application.id}</Card.Text>
-        <Button
-          id={"DegreeApplicationItemEditButton" + application.id}
-          onClick={() => {
-            setClickedApplication(application)
-            setShowEdit(true)
-          }}
-        >
-          Edit Application
-        </Button>
-        <Button
-          id={IDS.DegreeCourseApplicationDeleteButton + application.id}
-          onClick={() => {
-            setClickedApplication(application)
-            setShowDelete(true)
-          }}
-        >
-          Delete Application
-        </Button>
+        {setShowEdit && setClickedApplication && (
+          <Button
+            id={"DegreeApplicationItemEditButton" + application.id}
+            onClick={() => {
+              setClickedApplication(application)
+              setShowEdit(true)
+            }}
+          >
+            Edit Application
+          </Button>
+        )}
+        {setShowDelete && setClickedApplication && (
+          <Button
+            id={IDS.DegreeCourseApplicationItemDeleteButton + application.id}
+            onClick={() => {
+              setClickedApplication(application)
+              setShowDelete(true)
+            }}
+          >
+            Delete Application
+          </Button>
+        )}
       </Card.Body>
     </Card>
   )

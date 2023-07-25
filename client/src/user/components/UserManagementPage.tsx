@@ -80,6 +80,7 @@ export default function UserManagementPage() {
         clickedUser={clickedUser}
       />
       <ul
+        id={IDS.UserManagementPageListComponent}
         style={{
           display: "flex",
           flexWrap: "wrap",

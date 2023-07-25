@@ -137,7 +137,11 @@ export default function ApplyCourseModal({
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={() => setShowApply(false)} variant="secondary">
+          <Button
+            id={IDS.OpenDegreeCourseManagementPageListComponentButton}
+            onClick={() => setShowApply(false)}
+            variant="secondary"
+          >
             Close
           </Button>
         </Modal.Footer>

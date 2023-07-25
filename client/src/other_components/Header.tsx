@@ -44,7 +44,7 @@ export default function Header() {
               )}
               {user && (
                 <Link
-                  id={IDS.OpenDegreeCourseManagementPage}
+                  id={IDS.OpenDegreeCourseManagementPageButton}
                   to="/coursemanagement"
                   className="nav-link"
                 >

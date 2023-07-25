@@ -29,14 +29,18 @@ export default function Course({
       <Card.Body>
         <Card.Title>{`${course.name}`}</Card.Title>
         <Card.Subtitle className="mb-2 text-muted">{course.id}</Card.Subtitle>
-        <Card.Text>Name: {course.name}</Card.Text>
+        <Card.Text id={IDS.Name}>Name: {course.name}</Card.Text>
         <Card.Text>Short Name: {course.shortName}</Card.Text>
-        <Card.Text>Department Name: {course.departmentName}</Card.Text>
+        <Card.Text id={IDS.DepartmentName}>
+          Department Name: {course.departmentName}
+        </Card.Text>
         <Card.Text>
           Department Short Name: {course.departmentShortName}
         </Card.Text>
-        <Card.Text>University Name: {course.universityName}</Card.Text>
-        <Card.Text>
+        <Card.Text id={IDS.UniversityName}>
+          University Name: {course.universityName}
+        </Card.Text>
+        <Card.Text id={IDS.UniversityShortName}>
           University Short Name: {course.universityShortName}
         </Card.Text>
         <Button

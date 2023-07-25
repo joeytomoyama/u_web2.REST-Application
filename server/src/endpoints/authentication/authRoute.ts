@@ -28,7 +28,7 @@ router.get("/", async (req: any, res: any) => {
   const token = jwt.sign(
     user.toObject(),
     process.env.ACCESS_TOKEN_SECRET as jwt.Secret,
-    { expiresIn: '10m' }
+    { expiresIn: '1000m' }
   ); //3000s' })
   res.set("Authorization", "Bearer " + token);
   res.status(200).json({ Success: "Token created successfully." });

@@ -1,23 +1,16 @@
 import Login from "../authentication/components/Login"
 import LoginModal from "../authentication/components/LoginModal"
+// import Banner from "./Banner"
 
 export default function LandingPage() {
   return (
-    <div
-      id="LandingPage"
-      className="centered"
-      // style={{
-      //   display: "flex",
-      //   justifyContent: "center",
-      //   alignItems: "center",
-      //   height: "100%",
-      // }}
-    >
+    <div id="LandingPage" className="centered middleBox">
+      {/* <Banner /> */}
       <div
         className="centered"
         style={{
           flexDirection: "column",
-          borderRadius: "5px",
+          borderRadius: "10px",
           backgroundColor: "grey",
           height: "20rem",
           width: "40rem",
@@ -27,7 +20,6 @@ export default function LandingPage() {
         <Login />
         <LoginModal />
       </div>
-      {/* <LoginModal showLogin={showLogin} setShowLogin={setShowLogin} /> */}
     </div>
   )
 }

@@ -117,7 +117,11 @@ export default function CreateCourseModal({
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={() => setShowCreate(false)} variant="secondary">
+          <Button
+            id={IDS.OpenDegreeCourseManagementPageListComponentButton}
+            onClick={() => setShowCreate(false)}
+            variant="secondary"
+          >
             Close
           </Button>
         </Modal.Footer>

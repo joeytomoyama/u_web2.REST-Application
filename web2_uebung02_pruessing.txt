@@ -1,0 +1,11 @@
+Extra Aufgaben:
+
+1. Python Selenium tests. (Verwendete Version=4.10.0)
+
+2. Applications können edited werden.
+
+3. Wunderschönes Design.
+
+
+Vorschlag:
+Test wie idTest.js (prüft ob IDs im Projekt enthalten sind) Studenten zur Verfügung stellen um Flüchtigkeitsfehler zu vermeidne.
